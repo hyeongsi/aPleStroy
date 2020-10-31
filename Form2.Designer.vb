@@ -32,10 +32,16 @@ Partial Class Form2
         Me.plant1SpawnBtn = New System.Windows.Forms.Button()
         Me.plant2SpawnBtn = New System.Windows.Forms.Button()
         Me.plant3SpawnBtn = New System.Windows.Forms.Button()
-        Me.sunflowerMoneyLabelUi = New System.Windows.Forms.Label()
-        Me.mapBoardBtn00 = New System.Windows.Forms.Button()
+        Me.plantMoneyLabelUi1 = New System.Windows.Forms.Label()
         Me.moneyTimer = New System.Windows.Forms.Timer(Me.components)
         Me.sunImage = New System.Windows.Forms.PictureBox()
+        Me.plantMoneyLabelUi2 = New System.Windows.Forms.Label()
+        Me.plantMoneyLabelUi3 = New System.Windows.Forms.Label()
+        Me.plantMoneyLabelUi4 = New System.Windows.Forms.Label()
+        Me.plant1spawTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.plant2spawTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.plant3spawTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.plant4spawTimer = New System.Windows.Forms.Timer(Me.components)
         CType(Me.backgroundImage, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.leftTopUI, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.sunImage, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -52,16 +58,20 @@ Partial Class Form2
         '
         'shovelBtn
         '
+        Me.shovelBtn.BackColor = System.Drawing.Color.Transparent
         Me.shovelBtn.BackgroundImage = CType(resources.GetObject("shovelBtn.BackgroundImage"), System.Drawing.Image)
         Me.shovelBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.shovelBtn.Location = New System.Drawing.Point(370, 0)
         Me.shovelBtn.Name = "shovelBtn"
         Me.shovelBtn.Size = New System.Drawing.Size(67, 69)
         Me.shovelBtn.TabIndex = 1
-        Me.shovelBtn.UseVisualStyleBackColor = True
+        Me.shovelBtn.TabStop = False
+        Me.shovelBtn.UseVisualStyleBackColor = False
         '
         'leftTopUI
         '
+        Me.leftTopUI.BackColor = System.Drawing.Color.Transparent
+        Me.leftTopUI.BackgroundImage = CType(resources.GetObject("leftTopUI.BackgroundImage"), System.Drawing.Image)
         Me.leftTopUI.Image = CType(resources.GetObject("leftTopUI.Image"), System.Drawing.Image)
         Me.leftTopUI.Location = New System.Drawing.Point(0, 0)
         Me.leftTopUI.Name = "leftTopUI"
@@ -89,17 +99,21 @@ Partial Class Form2
         Me.sunflowerSpawnBtn.Name = "sunflowerSpawnBtn"
         Me.sunflowerSpawnBtn.Size = New System.Drawing.Size(68, 57)
         Me.sunflowerSpawnBtn.TabIndex = 5
+        Me.sunflowerSpawnBtn.TabStop = False
         Me.sunflowerSpawnBtn.UseVisualStyleBackColor = True
         '
         'plant1SpawnBtn
         '
+        Me.plant1SpawnBtn.BackColor = System.Drawing.SystemColors.Control
         Me.plant1SpawnBtn.BackgroundImage = CType(resources.GetObject("plant1SpawnBtn.BackgroundImage"), System.Drawing.Image)
         Me.plant1SpawnBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.plant1SpawnBtn.Location = New System.Drawing.Point(137, 6)
         Me.plant1SpawnBtn.Name = "plant1SpawnBtn"
         Me.plant1SpawnBtn.Size = New System.Drawing.Size(68, 57)
         Me.plant1SpawnBtn.TabIndex = 6
-        Me.plant1SpawnBtn.UseVisualStyleBackColor = True
+        Me.plant1SpawnBtn.TabStop = False
+        Me.plant1SpawnBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage
+        Me.plant1SpawnBtn.UseVisualStyleBackColor = False
         '
         'plant2SpawnBtn
         '
@@ -109,6 +123,7 @@ Partial Class Form2
         Me.plant2SpawnBtn.Name = "plant2SpawnBtn"
         Me.plant2SpawnBtn.Size = New System.Drawing.Size(68, 57)
         Me.plant2SpawnBtn.TabIndex = 7
+        Me.plant2SpawnBtn.TabStop = False
         Me.plant2SpawnBtn.UseVisualStyleBackColor = True
         '
         'plant3SpawnBtn
@@ -119,37 +134,27 @@ Partial Class Form2
         Me.plant3SpawnBtn.Name = "plant3SpawnBtn"
         Me.plant3SpawnBtn.Size = New System.Drawing.Size(68, 57)
         Me.plant3SpawnBtn.TabIndex = 8
+        Me.plant3SpawnBtn.TabStop = False
         Me.plant3SpawnBtn.UseVisualStyleBackColor = True
         '
-        'sunflowerMoneyLabelUi
+        'plantMoneyLabelUi1
         '
-        Me.sunflowerMoneyLabelUi.AutoSize = True
-        Me.sunflowerMoneyLabelUi.Font = New System.Drawing.Font("굴림", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(129, Byte))
-        Me.sunflowerMoneyLabelUi.Location = New System.Drawing.Point(106, 44)
-        Me.sunflowerMoneyLabelUi.Name = "sunflowerMoneyLabelUi"
-        Me.sunflowerMoneyLabelUi.Size = New System.Drawing.Size(29, 19)
-        Me.sunflowerMoneyLabelUi.TabIndex = 9
-        Me.sunflowerMoneyLabelUi.Text = "50"
-        '
-        'mapBoardBtn00
-        '
-        Me.mapBoardBtn00.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.mapBoardBtn00.FlatAppearance.BorderColor = System.Drawing.Color.White
-        Me.mapBoardBtn00.FlatAppearance.BorderSize = 0
-        Me.mapBoardBtn00.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Red
-        Me.mapBoardBtn00.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.mapBoardBtn00.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.mapBoardBtn00.Location = New System.Drawing.Point(256, 86)
-        Me.mapBoardBtn00.Name = "mapBoardBtn00"
-        Me.mapBoardBtn00.Size = New System.Drawing.Size(75, 67)
-        Me.mapBoardBtn00.TabIndex = 10
-        Me.mapBoardBtn00.UseVisualStyleBackColor = True
+        Me.plantMoneyLabelUi1.AutoSize = True
+        Me.plantMoneyLabelUi1.BackColor = System.Drawing.SystemColors.Control
+        Me.plantMoneyLabelUi1.Font = New System.Drawing.Font("굴림", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(129, Byte))
+        Me.plantMoneyLabelUi1.Location = New System.Drawing.Point(106, 44)
+        Me.plantMoneyLabelUi1.Name = "plantMoneyLabelUi1"
+        Me.plantMoneyLabelUi1.Size = New System.Drawing.Size(29, 19)
+        Me.plantMoneyLabelUi1.TabIndex = 9
+        Me.plantMoneyLabelUi1.Text = "50"
         '
         'moneyTimer
         '
+        Me.moneyTimer.Interval = 3000
         '
         'sunImage
         '
+        Me.sunImage.BackColor = System.Drawing.Color.Transparent
         Me.sunImage.Image = CType(resources.GetObject("sunImage.Image"), System.Drawing.Image)
         Me.sunImage.Location = New System.Drawing.Point(8, 3)
         Me.sunImage.Name = "sunImage"
@@ -158,14 +163,65 @@ Partial Class Form2
         Me.sunImage.TabIndex = 11
         Me.sunImage.TabStop = False
         '
+        'plantMoneyLabelUi2
+        '
+        Me.plantMoneyLabelUi2.AutoSize = True
+        Me.plantMoneyLabelUi2.BackColor = System.Drawing.SystemColors.Control
+        Me.plantMoneyLabelUi2.Font = New System.Drawing.Font("굴림", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(129, Byte))
+        Me.plantMoneyLabelUi2.Location = New System.Drawing.Point(166, 44)
+        Me.plantMoneyLabelUi2.Name = "plantMoneyLabelUi2"
+        Me.plantMoneyLabelUi2.Size = New System.Drawing.Size(39, 19)
+        Me.plantMoneyLabelUi2.TabIndex = 12
+        Me.plantMoneyLabelUi2.Text = "100"
+        '
+        'plantMoneyLabelUi3
+        '
+        Me.plantMoneyLabelUi3.AutoSize = True
+        Me.plantMoneyLabelUi3.BackColor = System.Drawing.SystemColors.Control
+        Me.plantMoneyLabelUi3.Font = New System.Drawing.Font("굴림", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(129, Byte))
+        Me.plantMoneyLabelUi3.Location = New System.Drawing.Point(236, 44)
+        Me.plantMoneyLabelUi3.Name = "plantMoneyLabelUi3"
+        Me.plantMoneyLabelUi3.Size = New System.Drawing.Size(39, 19)
+        Me.plantMoneyLabelUi3.TabIndex = 13
+        Me.plantMoneyLabelUi3.Text = "150"
+        '
+        'plantMoneyLabelUi4
+        '
+        Me.plantMoneyLabelUi4.AutoSize = True
+        Me.plantMoneyLabelUi4.BackColor = System.Drawing.SystemColors.Control
+        Me.plantMoneyLabelUi4.Font = New System.Drawing.Font("굴림", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(129, Byte))
+        Me.plantMoneyLabelUi4.Location = New System.Drawing.Point(306, 44)
+        Me.plantMoneyLabelUi4.Name = "plantMoneyLabelUi4"
+        Me.plantMoneyLabelUi4.Size = New System.Drawing.Size(39, 19)
+        Me.plantMoneyLabelUi4.TabIndex = 14
+        Me.plantMoneyLabelUi4.Text = "200"
+        '
+        'plant1spawTimer
+        '
+        Me.plant1spawTimer.Interval = 1000
+        '
+        'plant2spawTimer
+        '
+        Me.plant2spawTimer.Interval = 2000
+        '
+        'plant3spawTimer
+        '
+        Me.plant3spawTimer.Interval = 3000
+        '
+        'plant4spawTimer
+        '
+        Me.plant4spawTimer.Interval = 4000
+        '
         'Form2
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1008, 587)
+        Me.Controls.Add(Me.plantMoneyLabelUi4)
+        Me.Controls.Add(Me.plantMoneyLabelUi3)
+        Me.Controls.Add(Me.plantMoneyLabelUi2)
         Me.Controls.Add(Me.sunImage)
-        Me.Controls.Add(Me.mapBoardBtn00)
-        Me.Controls.Add(Me.sunflowerMoneyLabelUi)
+        Me.Controls.Add(Me.plantMoneyLabelUi1)
         Me.Controls.Add(Me.plant3SpawnBtn)
         Me.Controls.Add(Me.plant2SpawnBtn)
         Me.Controls.Add(Me.plant1SpawnBtn)
@@ -192,8 +248,14 @@ Partial Class Form2
     Friend WithEvents plant1SpawnBtn As Button
     Friend WithEvents plant2SpawnBtn As Button
     Friend WithEvents plant3SpawnBtn As Button
-    Friend WithEvents sunflowerMoneyLabelUi As Label
-    Friend WithEvents mapBoardBtn00 As Button
+    Friend WithEvents plantMoneyLabelUi1 As Label
     Friend WithEvents moneyTimer As Timer
     Friend WithEvents sunImage As PictureBox
+    Friend WithEvents plantMoneyLabelUi2 As Label
+    Friend WithEvents plantMoneyLabelUi3 As Label
+    Friend WithEvents plantMoneyLabelUi4 As Label
+    Friend WithEvents plant1spawTimer As Timer
+    Friend WithEvents plant2spawTimer As Timer
+    Friend WithEvents plant3spawTimer As Timer
+    Friend WithEvents plant4spawTimer As Timer
 End Class
