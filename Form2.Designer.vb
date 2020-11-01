@@ -42,6 +42,8 @@ Partial Class Form2
         Me.plant2spawTimer = New System.Windows.Forms.Timer(Me.components)
         Me.plant3spawTimer = New System.Windows.Forms.Timer(Me.components)
         Me.plant4spawTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.moneySpawnTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.spawnSunflowerTimer = New System.Windows.Forms.Timer(Me.components)
         CType(Me.backgroundImage, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.leftTopUI, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.sunImage, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -150,7 +152,8 @@ Partial Class Form2
         '
         'moneyTimer
         '
-        Me.moneyTimer.Interval = 3000
+        Me.moneyTimer.Enabled = True
+        Me.moneyTimer.Interval = 14
         '
         'sunImage
         '
@@ -212,6 +215,16 @@ Partial Class Form2
         '
         Me.plant4spawTimer.Interval = 4000
         '
+        'moneySpawnTimer
+        '
+        Me.moneySpawnTimer.Enabled = True
+        Me.moneySpawnTimer.Interval = 50
+        '
+        'spawnSunflowerTimer
+        '
+        Me.spawnSunflowerTimer.Enabled = True
+        Me.spawnSunflowerTimer.Interval = 5000
+        '
         'Form2
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 12.0!)
@@ -258,4 +271,6 @@ Partial Class Form2
     Friend WithEvents plant2spawTimer As Timer
     Friend WithEvents plant3spawTimer As Timer
     Friend WithEvents plant4spawTimer As Timer
+    Friend WithEvents moneySpawnTimer As Timer
+    Friend WithEvents spawnSunflowerTimer As Timer
 End Class
