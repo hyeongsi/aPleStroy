@@ -24,7 +24,7 @@ Partial Class Form2
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form2))
-        Me.backgroundImage = New System.Windows.Forms.PictureBox()
+        Me.backgroundMapImage = New System.Windows.Forms.PictureBox()
         Me.shovelBtn = New System.Windows.Forms.Button()
         Me.leftTopUI = New System.Windows.Forms.PictureBox()
         Me.currentMoneyLabelUi = New System.Windows.Forms.Label()
@@ -46,19 +46,19 @@ Partial Class Form2
         Me.spawnSunflowerMoneyTimer = New System.Windows.Forms.Timer(Me.components)
         Me.zombiesMoveTimer = New System.Windows.Forms.Timer(Me.components)
         Me.zombiesSpawnTimer = New System.Windows.Forms.Timer(Me.components)
-        CType(Me.backgroundImage, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.backgroundMapImage, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.leftTopUI, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.sunImage, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'backgroundImage
+        'backgroundMapImage
         '
-        Me.backgroundImage.Image = CType(resources.GetObject("backgroundImage.Image"), System.Drawing.Image)
-        Me.backgroundImage.Location = New System.Drawing.Point(0, 0)
-        Me.backgroundImage.Name = "backgroundImage"
-        Me.backgroundImage.Size = New System.Drawing.Size(1024, 626)
-        Me.backgroundImage.TabIndex = 0
-        Me.backgroundImage.TabStop = False
+        Me.backgroundMapImage.Image = CType(resources.GetObject("backgroundMapImage.Image"), System.Drawing.Image)
+        Me.backgroundMapImage.Location = New System.Drawing.Point(0, 0)
+        Me.backgroundMapImage.Name = "backgroundMapImage"
+        Me.backgroundMapImage.Size = New System.Drawing.Size(1024, 626)
+        Me.backgroundMapImage.TabIndex = 0
+        Me.backgroundMapImage.TabStop = False
         '
         'shovelBtn
         '
@@ -254,10 +254,10 @@ Partial Class Form2
         Me.Controls.Add(Me.currentMoneyLabelUi)
         Me.Controls.Add(Me.leftTopUI)
         Me.Controls.Add(Me.shovelBtn)
-        Me.Controls.Add(Me.backgroundImage)
+        Me.Controls.Add(Me.backgroundMapImage)
         Me.Name = "Form2"
         Me.Text = "PLANTS vs ZOMBIES"
-        CType(Me.backgroundImage, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.backgroundMapImage, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.leftTopUI, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.sunImage, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
@@ -265,7 +265,7 @@ Partial Class Form2
 
     End Sub
 
-    Friend WithEvents backgroundImage As PictureBox
+    Friend WithEvents backgroundMapImage As PictureBox
     Friend WithEvents shovelBtn As Button
     Friend WithEvents leftTopUI As PictureBox
     Friend WithEvents currentMoneyLabelUi As Label

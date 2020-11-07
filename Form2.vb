@@ -4,7 +4,6 @@
     Private moneyRainBtn(4) As Button
     Private sunflowerMoneyBtn(45) As Button
     Private mapBoardBtn(45) As Button
-
     Structure ActionTimerStruct                       '소환 시 시간에 따른 행동에 쓰일 구조체
         Dim index As Integer
         Dim countTime As Date
@@ -16,7 +15,7 @@
 
     Dim plantPrice(4) As Integer
     Dim point As Point
-    Dim size As Size
+    Dim pSize As Size
     Private Sub Form2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Randomize()
         '버튼 동적생성, 기본 설정
@@ -25,12 +24,12 @@
             moneyRainBtn(index) = New Button()
             point.X = CInt(Int((900 - 433 + 1) * Rnd() + 433))
             point.Y = 100
-            size.Width = 68
-            size.Height = 57
+            pSize.Width = 68
+            pSize.Height = 57
             With Me.moneyRainBtn(index)
                 .Name = "moneyRainBtn" & CStr(index)
                 .Location = point
-                .Size() = size
+                .Size() = pSize
                 .BackgroundImageLayout = ImageLayout.Stretch
                 .FlatStyle = FlatStyle.Flat
                 .FlatAppearance.BorderSize = 0
@@ -46,14 +45,14 @@
         Next
         For index As Integer = 0 To 3
             With Me.moneyRainBtn(index)
-                .Parent = backgroundImage
+                .Parent = backgroundMapImage
             End With
         Next
         Dim count As Integer
         count = 0
 
-        size.Width = 37
-        size.Height = 33
+        pSize.Width = 37
+        pSize.Height = 33
         For yIndex As Integer = 0 To 4
             For xIndex As Integer = 0 To 8
                 sunflowerMoneyBtn(count) = New Button()
@@ -62,7 +61,7 @@
                 With Me.sunflowerMoneyBtn(count)
                     .Name = "sunflowerMoneyBtn" & CStr(count)
                     .Location = point
-                    .Size() = size
+                    .Size() = pSize
                     .BackgroundImageLayout = ImageLayout.Stretch
                     .FlatStyle = FlatStyle.Flat
                     .FlatAppearance.BorderSize = 0
@@ -80,12 +79,12 @@
         Next
         For index As Integer = 0 To 44 '위의 for문에서 parent 설정 시 오류.. 따로 parent 설정
             With Me.sunflowerMoneyBtn(index)
-                .Parent = backgroundImage
+                .Parent = backgroundMapImage
             End With
         Next
         count = 0
-        size.Width = 75
-        size.Height = 67
+        pSize.Width = 75
+        pSize.Height = 67
         For yIndex As Integer = 0 To 4
             For xIndex As Integer = 0 To 8
                 mapBoardBtn(count) = New Button()
@@ -94,7 +93,7 @@
                 With Me.mapBoardBtn(count)
                     .Name = "mapBoardBtn" & CStr(count)
                     .Location = point
-                    .Size() = size
+                    .Size() = pSize
                     .BackgroundImageLayout = ImageLayout.Stretch
                     .FlatStyle = FlatStyle.Flat
                     .FlatAppearance.BorderSize = 0
@@ -110,15 +109,15 @@
         Next
         For index As Integer = 0 To 44 '위의 for문에서 parent 설정 시 오류.. 따로 parent 설정
             With Me.mapBoardBtn(index)
-                .Parent = backgroundImage
+                .Parent = backgroundMapImage
             End With
         Next
 
-        Controls.SetChildIndex(backgroundImage, 100)    '배경 z 좌표 100으로 설정 (제일 뒤)
+        Controls.SetChildIndex(backgroundMapImage, 100)    '배경 z 좌표 100으로 설정 (제일 뒤)
 
         isClickedSpawnBtn = -1                                  '스폰버튼 초기화
 
-        leftTopUI.Parent = backgroundImage                      '좌측 상단 UI 흰부분 바탕 동기화
+        leftTopUI.Parent = backgroundMapImage                      '좌측 상단 UI 흰부분 바탕 동기화
         sunImage.Parent = leftTopUI                             '좌측 상단 돈 UI 흰부분 바탕 동기화
 
         currentMoneyLabelUi.Text = 1000
@@ -351,11 +350,11 @@
 
         point.X = 1007
         point.Y = 86 + (CInt(Int((5) * Rnd())) * 100)
-        size.Width = 75
-        size.Height = 78
+        pSize.Width = 75
+        pSize.Height = 78
         With zombiePictureBox
             .Location = point
-            .Size() = size
+            .Size() = pSize
             .BackgroundImageLayout = ImageLayout.Stretch
             .BackColor = Color.Transparent
             .BackgroundImage = My.Resources.zombie2
@@ -364,7 +363,7 @@
         Me.Controls.Add(zombiePictureBox)
 
         With zombiePictureBox
-            .Parent = backgroundImage
+            .Parent = backgroundMapImage
             .BringToFront()
         End With
 
