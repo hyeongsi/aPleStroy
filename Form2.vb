@@ -317,9 +317,7 @@
     Private Sub moneyMoveTimer_Tick(sender As Object, e As EventArgs) Handles moneyMoveTimer.Tick
         For index As Integer = 0 To 3
             If moneyRainBtn(index).Visible = True Then
-                point.X = moneyRainBtn(index).Location.X
-                point.Y = moneyRainBtn(index).Location.Y + 1
-                moneyRainBtn(index).Location = point
+                moneyRainBtn(index).Top += 1
             End If
             If (moneyRainBtn(index).Visible = True) And (moneyRainBtn(index).Location.Y >= 577) Then
                 moneyRainBtn(index).Visible = False
@@ -332,13 +330,11 @@
         End If
 
         For index As Integer = 0 To zombiesSpawnList.Count() - 1
-            point.X = CType(zombiesSpawnList(index), PictureBox).Location.X - 1
-            point.Y = CType(zombiesSpawnList(index), PictureBox).Location.Y
-            CType(zombiesSpawnList(index), PictureBox).Location = point
+            CType(zombiesSpawnList(index), PictureBox).Left -= 1
 
             If CType(zombiesSpawnList(index), PictureBox).Location.X <= 218 Then
+                MsgBox("게임오버")
                 zombiesSpawnList.RemoveAt(index)
-                '게임오버 추가
             End If
         Next
     End Sub
