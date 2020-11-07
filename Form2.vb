@@ -12,18 +12,25 @@
     Dim actionTimer As New ActionTimerStruct
     Dim sunflowerSpawnTimerList As New ArrayList()    '해바라기 돈 스폰 시간에 쓰일 리스트
 
-    Dim plantPrice(4) As Integer
+    Dim zombiesSpawnList As New ArrayList()     '좀비 객체 관리할 리스트
 
+    Dim plantPrice(4) As Integer
+    Dim point As Point
+    Dim size As Size
     Private Sub Form2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Randomize()
         '버튼 동적생성, 기본 설정
 
         For index As Integer = 0 To 3
             moneyRainBtn(index) = New Button()
+            point.X = CInt(Int((900 - 433 + 1) * Rnd() + 433))
+            point.Y = 100
+            size.Width = 68
+            size.Height = 57
             With Me.moneyRainBtn(index)
                 .Name = "moneyRainBtn" & CStr(index)
-                .Location = New System.Drawing.Point(CInt(Int((900 - 433 + 1) * Rnd() + 433)), 100)
-                .Size() = New System.Drawing.Size(68, 57)
+                .Location = point
+                .Size() = size
                 .BackgroundImageLayout = ImageLayout.Stretch
                 .FlatStyle = FlatStyle.Flat
                 .FlatAppearance.BorderSize = 0
@@ -35,8 +42,7 @@
                 .Visible = False
             End With
             AddHandler Me.moneyRainBtn(index).Click, AddressOf moneyRainBtn_Click
-            Me.Controls.AddRange(New Button() {moneyRainBtn(index)})
-            Controls.SetChildIndex(moneyRainBtn(index), 90)
+            Me.Controls.Add(moneyRainBtn(index))
         Next
         For index As Integer = 0 To 3
             With Me.moneyRainBtn(index)
@@ -45,13 +51,18 @@
         Next
         Dim count As Integer
         count = 0
+
+        size.Width = 37
+        size.Height = 33
         For yIndex As Integer = 0 To 4
             For xIndex As Integer = 0 To 8
                 sunflowerMoneyBtn(count) = New Button()
+                point.X = 256 + (xIndex * 81)
+                point.Y = 86 + (yIndex * 100)
                 With Me.sunflowerMoneyBtn(count)
                     .Name = "sunflowerMoneyBtn" & CStr(count)
-                    .Location = New System.Drawing.Point(256 + (xIndex * 81), 86 + (yIndex * 100))
-                    .Size() = New System.Drawing.Size(37, 33)
+                    .Location = point
+                    .Size() = size
                     .BackgroundImageLayout = ImageLayout.Stretch
                     .FlatStyle = FlatStyle.Flat
                     .FlatAppearance.BorderSize = 0
@@ -63,8 +74,7 @@
                     .Visible = False
                 End With
                 AddHandler Me.sunflowerMoneyBtn(count).Click, AddressOf sunflowerMoneyBtn_Click
-                Me.Controls.AddRange(New Button() {sunflowerMoneyBtn(count)})
-                Controls.SetChildIndex(sunflowerMoneyBtn(count), 91)
+                Me.Controls.Add(sunflowerMoneyBtn(count))
                 count += 1
             Next
         Next
@@ -74,13 +84,17 @@
             End With
         Next
         count = 0
+        size.Width = 75
+        size.Height = 67
         For yIndex As Integer = 0 To 4
             For xIndex As Integer = 0 To 8
                 mapBoardBtn(count) = New Button()
+                point.X = 256 + (xIndex * 81)
+                point.Y = 86 + (yIndex * 100)
                 With Me.mapBoardBtn(count)
                     .Name = "mapBoardBtn" & CStr(count)
-                    .Location = New System.Drawing.Point(256 + (xIndex * 81), 86 + (yIndex * 100))
-                    .Size() = New System.Drawing.Size(75, 67)
+                    .Location = point
+                    .Size() = size
                     .BackgroundImageLayout = ImageLayout.Stretch
                     .FlatStyle = FlatStyle.Flat
                     .FlatAppearance.BorderSize = 0
@@ -90,8 +104,7 @@
                     .TabStop = False
                 End With
                 AddHandler Me.mapBoardBtn(count).Click, AddressOf mapBoardBtn_Click
-                Me.Controls.AddRange(New Button() {mapBoardBtn(count)})
-                Controls.SetChildIndex(mapBoardBtn(count), 92)
+                Me.Controls.Add(mapBoardBtn(count))
                 count += 1
             Next
         Next
@@ -100,7 +113,6 @@
                 .Parent = backgroundImage
             End With
         Next
-
 
         Controls.SetChildIndex(backgroundImage, 100)    '배경 z 좌표 100으로 설정 (제일 뒤)
 
@@ -117,7 +129,7 @@
         plantPrice(2) = plantMoneyLabelUi3.Text
         plantPrice(3) = plantMoneyLabelUi4.Text
 
-        moneySpawnTimer.Interval = CInt(Int((5000 - 3000 + 1) * Rnd() + 3000))
+        moneyRainSpawnTimer.Interval = CInt(Int((5000 - 3000 + 1) * Rnd() + 3000))
     End Sub
     Private Sub spawnBtn_Click(sender As Object, e As EventArgs) Handles sunflowerSpawnBtn.Click, plant1SpawnBtn.Click, plant2SpawnBtn.Click, plant3SpawnBtn.Click
         If (sender.Name = sunflowerSpawnBtn.Name) And (CInt(currentMoneyLabelUi.Text) >= plantPrice(0)) And (sunflowerSpawnBtn.BackColor <> Color.Red) Then
@@ -196,13 +208,15 @@
         End If
     End Sub
 
+    '삽 버튼 누르면 삽 활성화
     Private Sub shovelBtn_Click(sender As Object, e As EventArgs) Handles shovelBtn.Click
         isClickedSpawnBtn = 0
         shovelBtn.BackColor = Color.GreenYellow
     End Sub
+    '해바라기 돈 클릭 시 돈+25 And 돈 삭제
     Private Sub sunflowerMoneyBtn_Click(sender As Object, e As EventArgs)
-        Dim findIndex As Integer
-        findIndex = 0
+        Dim findIndex As Integer = 0
+
         For index As Integer = 0 To 44
             If (sender.Name = ("sunflowerMoneyBtn" & CStr(index))) Then
                 Exit For
@@ -214,9 +228,11 @@
         currentMoneyLabelUi.Text += 25
         sunflowerMoneyBtn(findIndex).Visible = False
     End Sub
+
+    '돈비 클릭 시 돈 +25 And 클릭한 돈비 삭제
     Private Sub moneyRainBtn_Click(sender As Object, e As EventArgs)
-        Dim findIndex As Integer
-        findIndex = 0
+        Dim findIndex As Integer = 0
+
         For index As Integer = 0 To 3
             If (sender.Name = ("moneyRainBtn" & CStr(index))) Then
                 Exit For
@@ -243,27 +259,28 @@
         End If
     End Sub
 
+    '식물1 소환 쿨타임 타이머
     Private Sub plant1spawTimer_Tick(sender As Object, e As EventArgs) Handles plant1spawTimer.Tick
         If sunflowerSpawnBtn.BackColor = Color.Red Then
             sunflowerSpawnBtn.BackColor = Color.Transparent
             plant1spawTimer.Enabled = False
         End If
     End Sub
-
+    '식물2 소환 쿨타임 타이머
     Private Sub plant2spawTimer_Tick(sender As Object, e As EventArgs) Handles plant2spawTimer.Tick
         If plant1SpawnBtn.BackColor = Color.Red Then
             plant1SpawnBtn.BackColor = Color.Transparent
             plant2spawTimer.Enabled = False
         End If
     End Sub
-
+    '식물3 소환 쿨타임 타이머
     Private Sub plant3spawTimer_Tick(sender As Object, e As EventArgs) Handles plant3spawTimer.Tick
         If plant2SpawnBtn.BackColor = Color.Red Then
             plant2SpawnBtn.BackColor = Color.Transparent
             plant3spawTimer.Enabled = False
         End If
     End Sub
-
+    '식물4 소환 쿨타임 타이머
     Private Sub plant4spawTimer_Tick(sender As Object, e As EventArgs) Handles plant4spawTimer.Tick
         If plant3SpawnBtn.BackColor = Color.Red Then
             plant3SpawnBtn.BackColor = Color.Transparent
@@ -271,43 +288,86 @@
         End If
     End Sub
 
-    Private Sub moneyTimer_Tick(sender As Object, e As EventArgs) Handles moneyTimer.Tick
+    '돈비 스폰하는 타이머
+    Private Sub moneyRainSpawnTimer_Tick(sender As Object, e As EventArgs) Handles moneyRainSpawnTimer.Tick
+        moneyRainSpawnTimer.Interval = CInt(Int((10000 - 5000 + 1) * Rnd() + 5000))
+        For index As Integer = 0 To 3
+            If moneyRainBtn(index).Visible = False Then
+                moneyRainBtn(index).Visible = True
+                point.X = CInt(Int((900 - 433 + 1) * Rnd() + 433))
+                point.Y = -54
+                moneyRainBtn(index).Location = point
+                Exit For
+            End If
+        Next
+    End Sub
+
+    Private Sub spawnSunflowerMoneyTimer_Tick(sender As Object, e As EventArgs) Handles spawnSunflowerMoneyTimer.Tick
+        For i As Integer = 0 To sunflowerSpawnTimerList.Count() - 1
+            If (DateDiff("s", sunflowerSpawnTimerList(i).countTime, Now()) > (CInt(Int((15 - 10 + 1) * Rnd() + 10)))) Then
+                Dim copyData As ActionTimerStruct
+                copyData.index = sunflowerSpawnTimerList(i).index   '삭제 안하고 list에 바로 접근하려 했으나 오류로 삭제 후 삽입 진행
+                copyData.countTime = Now()
+                sunflowerMoneyBtn(copyData.index).Visible = True
+                sunflowerSpawnTimerList.RemoveAt(i)
+                sunflowerSpawnTimerList.Add(copyData)
+            End If
+        Next
+
+    End Sub
+    Private Sub moneyMoveTimer_Tick(sender As Object, e As EventArgs) Handles moneyMoveTimer.Tick
         For index As Integer = 0 To 3
             If moneyRainBtn(index).Visible = True Then
-                moneyRainBtn(index).Location = New Point(moneyRainBtn(index).Location.X, moneyRainBtn(index).Location.Y + 1)
+                point.X = moneyRainBtn(index).Location.X
+                point.Y = moneyRainBtn(index).Location.Y + 1
+                moneyRainBtn(index).Location = point
             End If
             If (moneyRainBtn(index).Visible = True) And (moneyRainBtn(index).Location.Y >= 577) Then
                 moneyRainBtn(index).Visible = False
             End If
         Next
     End Sub
+    Private Sub zombiesMoveTimer_Tick(sender As Object, e As EventArgs) Handles zombiesMoveTimer.Tick
+        If zombiesSpawnList.Count() <= 0 Then
+            Return
+        End If
 
-    Private Sub moneySpawnTimer_Tick(sender As Object, e As EventArgs) Handles moneySpawnTimer.Tick
-        moneySpawnTimer.Interval = CInt(Int((9000 - 4000 + 1) * Rnd() + 4000))
-        For index As Integer = 0 To 3
-            If moneyRainBtn(index).Visible = False Then
-                moneyRainBtn(index).Visible = True
-                moneyRainBtn(index).Location = New Point(CInt(Int((900 - 433 + 1) * Rnd() + 433)), -54)
-                Exit For
+        For index As Integer = 0 To zombiesSpawnList.Count() - 1
+            point.X = CType(zombiesSpawnList(index), PictureBox).Location.X - 1
+            point.Y = CType(zombiesSpawnList(index), PictureBox).Location.Y
+            CType(zombiesSpawnList(index), PictureBox).Location = point
+
+            If CType(zombiesSpawnList(index), PictureBox).Location.X <= 218 Then
+                zombiesSpawnList.RemoveAt(index)
+                '게임오버 추가
             End If
         Next
     End Sub
 
-    Private Sub spawnSunflowerTimer_Tick(sender As Object, e As EventArgs) Handles spawnSunflowerTimer.Tick
-        spawnSunflowerTimer.Interval = CInt(Int((100 - 50 + 1) * Rnd() + 50))
-        For index As Integer = 0 To 44
-            If mapBoardBtn(index).BackgroundImage Is sunflowerSpawnBtn.BackgroundImage Then
-                For i As Integer = 0 To sunflowerSpawnTimerList.Count() - 1
-                    If (sunflowerSpawnTimerList(i).index = index) And (DateDiff("s", sunflowerSpawnTimerList(i).countTime, Now()) > (CInt(Int((10 - 5 + 1) * Rnd() + 5)))) Then
-                        Dim copyData As ActionTimerStruct
-                        copyData.index = sunflowerSpawnTimerList(i).index   '삭제 안하고 list에 바로 접근하려 했으나 오류로 삭제 후 삽입 진행
-                        copyData.countTime = Now()
-                        sunflowerSpawnTimerList.RemoveAt(i)
-                        sunflowerSpawnTimerList.Add(copyData)
-                        sunflowerMoneyBtn(index).Visible = True
-                    End If
-                Next
-            End If
-        Next
+    Private Sub zombiesSpawnTimer_Tick(sender As Object, e As EventArgs) Handles zombiesSpawnTimer.Tick
+        zombiesSpawnTimer.Interval = CInt(Int((10000 - 5000 + 1) * Rnd() + 5000))
+
+        Dim zombiePictureBox As New PictureBox()
+
+        point.X = 1007
+        point.Y = 86 + (CInt(Int((5) * Rnd())) * 100)
+        size.Width = 75
+        size.Height = 78
+        With zombiePictureBox
+            .Location = point
+            .Size() = size
+            .BackgroundImageLayout = ImageLayout.Stretch
+            .BackColor = Color.Transparent
+            .BackgroundImage = My.Resources.zombie2
+            .TabStop = False
+        End With
+        Me.Controls.Add(zombiePictureBox)
+
+        With zombiePictureBox
+            .Parent = backgroundImage
+            .BringToFront()
+        End With
+
+        zombiesSpawnList.Add(zombiePictureBox)
     End Sub
 End Class
