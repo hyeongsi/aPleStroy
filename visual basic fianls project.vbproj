@@ -132,5 +132,8 @@
   <ItemGroup>
     <None Include="image\zombie2.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="image\bullet.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

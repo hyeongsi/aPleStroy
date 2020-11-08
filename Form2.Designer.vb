@@ -38,14 +38,16 @@ Partial Class Form2
         Me.plantMoneyLabelUi2 = New System.Windows.Forms.Label()
         Me.plantMoneyLabelUi3 = New System.Windows.Forms.Label()
         Me.plantMoneyLabelUi4 = New System.Windows.Forms.Label()
+        Me.sunflowerspawTimer = New System.Windows.Forms.Timer(Me.components)
         Me.plant1spawTimer = New System.Windows.Forms.Timer(Me.components)
         Me.plant2spawTimer = New System.Windows.Forms.Timer(Me.components)
         Me.plant3spawTimer = New System.Windows.Forms.Timer(Me.components)
-        Me.plant4spawTimer = New System.Windows.Forms.Timer(Me.components)
         Me.moneyRainSpawnTimer = New System.Windows.Forms.Timer(Me.components)
         Me.spawnSunflowerMoneyTimer = New System.Windows.Forms.Timer(Me.components)
         Me.zombiesMoveTimer = New System.Windows.Forms.Timer(Me.components)
         Me.zombiesSpawnTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.spawnBulletTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.moveBulletTimer = New System.Windows.Forms.Timer(Me.components)
         CType(Me.backgroundMapImage, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.leftTopUI, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.sunImage, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -155,7 +157,7 @@ Partial Class Form2
         'moneyMoveTimer
         '
         Me.moneyMoveTimer.Enabled = True
-        Me.moneyMoveTimer.Interval = 14
+        Me.moneyMoveTimer.Interval = 102
         '
         'sunImage
         '
@@ -201,21 +203,21 @@ Partial Class Form2
         Me.plantMoneyLabelUi4.TabIndex = 14
         Me.plantMoneyLabelUi4.Text = "200"
         '
+        'sunflowerspawTimer
+        '
+        Me.sunflowerspawTimer.Interval = 1000
+        '
         'plant1spawTimer
         '
-        Me.plant1spawTimer.Interval = 1000
+        Me.plant1spawTimer.Interval = 2000
         '
         'plant2spawTimer
         '
-        Me.plant2spawTimer.Interval = 2000
+        Me.plant2spawTimer.Interval = 3000
         '
         'plant3spawTimer
         '
-        Me.plant3spawTimer.Interval = 3000
-        '
-        'plant4spawTimer
-        '
-        Me.plant4spawTimer.Interval = 4000
+        Me.plant3spawTimer.Interval = 4000
         '
         'moneyRainSpawnTimer
         '
@@ -230,12 +232,22 @@ Partial Class Form2
         'zombiesMoveTimer
         '
         Me.zombiesMoveTimer.Enabled = True
-        Me.zombiesMoveTimer.Interval = 56
+        Me.zombiesMoveTimer.Interval = 99
         '
         'zombiesSpawnTimer
         '
         Me.zombiesSpawnTimer.Enabled = True
         Me.zombiesSpawnTimer.Interval = 10000
+        '
+        'spawnBulletTimer
+        '
+        Me.spawnBulletTimer.Enabled = True
+        Me.spawnBulletTimer.Interval = 1009
+        '
+        'moveBulletTimer
+        '
+        Me.moveBulletTimer.Enabled = True
+        Me.moveBulletTimer.Interval = 101
         '
         'Form2
         '
@@ -279,12 +291,14 @@ Partial Class Form2
     Friend WithEvents plantMoneyLabelUi2 As Label
     Friend WithEvents plantMoneyLabelUi3 As Label
     Friend WithEvents plantMoneyLabelUi4 As Label
+    Friend WithEvents sunflowerspawTimer As Timer
     Friend WithEvents plant1spawTimer As Timer
     Friend WithEvents plant2spawTimer As Timer
     Friend WithEvents plant3spawTimer As Timer
-    Friend WithEvents plant4spawTimer As Timer
     Friend WithEvents moneyRainSpawnTimer As Timer
     Friend WithEvents spawnSunflowerMoneyTimer As Timer
     Friend WithEvents zombiesMoveTimer As Timer
     Friend WithEvents zombiesSpawnTimer As Timer
+    Friend WithEvents spawnBulletTimer As Timer
+    Friend WithEvents moveBulletTimer As Timer
 End Class

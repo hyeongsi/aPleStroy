@@ -8,10 +8,20 @@
         Dim index As Integer
         Dim countTime As Date
     End Structure
-    Dim actionTimer As New ActionTimerStruct
+    Dim actionTimer As ActionTimerStruct
+    Dim copyData_ActionTimerStruct As ActionTimerStruct
     Dim sunflowerSpawnTimerList As New ArrayList()    '해바라기 돈 스폰 시간에 쓰일 리스트
+    Dim plant1SpawnTimerList As New ArrayList()    '식물1 스폰 시간에 쓰일 리스트
+    Dim plant1BulletList As New ArrayList()        '식물1 총알 리스트
 
+    Structure ZombieInfo                       '좀비 관리 구조체
+        Dim hp As Integer
+        Dim picturebox As PictureBox
+    End Structure
+    Dim zombiesInfo As ZombieInfo
+    Dim copyData_ZombieInfo As ZombieInfo
     Dim zombiesSpawnList As New ArrayList()     '좀비 객체 관리할 리스트
+    Dim speed As Integer = 0
 
     Dim plantPrice(4) As Integer
     Dim point As Point
@@ -129,6 +139,7 @@
         plantPrice(3) = plantMoneyLabelUi4.Text
 
         moneyRainSpawnTimer.Interval = CInt(Int((5000 - 3000 + 1) * Rnd() + 3000))
+
     End Sub
     Private Sub spawnBtn_Click(sender As Object, e As EventArgs) Handles sunflowerSpawnBtn.Click, plant1SpawnBtn.Click, plant2SpawnBtn.Click, plant3SpawnBtn.Click
         If (sender.Name = sunflowerSpawnBtn.Name) And (CInt(currentMoneyLabelUi.Text) >= plantPrice(0)) And (sunflowerSpawnBtn.BackColor <> Color.Red) Then
@@ -181,7 +192,7 @@
             mapBoardBtn(findIndex).BackgroundImage = sunflowerSpawnBtn.BackgroundImage
             sunflowerSpawnBtn.BackColor = Color.Red
             isClickedSpawnBtn = -1
-            plant1spawTimer.Enabled = True
+            sunflowerspawTimer.Enabled = True
 
             actionTimer.index = findIndex   '구조체에 생성 시간 대입
             actionTimer.countTime = Now()
@@ -191,19 +202,23 @@
             mapBoardBtn(findIndex).BackgroundImage = plant1SpawnBtn.BackgroundImage
             plant1SpawnBtn.BackColor = Color.Red
             isClickedSpawnBtn = -1
-            plant2spawTimer.Enabled = True
+            plant1spawTimer.Enabled = True
+
+            actionTimer.index = findIndex   '구조체에 생성 시간 대입
+            actionTimer.countTime = Now()
+            plant1SpawnTimerList.Add(actionTimer)
         ElseIf (isClickedSpawnBtn = 3 And (plant2SpawnBtn.Enabled = True) And (mapBoardBtn(findIndex).BackgroundImage Is Nothing And (CInt(currentMoneyLabelUi.Text) >= plantPrice(2)))) Then       '식물2 선택
             currentMoneyLabelUi.Text = CStr((CInt(currentMoneyLabelUi.Text) - plantPrice(2)))
             mapBoardBtn(findIndex).BackgroundImage = plant2SpawnBtn.BackgroundImage
             plant2SpawnBtn.BackColor = Color.Red
             isClickedSpawnBtn = -1
-            plant3spawTimer.Enabled = True
+            plant2spawTimer.Enabled = True
         ElseIf (isClickedSpawnBtn = 4 And (plant3SpawnBtn.Enabled = True) And (mapBoardBtn(findIndex).BackgroundImage Is Nothing And (CInt(currentMoneyLabelUi.Text) >= plantPrice(3)))) Then       '식물3 선택
             currentMoneyLabelUi.Text = CStr((CInt(currentMoneyLabelUi.Text) - plantPrice(3)))
             mapBoardBtn(findIndex).BackgroundImage = plant3SpawnBtn.BackgroundImage
             plant3SpawnBtn.BackColor = Color.Red
             isClickedSpawnBtn = -1
-            plant4spawTimer.Enabled = True
+            plant3spawTimer.Enabled = True
         End If
     End Sub
 
@@ -259,31 +274,31 @@
     End Sub
 
     '식물1 소환 쿨타임 타이머
-    Private Sub plant1spawTimer_Tick(sender As Object, e As EventArgs) Handles plant1spawTimer.Tick
+    Private Sub plant1spawTimer_Tick(sender As Object, e As EventArgs) Handles sunflowerspawTimer.Tick
         If sunflowerSpawnBtn.BackColor = Color.Red Then
             sunflowerSpawnBtn.BackColor = Color.Transparent
-            plant1spawTimer.Enabled = False
+            sunflowerspawTimer.Enabled = False
         End If
     End Sub
     '식물2 소환 쿨타임 타이머
-    Private Sub plant2spawTimer_Tick(sender As Object, e As EventArgs) Handles plant2spawTimer.Tick
+    Private Sub plant2spawTimer_Tick(sender As Object, e As EventArgs) Handles plant1spawTimer.Tick
         If plant1SpawnBtn.BackColor = Color.Red Then
             plant1SpawnBtn.BackColor = Color.Transparent
-            plant2spawTimer.Enabled = False
+            plant1spawTimer.Enabled = False
         End If
     End Sub
     '식물3 소환 쿨타임 타이머
-    Private Sub plant3spawTimer_Tick(sender As Object, e As EventArgs) Handles plant3spawTimer.Tick
+    Private Sub plant3spawTimer_Tick(sender As Object, e As EventArgs) Handles plant2spawTimer.Tick
         If plant2SpawnBtn.BackColor = Color.Red Then
             plant2SpawnBtn.BackColor = Color.Transparent
-            plant3spawTimer.Enabled = False
+            plant2spawTimer.Enabled = False
         End If
     End Sub
     '식물4 소환 쿨타임 타이머
-    Private Sub plant4spawTimer_Tick(sender As Object, e As EventArgs) Handles plant4spawTimer.Tick
+    Private Sub plant4spawTimer_Tick(sender As Object, e As EventArgs) Handles plant3spawTimer.Tick
         If plant3SpawnBtn.BackColor = Color.Red Then
             plant3SpawnBtn.BackColor = Color.Transparent
-            plant4spawTimer.Enabled = False
+            plant3spawTimer.Enabled = False
         End If
     End Sub
 
@@ -303,13 +318,83 @@
 
     Private Sub spawnSunflowerMoneyTimer_Tick(sender As Object, e As EventArgs) Handles spawnSunflowerMoneyTimer.Tick
         For i As Integer = 0 To sunflowerSpawnTimerList.Count() - 1
-            If (DateDiff("s", sunflowerSpawnTimerList(i).countTime, Now()) > (CInt(Int((15 - 10 + 1) * Rnd() + 10)))) Then
-                Dim copyData As ActionTimerStruct
-                copyData.index = sunflowerSpawnTimerList(i).index   '삭제 안하고 list에 바로 접근하려 했으나 오류로 삭제 후 삽입 진행
-                copyData.countTime = Now()
-                sunflowerMoneyBtn(copyData.index).Visible = True
+            If (DateDiff("s", sunflowerSpawnTimerList(i).countTime, Now()) > (CInt(Int((15 - 10 + 1) * Rnd() + 10))) And sunflowerMoneyBtn(sunflowerSpawnTimerList(i).index).Visible = False) Then
+                copyData_ActionTimerStruct.index = sunflowerSpawnTimerList(i).index   '삭제 안하고 list에 바로 접근하려 했으나 오류로 삭제 후 삽입 진행
+                copyData_ActionTimerStruct.countTime = Now()
+                sunflowerMoneyBtn(copyData_ActionTimerStruct.index).Visible = True
                 sunflowerSpawnTimerList.RemoveAt(i)
-                sunflowerSpawnTimerList.Add(copyData)
+                sunflowerSpawnTimerList.Add(copyData_ActionTimerStruct)
+            End If
+        Next
+    End Sub
+    Private Sub spawnBulletTimer_Tick(sender As Object, e As EventArgs) Handles spawnBulletTimer.Tick
+        '조건 추가하기, 좀비가 해당 줄에 있을 때 생성하도록 만들기!!
+
+        For i As Integer = 0 To plant1SpawnTimerList.Count() - 1
+            If (DateDiff("s", plant1SpawnTimerList(i).countTime, Now()) > 3) Then
+                Dim bulletPictureBox As New PictureBox()
+                pSize.Width = 20
+                pSize.Height = 20
+                point.X = mapBoardBtn(plant1SpawnTimerList(i).index).Location.X + 60
+                point.Y = mapBoardBtn(plant1SpawnTimerList(i).index).Location.Y + 20
+                With bulletPictureBox
+                    .Location = point
+                    .Size() = pSize
+                    .BackgroundImageLayout = ImageLayout.Stretch
+                    .BackColor = Color.Transparent
+                    .BackgroundImage = My.Resources.bullet
+                    .TabStop = False
+                End With
+                Me.Controls.Add(bulletPictureBox)
+
+                With bulletPictureBox
+                    .BringToFront()
+                End With
+
+                plant1BulletList.Add(bulletPictureBox)
+
+                copyData_ActionTimerStruct.index = plant1SpawnTimerList(i).index   '삭제 안하고 list에 바로 접근하려 했으나 오류로 삭제 후 삽입 진행
+                copyData_ActionTimerStruct.countTime = Now()
+                plant1SpawnTimerList.RemoveAt(i)
+                plant1SpawnTimerList.Add(copyData_ActionTimerStruct)
+            End If
+        Next
+    End Sub
+    Private Sub moveBulletTimer_Tick(sender As Object, e As EventArgs) Handles moveBulletTimer.Tick
+        If plant1BulletList.Count() <= 0 Then
+            Return
+        End If
+
+        For index As Integer = 0 To plant1BulletList.Count() - 1
+            CType(plant1BulletList(index), PictureBox).Left += 10 + speed
+        Next
+
+        Dim escape As Boolean = False
+        For index As Integer = 0 To plant1BulletList.Count() - 1
+            For indexB As Integer = 0 To zombiesSpawnList.Count() - 1
+                If plant1BulletList(index).Bounds.IntersectsWith(zombiesSpawnList(indexB).picturebox.Bounds) Then
+                    copyData_ZombieInfo.picturebox = zombiesSpawnList(indexB).picturebox   '삭제 안하고 list에 바로 접근하려 했으나 오류로 삭제 후 삽입 진행
+                    copyData_ZombieInfo.hp = zombiesSpawnList(indexB).hp - 1
+                    zombiesSpawnList.RemoveAt(indexB)
+                    zombiesSpawnList.Add(copyData_ZombieInfo)
+
+                    Me.Controls.Remove(plant1BulletList(index))
+                    plant1BulletList.RemoveAt(index)
+                    escape = True
+                    Exit For
+                End If
+            Next
+            If escape = True Then
+                escape = False
+                Exit For
+            End If
+        Next
+
+
+        For index As Integer = 0 To plant1BulletList.Count() - 1
+            If CType(plant1BulletList(index), PictureBox).Location.X >= 1008 Then
+                plant1BulletList.RemoveAt(index)
+                Exit For
             End If
         Next
 
@@ -317,7 +402,7 @@
     Private Sub moneyMoveTimer_Tick(sender As Object, e As EventArgs) Handles moneyMoveTimer.Tick
         For index As Integer = 0 To 3
             If moneyRainBtn(index).Visible = True Then
-                moneyRainBtn(index).Top += 1
+                moneyRainBtn(index).Top += 4 + speed
             End If
             If (moneyRainBtn(index).Visible = True) And (moneyRainBtn(index).Location.Y >= 577) Then
                 moneyRainBtn(index).Visible = False
@@ -330,11 +415,21 @@
         End If
 
         For index As Integer = 0 To zombiesSpawnList.Count() - 1
-            CType(zombiesSpawnList(index), PictureBox).Left -= 1
+            If CType(zombiesSpawnList(index), ZombieInfo).hp <= 0 Then
+                zombiesSpawnList(index).pictureBox.visible = False
+                Me.Controls.Remove(zombiesSpawnList(index).pictureBox)
+                zombiesSpawnList.RemoveAt(index)
+                Exit For
+            End If
+        Next
 
-            If CType(zombiesSpawnList(index), PictureBox).Location.X <= 218 Then
+        For index As Integer = 0 To zombiesSpawnList.Count() - 1
+            CType(zombiesSpawnList(index), ZombieInfo).picturebox.Left -= 2 + speed
+
+            If CType(zombiesSpawnList(index), ZombieInfo).picturebox.Location.X <= 218 Then
                 Process.GetCurrentProcess.Kill()
                 zombiesSpawnList.RemoveAt(index)
+                Exit For
             End If
         Next
     End Sub
@@ -363,6 +458,14 @@
             .BringToFront()
         End With
 
-        zombiesSpawnList.Add(zombiePictureBox)
+        zombiesInfo.hp = 3
+        zombiesInfo.picturebox = zombiePictureBox
+        zombiesSpawnList.Add(zombiesInfo)
+
+        If zombiesSpawnList.Count() Mod 5 = 0 Then
+            speed += 1
+        End If
     End Sub
+
+
 End Class
