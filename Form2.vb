@@ -333,7 +333,7 @@
             CType(zombiesSpawnList(index), PictureBox).Left -= 1
 
             If CType(zombiesSpawnList(index), PictureBox).Location.X <= 218 Then
-                MsgBox("게임오버")
+                Process.GetCurrentProcess.Kill()
                 zombiesSpawnList.RemoveAt(index)
             End If
         Next
