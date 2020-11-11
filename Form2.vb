@@ -21,12 +21,14 @@
     Dim zombiesInfo As ZombieInfo
     Dim copyData_ZombieInfo As ZombieInfo
     Dim zombiesSpawnList As New ArrayList()     '좀비 객체 관리할 리스트
+    Dim zombieLine(5) As Integer                '라인별 좀비 유무 체크
     Dim speed As Integer = 0
 
     Dim plantPrice(4) As Integer
     Dim point As Point
     Dim pSize As Size
     Private Sub Form2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Me.DoubleBuffered = True
         Randomize()
 
         Dim count As Integer
@@ -256,9 +258,12 @@
     End Sub
     Private Sub spawnBulletTimer_Tick(sender As Object, e As EventArgs) Handles spawnBulletTimer.Tick
         '조건 추가하기, 좀비가 해당 줄에 있을 때 생성하도록 만들기!!
+        If plant1SpawnTimerList.Count() = 0 Then
+            Return
+        End If
 
         For i As Integer = 0 To plant1SpawnTimerList.Count() - 1
-            If (DateDiff("s", plant1SpawnTimerList(i).countTime, Now()) > 3) Then
+            If (DateDiff("s", plant1SpawnTimerList(i).countTime, Now()) > 3) And (zombieLine(plant1SpawnTimerList(i).index / 9) > 0) Then
                 Dim bulletPictureBox As New PictureBox()
                 pSize.Width = 20
                 pSize.Height = 20
@@ -304,7 +309,17 @@
                     copyData_ZombieInfo.hp = zombiesSpawnList(indexB).hp - 1
                     zombiesSpawnList.RemoveAt(indexB)
                     zombiesSpawnList.Add(copyData_ZombieInfo)
-
+                    If CInt(CType(plant1BulletList(index), PictureBox).Location.Y / 100) = 1 Then
+                        zombieLine(0) -= 1
+                    ElseIf CInt(CType(plant1BulletList(index), PictureBox).Location.Y / 100) = 2 Then
+                        zombieLine(1) -= 1
+                    ElseIf CInt(CType(plant1BulletList(index), PictureBox).Location.Y / 100) = 3 Then
+                        zombieLine(2) -= 1
+                    ElseIf CInt(CType(plant1BulletList(index), PictureBox).Location.Y / 100) = 4 Then
+                        zombieLine(3) -= 1
+                    ElseIf CInt(CType(plant1BulletList(index), PictureBox).Location.Y / 100) = 5 Then
+                        zombieLine(4) -= 1
+                    End If
                     Me.Controls.Remove(plant1BulletList(index))
                     plant1BulletList.RemoveAt(index)
                     escape = True
@@ -368,6 +383,19 @@
 
         point.X = 1007
         point.Y = 86 + (CInt(Int((5) * Rnd())) * 100)
+
+        If CInt(point.Y / 100) = 1 Then
+            zombieLine(0) += 1
+        ElseIf CInt(point.Y / 100) = 2 Then
+            zombieLine(1) += 1
+        ElseIf CInt(point.Y / 100) = 3 Then
+            zombieLine(2) += 1
+        ElseIf CInt(point.Y / 100) = 4 Then
+            zombieLine(3) += 1
+        ElseIf CInt(point.Y / 100) = 5 Then
+            zombieLine(4) += 1
+        End If
+
         pSize.Width = 75
         pSize.Height = 78
         With zombiePictureBox
@@ -399,6 +427,10 @@
         sunImage.Parent = leftTopUI                             '좌측 상단 돈 UI 흰부분 바탕 동기화
 
         currentMoneyLabelUi.Text = 1000
+
+        For i As Integer = 0 To 4
+            zombieLine(i) = 0
+        Next
 
         currentMoneyLabelUi.Parent = leftTopUI                  '돈 UI 흰부분 바탕 동기화
         plantPrice(0) = plantMoneyLabelUi1.Text                 '가격 설정
