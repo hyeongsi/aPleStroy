@@ -22,21 +22,11 @@ Partial Class Form1
     '코드 편집기에서는 수정하지 마세요.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
-        Me.backgroundMenuImage = New System.Windows.Forms.PictureBox()
+        Me.components = New System.ComponentModel.Container()
         Me.startBtn = New System.Windows.Forms.Button()
         Me.explainBtn = New System.Windows.Forms.Button()
-        CType(Me.backgroundMenuImage, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.SuspendLayout()
-        '
-        'backgroundMenuImage
-        '
-        Me.backgroundMenuImage.Image = CType(resources.GetObject("backgroundMenuImage.Image"), System.Drawing.Image)
-        Me.backgroundMenuImage.Location = New System.Drawing.Point(0, 0)
-        Me.backgroundMenuImage.Name = "backgroundMenuImage"
-        Me.backgroundMenuImage.Size = New System.Drawing.Size(595, 450)
-        Me.backgroundMenuImage.TabIndex = 0
-        Me.backgroundMenuImage.TabStop = False
         '
         'startBtn
         '
@@ -56,22 +46,27 @@ Partial Class Form1
         Me.explainBtn.Text = "설명"
         Me.explainBtn.UseVisualStyleBackColor = True
         '
+        'Timer1
+        '
+        Me.Timer1.Enabled = True
+        Me.Timer1.Interval = 33
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.BackgroundImage = Global.visual_basic_fianls_project.My.Resources.Resources.메뉴화면
+        Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ClientSize = New System.Drawing.Size(579, 411)
         Me.Controls.Add(Me.explainBtn)
         Me.Controls.Add(Me.startBtn)
-        Me.Controls.Add(Me.backgroundMenuImage)
+        Me.DoubleBuffered = True
         Me.Name = "Form1"
         Me.Text = "PLANTS vs ZOMBIES"
-        CType(Me.backgroundMenuImage, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
-
-    Friend WithEvents backgroundMenuImage As PictureBox
     Friend WithEvents startBtn As Button
     Friend WithEvents explainBtn As Button
+    Friend WithEvents Timer1 As Timer
 End Class

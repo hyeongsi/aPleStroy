@@ -1,8 +1,8 @@
 ﻿Public Class Form2
     Dim isClickedSpawnBtn As Integer    '-1: 선택x,  0 :삽   1:첫번째스폰,  2:두번쨰스폰 ....
 
-    Private moneyRainBtn(4) As Button
-    Private sunflowerMoneyBtn(45) As Button
+    Private moneyRain(4) As PictureBox
+    Private sunflowerMoney(45) As PictureBox
     Private mapBoardBtn(45) As Button
     Structure ActionTimerStruct                       '소환 시 시간에 따른 행동에 쓰일 구조체
         Dim index As Integer
@@ -28,70 +28,10 @@
     Dim pSize As Size
     Private Sub Form2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Randomize()
-        '버튼 동적생성, 기본 설정
 
-        For index As Integer = 0 To 3
-            moneyRainBtn(index) = New Button()
-            point.X = CInt(Int((900 - 433 + 1) * Rnd() + 433))
-            point.Y = 100
-            pSize.Width = 68
-            pSize.Height = 57
-            With Me.moneyRainBtn(index)
-                .Name = "moneyRainBtn" & CStr(index)
-                .Location = point
-                .Size() = pSize
-                .BackgroundImageLayout = ImageLayout.Stretch
-                .FlatStyle = FlatStyle.Flat
-                .FlatAppearance.BorderSize = 0
-                .FlatAppearance.MouseDownBackColor = Color.Transparent
-                .FlatAppearance.MouseOverBackColor = Color.Transparent
-                .BackColor = Color.Transparent
-                .BackgroundImage = sunImage.Image
-                .TabStop = False
-                .Visible = False
-            End With
-            AddHandler Me.moneyRainBtn(index).Click, AddressOf moneyRainBtn_Click
-            Me.Controls.Add(moneyRainBtn(index))
-        Next
-        For index As Integer = 0 To 3
-            With Me.moneyRainBtn(index)
-                .Parent = backgroundMapImage
-            End With
-        Next
         Dim count As Integer
         count = 0
 
-        pSize.Width = 37
-        pSize.Height = 33
-        For yIndex As Integer = 0 To 4
-            For xIndex As Integer = 0 To 8
-                sunflowerMoneyBtn(count) = New Button()
-                point.X = 256 + (xIndex * 81)
-                point.Y = 86 + (yIndex * 100)
-                With Me.sunflowerMoneyBtn(count)
-                    .Name = "sunflowerMoneyBtn" & CStr(count)
-                    .Location = point
-                    .Size() = pSize
-                    .BackgroundImageLayout = ImageLayout.Stretch
-                    .FlatStyle = FlatStyle.Flat
-                    .FlatAppearance.BorderSize = 0
-                    .FlatAppearance.MouseDownBackColor = Color.Transparent
-                    .FlatAppearance.MouseOverBackColor = Color.Transparent
-                    .BackColor = Color.Transparent
-                    .BackgroundImage = sunImage.Image
-                    .TabStop = False
-                    .Visible = False
-                End With
-                AddHandler Me.sunflowerMoneyBtn(count).Click, AddressOf sunflowerMoneyBtn_Click
-                Me.Controls.Add(sunflowerMoneyBtn(count))
-                count += 1
-            Next
-        Next
-        For index As Integer = 0 To 44 '위의 for문에서 parent 설정 시 오류.. 따로 parent 설정
-            With Me.sunflowerMoneyBtn(index)
-                .Parent = backgroundMapImage
-            End With
-        Next
         count = 0
         pSize.Width = 75
         pSize.Height = 67
@@ -117,29 +57,8 @@
                 count += 1
             Next
         Next
-        For index As Integer = 0 To 44 '위의 for문에서 parent 설정 시 오류.. 따로 parent 설정
-            With Me.mapBoardBtn(index)
-                .Parent = backgroundMapImage
-            End With
-        Next
 
-        Controls.SetChildIndex(backgroundMapImage, 100)    '배경 z 좌표 100으로 설정 (제일 뒤)
-
-        isClickedSpawnBtn = -1                                  '스폰버튼 초기화
-
-        leftTopUI.Parent = backgroundMapImage                      '좌측 상단 UI 흰부분 바탕 동기화
-        sunImage.Parent = leftTopUI                             '좌측 상단 돈 UI 흰부분 바탕 동기화
-
-        currentMoneyLabelUi.Text = 1000
-
-        currentMoneyLabelUi.Parent = leftTopUI                  '돈 UI 흰부분 바탕 동기화
-        plantPrice(0) = plantMoneyLabelUi1.Text                 '가격 설정
-        plantPrice(1) = plantMoneyLabelUi2.Text
-        plantPrice(2) = plantMoneyLabelUi3.Text
-        plantPrice(3) = plantMoneyLabelUi4.Text
-
-        moneyRainSpawnTimer.Interval = CInt(Int((5000 - 3000 + 1) * Rnd() + 3000))
-
+        Init()
     End Sub
     Private Sub spawnBtn_Click(sender As Object, e As EventArgs) Handles sunflowerSpawnBtn.Click, plant1SpawnBtn.Click, plant2SpawnBtn.Click, plant3SpawnBtn.Click
         If (sender.Name = sunflowerSpawnBtn.Name) And (CInt(currentMoneyLabelUi.Text) >= plantPrice(0)) And (sunflowerSpawnBtn.BackColor <> Color.Red) Then
@@ -187,6 +106,14 @@
                     Exit For '삭제 후 다음 값 참조하면 sunflowerSpawnTimerList.Count()값 변경되어 outofindex 오류 발생 따라서 exit 해줌
                 End If
             Next
+            '식물1 삭제에 대한 코드 (리스트 삭제)
+            For i As Integer = 0 To plant1SpawnTimerList.Count() - 1
+                If plant1SpawnTimerList(i).index = findIndex Then
+                    plant1SpawnTimerList.RemoveAt(i)
+                    Exit For
+                End If
+            Next
+
         ElseIf (isClickedSpawnBtn = 1 And (sunflowerSpawnBtn.Enabled = True) And (mapBoardBtn(findIndex).BackgroundImage Is Nothing) And (CInt(currentMoneyLabelUi.Text) >= plantPrice(0))) Then    '해바라기 선택
             currentMoneyLabelUi.Text = CStr((CInt(currentMoneyLabelUi.Text) - plantPrice(0)))
             mapBoardBtn(findIndex).BackgroundImage = sunflowerSpawnBtn.BackgroundImage
@@ -232,7 +159,7 @@
         Dim findIndex As Integer = 0
 
         For index As Integer = 0 To 44
-            If (sender.Name = ("sunflowerMoneyBtn" & CStr(index))) Then
+            If (sender.Name = ("sunflowerMoney" & CStr(index))) Then
                 Exit For
             Else
                 findIndex += 1
@@ -240,15 +167,15 @@
         Next
 
         currentMoneyLabelUi.Text += 25
-        sunflowerMoneyBtn(findIndex).Visible = False
+        sunflowerMoney(findIndex).Visible = False
     End Sub
 
     '돈비 클릭 시 돈 +25 And 클릭한 돈비 삭제
-    Private Sub moneyRainBtn_Click(sender As Object, e As EventArgs)
+    Private Sub moneyRain_Click(sender As Object, e As EventArgs) Handles moneyRain0.Click, moneyRain1.Click, moneyRain2.Click, moneyRain3.Click
         Dim findIndex As Integer = 0
 
         For index As Integer = 0 To 3
-            If (sender.Name = ("moneyRainBtn" & CStr(index))) Then
+            If (sender.Name = ("moneyRain" & CStr(index))) Then
                 Exit For
             Else
                 findIndex += 1
@@ -256,7 +183,7 @@
         Next
 
         currentMoneyLabelUi.Text += 25
-        moneyRainBtn(findIndex).Visible = False
+        moneyRain(findIndex).Visible = False
     End Sub
     Private Sub clearSelectColor()
         If sunflowerSpawnBtn.BackColor = Color.GreenYellow Then
@@ -306,11 +233,11 @@
     Private Sub moneyRainSpawnTimer_Tick(sender As Object, e As EventArgs) Handles moneyRainSpawnTimer.Tick
         moneyRainSpawnTimer.Interval = CInt(Int((10000 - 5000 + 1) * Rnd() + 5000))
         For index As Integer = 0 To 3
-            If moneyRainBtn(index).Visible = False Then
-                moneyRainBtn(index).Visible = True
+            If moneyRain(index).Visible = False Then
+                moneyRain(index).Visible = True
                 point.X = CInt(Int((900 - 433 + 1) * Rnd() + 433))
                 point.Y = -54
-                moneyRainBtn(index).Location = point
+                moneyRain(index).Location = point
                 Exit For
             End If
         Next
@@ -318,10 +245,10 @@
 
     Private Sub spawnSunflowerMoneyTimer_Tick(sender As Object, e As EventArgs) Handles spawnSunflowerMoneyTimer.Tick
         For i As Integer = 0 To sunflowerSpawnTimerList.Count() - 1
-            If (DateDiff("s", sunflowerSpawnTimerList(i).countTime, Now()) > (CInt(Int((15 - 10 + 1) * Rnd() + 10))) And sunflowerMoneyBtn(sunflowerSpawnTimerList(i).index).Visible = False) Then
+            If (DateDiff("s", sunflowerSpawnTimerList(i).countTime, Now()) > (CInt(Int((15 - 10 + 1) * Rnd() + 10))) And sunflowerMoney(sunflowerSpawnTimerList(i).index).Visible = False) Then
                 copyData_ActionTimerStruct.index = sunflowerSpawnTimerList(i).index   '삭제 안하고 list에 바로 접근하려 했으나 오류로 삭제 후 삽입 진행
                 copyData_ActionTimerStruct.countTime = Now()
-                sunflowerMoneyBtn(copyData_ActionTimerStruct.index).Visible = True
+                sunflowerMoney(copyData_ActionTimerStruct.index).Visible = True
                 sunflowerSpawnTimerList.RemoveAt(i)
                 sunflowerSpawnTimerList.Add(copyData_ActionTimerStruct)
             End If
@@ -401,11 +328,11 @@
     End Sub
     Private Sub moneyMoveTimer_Tick(sender As Object, e As EventArgs) Handles moneyMoveTimer.Tick
         For index As Integer = 0 To 3
-            If moneyRainBtn(index).Visible = True Then
-                moneyRainBtn(index).Top += 4 + speed
+            If moneyRain(index).Visible = True Then
+                moneyRain(index).Top += 4 + speed
             End If
-            If (moneyRainBtn(index).Visible = True) And (moneyRainBtn(index).Location.Y >= 577) Then
-                moneyRainBtn(index).Visible = False
+            If (moneyRain(index).Visible = True) And (moneyRain(index).Location.Y >= 577) Then
+                moneyRain(index).Visible = False
             End If
         Next
     End Sub
@@ -454,7 +381,6 @@
         Me.Controls.Add(zombiePictureBox)
 
         With zombiePictureBox
-            .Parent = backgroundMapImage
             .BringToFront()
         End With
 
@@ -467,5 +393,77 @@
         End If
     End Sub
 
+    Private Sub Init()
+        isClickedSpawnBtn = -1                                  '스폰버튼 초기화
 
+        sunImage.Parent = leftTopUI                             '좌측 상단 돈 UI 흰부분 바탕 동기화
+
+        currentMoneyLabelUi.Text = 1000
+
+        currentMoneyLabelUi.Parent = leftTopUI                  '돈 UI 흰부분 바탕 동기화
+        plantPrice(0) = plantMoneyLabelUi1.Text                 '가격 설정
+        plantPrice(1) = plantMoneyLabelUi2.Text
+        plantPrice(2) = plantMoneyLabelUi3.Text
+        plantPrice(3) = plantMoneyLabelUi4.Text
+
+        moneyRain(0) = moneyRain0
+        moneyRain(1) = moneyRain1
+        moneyRain(2) = moneyRain2
+        moneyRain(3) = moneyRain3
+
+        sunflowerMoney(0) = sunflowerMoney0
+        sunflowerMoney(1) = sunflowerMoney1
+        sunflowerMoney(2) = sunflowerMoney2
+        sunflowerMoney(3) = sunflowerMoney3
+        sunflowerMoney(4) = sunflowerMoney4
+        sunflowerMoney(5) = sunflowerMoney5
+        sunflowerMoney(6) = sunflowerMoney6
+        sunflowerMoney(7) = sunflowerMoney7
+        sunflowerMoney(8) = sunflowerMoney8
+        sunflowerMoney(9) = sunflowerMoney9
+        sunflowerMoney(10) = sunflowerMoney10
+        sunflowerMoney(11) = sunflowerMoney11
+        sunflowerMoney(12) = sunflowerMoney12
+        sunflowerMoney(13) = sunflowerMoney13
+        sunflowerMoney(14) = sunflowerMoney14
+        sunflowerMoney(15) = sunflowerMoney15
+        sunflowerMoney(16) = sunflowerMoney16
+        sunflowerMoney(17) = sunflowerMoney17
+        sunflowerMoney(18) = sunflowerMoney18
+
+        sunflowerMoney(19) = sunflowerMoney19
+        sunflowerMoney(20) = sunflowerMoney20
+        sunflowerMoney(21) = sunflowerMoney21
+        sunflowerMoney(22) = sunflowerMoney22
+        sunflowerMoney(23) = sunflowerMoney23
+        sunflowerMoney(24) = sunflowerMoney24
+        sunflowerMoney(25) = sunflowerMoney25
+        sunflowerMoney(26) = sunflowerMoney26
+        sunflowerMoney(27) = sunflowerMoney27
+        sunflowerMoney(28) = sunflowerMoney28
+        sunflowerMoney(29) = sunflowerMoney29
+
+        sunflowerMoney(30) = sunflowerMoney30
+        sunflowerMoney(31) = sunflowerMoney31
+        sunflowerMoney(32) = sunflowerMoney32
+        sunflowerMoney(33) = sunflowerMoney33
+        sunflowerMoney(34) = sunflowerMoney34
+        sunflowerMoney(35) = sunflowerMoney35
+        sunflowerMoney(36) = sunflowerMoney36
+        sunflowerMoney(37) = sunflowerMoney37
+        sunflowerMoney(38) = sunflowerMoney38
+        sunflowerMoney(39) = sunflowerMoney39
+
+        sunflowerMoney(40) = sunflowerMoney40
+        sunflowerMoney(41) = sunflowerMoney41
+        sunflowerMoney(42) = sunflowerMoney42
+        sunflowerMoney(43) = sunflowerMoney43
+        sunflowerMoney(44) = sunflowerMoney44
+
+        For i As Integer = 0 To 44
+            AddHandler Me.sunflowerMoney(i).Click, AddressOf sunflowerMoneyBtn_Click
+        Next
+
+        moneyRainSpawnTimer.Interval = CInt(Int((5000 - 3000 + 1) * Rnd() + 3000))
+    End Sub
 End Class
