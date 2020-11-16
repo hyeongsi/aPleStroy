@@ -309,17 +309,7 @@
                     copyData_ZombieInfo.hp = zombiesSpawnList(indexB).hp - 1
                     zombiesSpawnList.RemoveAt(indexB)
                     zombiesSpawnList.Add(copyData_ZombieInfo)
-                    If CInt(CType(plant1BulletList(index), PictureBox).Location.Y / 100) = 1 Then
-                        zombieLine(0) -= 1
-                    ElseIf CInt(CType(plant1BulletList(index), PictureBox).Location.Y / 100) = 2 Then
-                        zombieLine(1) -= 1
-                    ElseIf CInt(CType(plant1BulletList(index), PictureBox).Location.Y / 100) = 3 Then
-                        zombieLine(2) -= 1
-                    ElseIf CInt(CType(plant1BulletList(index), PictureBox).Location.Y / 100) = 4 Then
-                        zombieLine(3) -= 1
-                    ElseIf CInt(CType(plant1BulletList(index), PictureBox).Location.Y / 100) = 5 Then
-                        zombieLine(4) -= 1
-                    End If
+
                     Me.Controls.Remove(plant1BulletList(index))
                     plant1BulletList.RemoveAt(index)
                     escape = True
@@ -355,6 +345,26 @@
         If zombiesSpawnList.Count() <= 0 Then
             Return
         End If
+
+        For index As Integer = 0 To zombiesSpawnList.Count() - 1
+            If CType(zombiesSpawnList(index), ZombieInfo).hp <= 0 Then
+
+                If CInt(CType(zombiesSpawnList(index), ZombieInfo).picturebox.Location.Y / 100) = 1 Then
+                    zombieLine(0) -= 1
+                ElseIf CInt(CType(zombiesSpawnList(index), ZombieInfo).picturebox.Location.Y / 100) = 2 Then
+                    zombieLine(1) -= 1
+                ElseIf CInt(CType(zombiesSpawnList(index), ZombieInfo).picturebox.Location.Y / 100) = 3 Then
+                    zombieLine(2) -= 1
+                ElseIf CInt(CType(zombiesSpawnList(index), ZombieInfo).picturebox.Location.Y / 100) = 4 Then
+                    zombieLine(3) -= 1
+                ElseIf CInt(CType(zombiesSpawnList(index), ZombieInfo).picturebox.Location.Y / 100) = 5 Then
+                    zombieLine(4) -= 1
+                End If
+
+                Exit For
+            End If
+        Next
+
 
         For index As Integer = 0 To zombiesSpawnList.Count() - 1
             If CType(zombiesSpawnList(index), ZombieInfo).hp <= 0 Then
