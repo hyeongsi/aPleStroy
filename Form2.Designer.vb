@@ -43,7 +43,7 @@ Partial Class Form2
         Me.plant3spawTimer = New System.Windows.Forms.Timer(Me.components)
         Me.moneyRainSpawnTimer = New System.Windows.Forms.Timer(Me.components)
         Me.spawnSunflowerMoneyTimer = New System.Windows.Forms.Timer(Me.components)
-        Me.zombiesMoveTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.zombiesActionTimer = New System.Windows.Forms.Timer(Me.components)
         Me.zombiesSpawnTimer = New System.Windows.Forms.Timer(Me.components)
         Me.spawnBulletTimer = New System.Windows.Forms.Timer(Me.components)
         Me.moveBulletTimer = New System.Windows.Forms.Timer(Me.components)
@@ -96,6 +96,8 @@ Partial Class Form2
         Me.sunflowerMoney42 = New System.Windows.Forms.PictureBox()
         Me.sunflowerMoney43 = New System.Windows.Forms.PictureBox()
         Me.sunflowerMoney44 = New System.Windows.Forms.PictureBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
         CType(Me.leftTopUI, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.sunImage, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.moneyRain0, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -316,10 +318,10 @@ Partial Class Form2
         Me.spawnSunflowerMoneyTimer.Enabled = True
         Me.spawnSunflowerMoneyTimer.Interval = 1010
         '
-        'zombiesMoveTimer
+        'zombiesActionTimer
         '
-        Me.zombiesMoveTimer.Enabled = True
-        Me.zombiesMoveTimer.Interval = 99
+        Me.zombiesActionTimer.Enabled = True
+        Me.zombiesActionTimer.Interval = 99
         '
         'zombiesSpawnTimer
         '
@@ -924,12 +926,32 @@ Partial Class Form2
         Me.sunflowerMoney44.TabStop = False
         Me.sunflowerMoney44.Visible = False
         '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(472, 25)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(42, 12)
+        Me.Label1.TabIndex = 63
+        Me.Label1.Text = "Label1"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(474, 50)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(42, 12)
+        Me.Label2.TabIndex = 64
+        Me.Label2.Text = "Label2"
+        '
         'Form2
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackgroundImage = Global.visual_basic_fianls_project.My.Resources.Resources.stageMap
         Me.ClientSize = New System.Drawing.Size(1008, 587)
+        Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.sunflowerMoney44)
         Me.Controls.Add(Me.sunflowerMoney43)
         Me.Controls.Add(Me.sunflowerMoney42)
@@ -1067,7 +1089,7 @@ Partial Class Form2
     Friend WithEvents plant3spawTimer As Timer
     Friend WithEvents moneyRainSpawnTimer As Timer
     Friend WithEvents spawnSunflowerMoneyTimer As Timer
-    Friend WithEvents zombiesMoveTimer As Timer
+    Friend WithEvents zombiesActionTimer As Timer
     Friend WithEvents zombiesSpawnTimer As Timer
     Friend WithEvents spawnBulletTimer As Timer
     Friend WithEvents moveBulletTimer As Timer
@@ -1120,4 +1142,6 @@ Partial Class Form2
     Friend WithEvents sunflowerMoney42 As PictureBox
     Friend WithEvents sunflowerMoney43 As PictureBox
     Friend WithEvents sunflowerMoney44 As PictureBox
+    Friend WithEvents Label1 As Label
+    Friend WithEvents Label2 As Label
 End Class

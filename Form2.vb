@@ -1,5 +1,7 @@
 ﻿Public Class Form2
     Dim isClickedSpawnBtn As Integer    '-1: 선택x,  0 :삽   1:첫번째스폰,  2:두번쨰스폰 ....
+    Dim timeGap As TimeSpan
+    Dim tempIndex As Integer
 
     Private moneyRain(4) As PictureBox
     Private sunflowerMoney(45) As PictureBox
@@ -9,24 +11,25 @@
         Dim countTime As Date
     End Structure
     Dim actionTimer As ActionTimerStruct
-    Dim copyData_ActionTimerStruct As ActionTimerStruct
     Structure SpawnPlantStruct                     '소환 시 시간에 따른 행동에 쓰일 구조체
         Dim index As Integer
         Dim picturebox As PictureBox
+        Dim hp As Integer
     End Structure
     Dim spawnPlant As SpawnPlantStruct
     Dim spawnFlowerIndexList As New ArrayList()         '스폰된 식물의 인덱스 저장할 리스트
     Dim sunflowerSpawnTimerList As New ArrayList()    '해바라기 돈 스폰 시간에 쓰일 리스트
     Dim plant1SpawnTimerList As New ArrayList()    '식물1 스폰 시간에 쓰일 리스트
-    Dim plant1BulletList As New ArrayList()        '식물1 총알 리스트
+    Dim plant1BulletList As New List(Of PictureBox)        '식물1 총알 리스트
 
     Structure ZombieInfo                       '좀비 관리 구조체
         Dim hp As Integer
         Dim picturebox As PictureBox
+        Dim isAttack As Boolean
+        Dim countTime As Date
     End Structure
     Dim zombiesInfo As ZombieInfo
-    Dim copyData_ZombieInfo As ZombieInfo
-    Dim zombiesSpawnList As New ArrayList()     '좀비 객체 관리할 리스트
+    Dim zombiesSpawnList As New List(Of ZombieInfo)     '좀비 객체 관리할 리스트
     Dim zombieLine(5) As Integer                '라인별 좀비 유무 체크
     Dim speed As Integer = 0
 
@@ -121,6 +124,7 @@
 
             spawnPlant.index = findIndex
             spawnPlant.picturebox = mapBoardPictureBox(findIndex)
+            spawnPlant.hp = 2
             spawnFlowerIndexList.Add(spawnPlant)
         ElseIf (isClickedSpawnBtn = 2 And (plant1SpawnBtn.Enabled = True) And (mapBoardPictureBox(findIndex).BackgroundImage Is Nothing And (CInt(currentMoneyLabelUi.Text) >= plantPrice(1)))) Then       '식물1 선택
             currentMoneyLabelUi.Text = CStr((CInt(currentMoneyLabelUi.Text) - plantPrice(1)))
@@ -135,6 +139,7 @@
 
             spawnPlant.index = findIndex
             spawnPlant.picturebox = mapBoardPictureBox(findIndex)
+            spawnPlant.hp = 2
             spawnFlowerIndexList.Add(spawnPlant)
         ElseIf (isClickedSpawnBtn = 3 And (plant2SpawnBtn.Enabled = True) And (mapBoardPictureBox(findIndex).BackgroundImage Is Nothing And (CInt(currentMoneyLabelUi.Text) >= plantPrice(2)))) Then       '식물2 선택
             currentMoneyLabelUi.Text = CStr((CInt(currentMoneyLabelUi.Text) - plantPrice(2)))
@@ -248,11 +253,11 @@
     Private Sub spawnSunflowerMoneyTimer_Tick(sender As Object, e As EventArgs) Handles spawnSunflowerMoneyTimer.Tick
         For i As Integer = 0 To sunflowerSpawnTimerList.Count() - 1
             If (DateDiff("s", sunflowerSpawnTimerList(i).countTime, Now()) > (CInt(Int((15 - 10 + 1) * Rnd() + 10))) And sunflowerMoney(sunflowerSpawnTimerList(i).index).Visible = False) Then
-                copyData_ActionTimerStruct.index = sunflowerSpawnTimerList(i).index   '삭제 안하고 list에 바로 접근하려 했으나 오류로 삭제 후 삽입 진행
-                copyData_ActionTimerStruct.countTime = Now()
-                sunflowerMoney(copyData_ActionTimerStruct.index).Visible = True
-                sunflowerSpawnTimerList.RemoveAt(i)
-                sunflowerSpawnTimerList.Add(copyData_ActionTimerStruct)
+                actionTimer.index = CType(sunflowerSpawnTimerList(i), ActionTimerStruct).index
+                actionTimer.countTime = Now()
+                sunflowerSpawnTimerList(i) = actionTimer
+
+                sunflowerMoney(CType(sunflowerSpawnTimerList(i), ActionTimerStruct).index).Visible = True
             End If
         Next
     End Sub
@@ -285,10 +290,9 @@
 
                 plant1BulletList.Add(bulletPictureBox)
 
-                copyData_ActionTimerStruct.index = plant1SpawnTimerList(i).index   '삭제 안하고 list에 바로 접근하려 했으나 오류로 삭제 후 삽입 진행
-                copyData_ActionTimerStruct.countTime = Now()
-                plant1SpawnTimerList.RemoveAt(i)
-                plant1SpawnTimerList.Add(copyData_ActionTimerStruct)
+                actionTimer.index = CType(sunflowerSpawnTimerList(i), ActionTimerStruct).index
+                actionTimer.countTime = Now()
+                plant1SpawnTimerList(i) = actionTimer
             End If
         Next
     End Sub
@@ -305,10 +309,9 @@
         For index As Integer = 0 To plant1BulletList.Count() - 1
             For indexB As Integer = 0 To zombiesSpawnList.Count() - 1
                 If plant1BulletList(index).Bounds.IntersectsWith(zombiesSpawnList(indexB).picturebox.Bounds) Then
-                    copyData_ZombieInfo.picturebox = zombiesSpawnList(indexB).picturebox   '삭제 안하고 list에 바로 접근하려 했으나 오류로 삭제 후 삽입 진행
-                    copyData_ZombieInfo.hp = zombiesSpawnList(indexB).hp - 1
-                    zombiesSpawnList.RemoveAt(indexB)
-                    zombiesSpawnList.Add(copyData_ZombieInfo)
+                    zombiesInfo.hp = CType(zombiesSpawnList(indexB), ZombieInfo).hp - 1
+                    zombiesInfo.picturebox = CType(zombiesSpawnList(indexB), ZombieInfo).picturebox
+                    zombiesSpawnList(indexB) = zombiesInfo
 
                     Me.Controls.Remove(plant1BulletList(index))
                     plant1BulletList.RemoveAt(index)
@@ -340,7 +343,7 @@
             End If
         Next
     End Sub
-    Private Sub zombiesMoveTimer_Tick(sender As Object, e As EventArgs) Handles zombiesMoveTimer.Tick
+    Private Sub zombiesActionTimer_Tick(sender As Object, e As EventArgs) Handles zombiesActionTimer.Tick
         If zombiesSpawnList.Count() <= 0 Then
             Return
         End If
@@ -348,23 +351,8 @@
         DeleteZombieLine()
         DieZombie()
 
-        If spawnFlowerIndexList.Count() >= 1 Then
-            For index As Integer = 0 To zombiesSpawnList.Count() - 1
-                For index2 As Integer = 0 To spawnFlowerIndexList.Count() - 1
-                    If CType(zombiesSpawnList(index), ZombieInfo).picturebox.Bounds.IntersectsWith(CType(spawnFlowerIndexList(index2), SpawnPlantStruct).picturebox.Bounds) Then
-                        CType(spawnFlowerIndexList(index2), SpawnPlantStruct).picturebox.BackgroundImage = Nothing
-                        If (CType(spawnFlowerIndexList(index2), SpawnPlantStruct).picturebox.BackgroundImage Is sunflowerSpawnBtn.BackgroundImage) Then
-                            DeleteSunflower(index2)
-                            spawnFlowerIndexList.RemoveAt(index2)
-                        Else
-                            DeletePlant1(index2)
-                            spawnFlowerIndexList.RemoveAt(index2)
-                        End If
-                        Exit For
-                    End If
-                Next
-            Next
-        End If
+        AttackZombie()
+        DiePlant(tempIndex)
 
         MoveZombie()
 
@@ -408,6 +396,7 @@
 
         zombiesInfo.hp = 3
         zombiesInfo.picturebox = zombiePictureBox
+        zombiesInfo.isAttack = False
         zombiesSpawnList.Add(zombiesInfo)
 
         If zombiesSpawnList.Count() Mod 5 = 0 Then
@@ -505,6 +494,33 @@
             End If
         Next
     End Sub
+    '식물 hp 0보다 작으면 삭제 처리
+    Sub DiePlant(index As Integer)
+        For index2 As Integer = 0 To spawnFlowerIndexList.Count() - 1
+            If CType(spawnFlowerIndexList(index2), SpawnPlantStruct).hp <= 0 Then
+                If (CType(spawnFlowerIndexList(index2), SpawnPlantStruct).picturebox.BackgroundImage Is sunflowerSpawnBtn.BackgroundImage) Then
+                    CType(spawnFlowerIndexList(index2), SpawnPlantStruct).picturebox.BackgroundImage = Nothing
+                    DeleteSunflower(index2)
+                    spawnFlowerIndexList.RemoveAt(index2)
+
+                    zombiesInfo.hp = CType(zombiesSpawnList(index), ZombieInfo).hp
+                    zombiesInfo.picturebox = CType(zombiesSpawnList(index), ZombieInfo).picturebox
+                    zombiesInfo.isAttack = False
+                    zombiesSpawnList(index) = zombiesInfo
+                Else
+                    CType(spawnFlowerIndexList(index2), SpawnPlantStruct).picturebox.BackgroundImage = Nothing
+                    DeletePlant1(index2)
+                    spawnFlowerIndexList.RemoveAt(index2)
+
+                    zombiesInfo.hp = CType(zombiesSpawnList(index), ZombieInfo).hp
+                    zombiesInfo.picturebox = CType(zombiesSpawnList(index), ZombieInfo).picturebox
+                    zombiesInfo.isAttack = False
+                    zombiesSpawnList(index) = zombiesInfo
+                End If
+                Exit For
+            End If
+        Next
+    End Sub
     Sub DeletePlant1(findIndex)
         For i As Integer = 0 To plant1SpawnTimerList.Count() - 1
             If plant1SpawnTimerList(i).index = findIndex Then
@@ -539,13 +555,13 @@
         Next
     End Sub
     Sub MoveZombie()
-        For index As Integer = 0 To zombiesSpawnList.Count() - 1
-            CType(zombiesSpawnList(index), ZombieInfo).picturebox.Left -= 2 + speed
+        If zombiesSpawnList.Count() <= 0 Then
+            Return
+        End If
 
-            If CType(zombiesSpawnList(index), ZombieInfo).picturebox.Location.X <= 218 Then
-                Process.GetCurrentProcess.Kill()
-                zombiesSpawnList.RemoveAt(index)
-                Exit For
+        For index As Integer = 0 To zombiesSpawnList.Count() - 1
+            If CType(zombiesSpawnList(index), ZombieInfo).isAttack = False Then
+                CType(zombiesSpawnList(index), ZombieInfo).picturebox.Left -= 2 + speed
             End If
         Next
     End Sub
@@ -558,5 +574,46 @@
                 Exit For
             End If
         Next
+
+        For index As Integer = 0 To zombiesSpawnList.Count() - 1
+            If CType(zombiesSpawnList(index), ZombieInfo).picturebox.Location.X <= 218 Then
+                Process.GetCurrentProcess.Kill()
+                zombiesSpawnList.RemoveAt(index)
+                Exit For
+            End If
+        Next
+    End Sub
+    Sub AttackZombie()
+        If spawnFlowerIndexList.Count() >= 1 Then
+            For index As Integer = 0 To zombiesSpawnList.Count() - 1
+                For index2 As Integer = 0 To spawnFlowerIndexList.Count() - 1
+                    If CType(zombiesSpawnList(index), ZombieInfo).picturebox.Bounds.IntersectsWith(CType(spawnFlowerIndexList(index2), SpawnPlantStruct).picturebox.Bounds) And zombiesSpawnList(index).isAttack = False Then
+                        zombiesInfo.hp = CType(zombiesSpawnList(index), ZombieInfo).hp
+                        zombiesInfo.picturebox = CType(zombiesSpawnList(index), ZombieInfo).picturebox
+                        zombiesInfo.isAttack = True
+                        zombiesInfo.countTime = Now()
+                        zombiesSpawnList(index) = zombiesInfo
+                    End If
+
+                    If CType(zombiesSpawnList(index), ZombieInfo).picturebox.Bounds.IntersectsWith(CType(spawnFlowerIndexList(index2), SpawnPlantStruct).picturebox.Bounds) And CType(zombiesSpawnList(index), ZombieInfo).isAttack = True Then
+                        timeGap = Now() - zombiesSpawnList(index).countTime
+
+                        If timeGap.TotalSeconds >= 1 Then
+                            zombiesInfo.hp = CType(zombiesSpawnList(index), ZombieInfo).hp
+                            zombiesInfo.picturebox = CType(zombiesSpawnList(index), ZombieInfo).picturebox
+                            zombiesInfo.isAttack = True
+                            zombiesInfo.countTime = Now()
+                            zombiesSpawnList(index) = zombiesInfo
+
+                            spawnPlant.index = CType(spawnFlowerIndexList(index2), SpawnPlantStruct).index
+                            spawnPlant.picturebox = CType(spawnFlowerIndexList(index2), SpawnPlantStruct).picturebox
+                            spawnPlant.hp = CType(spawnFlowerIndexList(index2), SpawnPlantStruct).hp - 1
+                            spawnFlowerIndexList(index2) = spawnPlant
+                            tempIndex = index
+                        End If
+                    End If
+                Next
+            Next
+        End If
     End Sub
 End Class
