@@ -262,7 +262,6 @@
         Next
     End Sub
     Private Sub spawnBulletTimer_Tick(sender As Object, e As EventArgs) Handles spawnBulletTimer.Tick
-        '조건 추가하기, 좀비가 해당 줄에 있을 때 생성하도록 만들기!!
         If plant1SpawnTimerList.Count() = 0 Then
             Return
         End If
@@ -290,7 +289,7 @@
 
                 plant1BulletList.Add(bulletPictureBox)
 
-                actionTimer.index = CType(sunflowerSpawnTimerList(i), ActionTimerStruct).index
+                actionTimer.index = CType(plant1SpawnTimerList(i), ActionTimerStruct).index
                 actionTimer.countTime = Now()
                 plant1SpawnTimerList(i) = actionTimer
             End If
@@ -483,14 +482,10 @@
     End Sub
     Sub DeleteSunflower(findIndex As Integer)
         For i As Integer = 0 To sunflowerSpawnTimerList.Count() - 1
-            If sunflowerSpawnTimerList(i).index = findIndex Then
-                For i2 As Integer = 0 To spawnFlowerIndexList.Count() - 1
-                    spawnFlowerIndexList(i2).index = findIndex
-                    spawnFlowerIndexList.RemoveAt(i2)
-                    Exit For
-                Next
-                sunflowerSpawnTimerList.RemoveAt(i)
-                Exit For '삭제 후 다음 값 참조하면 sunflowerSpawnTimerList.Count()값 변경되어 outofindex 오류 발생 따라서 exit 해줌
+            If sunflowerSpawnTimerList(i).index = spawnFlowerIndexList(findIndex).index Then
+                sunflowerSpawnTimerList.Remove(sunflowerSpawnTimerList(i))
+                spawnFlowerIndexList.Remove(spawnFlowerIndexList(findIndex))
+                Exit For
             End If
         Next
     End Sub
@@ -501,7 +496,6 @@
                 If (CType(spawnFlowerIndexList(index2), SpawnPlantStruct).picturebox.BackgroundImage Is sunflowerSpawnBtn.BackgroundImage) Then
                     CType(spawnFlowerIndexList(index2), SpawnPlantStruct).picturebox.BackgroundImage = Nothing
                     DeleteSunflower(index2)
-                    spawnFlowerIndexList.RemoveAt(index2)
 
                     zombiesInfo.hp = CType(zombiesSpawnList(index), ZombieInfo).hp
                     zombiesInfo.picturebox = CType(zombiesSpawnList(index), ZombieInfo).picturebox
@@ -510,7 +504,6 @@
                 Else
                     CType(spawnFlowerIndexList(index2), SpawnPlantStruct).picturebox.BackgroundImage = Nothing
                     DeletePlant1(index2)
-                    spawnFlowerIndexList.RemoveAt(index2)
 
                     zombiesInfo.hp = CType(zombiesSpawnList(index), ZombieInfo).hp
                     zombiesInfo.picturebox = CType(zombiesSpawnList(index), ZombieInfo).picturebox
@@ -523,13 +516,9 @@
     End Sub
     Sub DeletePlant1(findIndex)
         For i As Integer = 0 To plant1SpawnTimerList.Count() - 1
-            If plant1SpawnTimerList(i).index = findIndex Then
-                For i2 As Integer = 0 To spawnFlowerIndexList.Count() - 1
-                    spawnFlowerIndexList(i2).index = findIndex
-                    spawnFlowerIndexList.RemoveAt(i2)
-                    Exit For
-                Next
-                plant1SpawnTimerList.RemoveAt(i)
+            If plant1SpawnTimerList(i).index = spawnFlowerIndexList(findIndex).index Then
+                plant1SpawnTimerList.Remove(plant1SpawnTimerList(i))
+                spawnFlowerIndexList.Remove(spawnFlowerIndexList(findIndex))
                 Exit For
             End If
         Next
