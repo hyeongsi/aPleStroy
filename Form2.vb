@@ -102,14 +102,18 @@
         Next
 
         If (isClickedSpawnBtn = 0 And (mapBoardPictureBox(findIndex).BackgroundImage IsNot Nothing)) Then       '삽 선택
+
+            If mapBoardPictureBox(findIndex).BackgroundImage Is sunflowerSpawnBtn.BackgroundImage Then
+                '해바라기 삭제에 대한 코드 (리스트 삭제)
+                DeleteSunflowerShovel(findIndex)
+            ElseIf mapBoardPictureBox(findIndex).BackgroundImage Is plant1SpawnBtn.BackgroundImage Then
+                '식물1 삭제에 대한 코드 (리스트 삭제)
+                DeletePlant1Shovel(findIndex)
+            End If
+
             mapBoardPictureBox(findIndex).BackgroundImage = Nothing
             shovelBtn.BackColor = Color.Transparent
             isClickedSpawnBtn = -1
-
-            '해바라기 삭제에 대한 코드 (리스트 삭제)
-            DeleteSunflower(findIndex)
-            '식물1 삭제에 대한 코드 (리스트 삭제)
-            DeletePlant1(findIndex)
 
         ElseIf (isClickedSpawnBtn = 1 And (sunflowerSpawnBtn.Enabled = True) And (mapBoardPictureBox(findIndex).BackgroundImage Is Nothing) And (CInt(currentMoneyLabelUi.Text) >= plantPrice(0))) Then    '해바라기 선택
             currentMoneyLabelUi.Text = CStr((CInt(currentMoneyLabelUi.Text) - plantPrice(0)))
@@ -489,6 +493,21 @@
             End If
         Next
     End Sub
+    Sub DeleteSunflowerShovel(findIndex As Integer)
+        For i As Integer = 0 To spawnFlowerIndexList.Count() - 1
+            If spawnFlowerIndexList(i).index = findIndex Then
+                spawnFlowerIndexList.Remove(spawnFlowerIndexList(i))
+                Exit For
+            End If
+        Next
+
+        For i As Integer = 0 To sunflowerSpawnTimerList.Count() - 1
+            If sunflowerSpawnTimerList(i).index = findIndex Then
+                sunflowerSpawnTimerList.Remove(sunflowerSpawnTimerList(i))
+                Exit For
+            End If
+        Next
+    End Sub
     '식물 hp 0보다 작으면 삭제 처리
     Sub DiePlant(index As Integer)
         For index2 As Integer = 0 To spawnFlowerIndexList.Count() - 1
@@ -497,6 +516,8 @@
                     CType(spawnFlowerIndexList(index2), SpawnPlantStruct).picturebox.BackgroundImage = Nothing
                     DeleteSunflower(index2)
 
+                    index2 = 0
+
                     zombiesInfo.hp = CType(zombiesSpawnList(index), ZombieInfo).hp
                     zombiesInfo.picturebox = CType(zombiesSpawnList(index), ZombieInfo).picturebox
                     zombiesInfo.isAttack = False
@@ -504,6 +525,8 @@
                 Else
                     CType(spawnFlowerIndexList(index2), SpawnPlantStruct).picturebox.BackgroundImage = Nothing
                     DeletePlant1(index2)
+
+                    index2 = 0
 
                     zombiesInfo.hp = CType(zombiesSpawnList(index), ZombieInfo).hp
                     zombiesInfo.picturebox = CType(zombiesSpawnList(index), ZombieInfo).picturebox
@@ -519,6 +542,21 @@
             If plant1SpawnTimerList(i).index = spawnFlowerIndexList(findIndex).index Then
                 plant1SpawnTimerList.Remove(plant1SpawnTimerList(i))
                 spawnFlowerIndexList.Remove(spawnFlowerIndexList(findIndex))
+                Exit For
+            End If
+        Next
+    End Sub
+    Sub DeletePlant1Shovel(findIndex As Integer)
+        For i As Integer = 0 To spawnFlowerIndexList.Count() - 1
+            If spawnFlowerIndexList(i).index = findIndex Then
+                spawnFlowerIndexList.Remove(spawnFlowerIndexList(i))
+                Exit For
+            End If
+        Next
+
+        For i As Integer = 0 To plant1SpawnTimerList.Count() - 1
+            If plant1SpawnTimerList(i).index = findIndex Then
+                plant1SpawnTimerList.Remove(plant1SpawnTimerList(i))
                 Exit For
             End If
         Next
@@ -576,14 +614,14 @@
         If spawnFlowerIndexList.Count() >= 1 Then
             For index As Integer = 0 To zombiesSpawnList.Count() - 1
                 For index2 As Integer = 0 To spawnFlowerIndexList.Count() - 1
-                    If CType(zombiesSpawnList(index), ZombieInfo).picturebox.Bounds.IntersectsWith(CType(spawnFlowerIndexList(index2), SpawnPlantStruct).picturebox.Bounds) And zombiesSpawnList(index).isAttack = False Then
+                    If CType(zombiesSpawnList(index), ZombieInfo).picturebox.Bounds.IntersectsWith(CType(spawnFlowerIndexList(index2), SpawnPlantStruct).picturebox.Bounds) And zombiesSpawnList(index).isAttack = False And (CType(spawnFlowerIndexList(index2), SpawnPlantStruct).picturebox.BackgroundImage IsNot Nothing) Then
                         zombiesInfo.hp = CType(zombiesSpawnList(index), ZombieInfo).hp
                         zombiesInfo.picturebox = CType(zombiesSpawnList(index), ZombieInfo).picturebox
                         zombiesInfo.isAttack = True
                         zombiesInfo.countTime = Now()
                         zombiesSpawnList(index) = zombiesInfo
                     End If
-
+                    '공격중 일때 공격 속도에 따른 식물 hp -1 처리
                     If CType(zombiesSpawnList(index), ZombieInfo).picturebox.Bounds.IntersectsWith(CType(spawnFlowerIndexList(index2), SpawnPlantStruct).picturebox.Bounds) And CType(zombiesSpawnList(index), ZombieInfo).isAttack = True Then
                         timeGap = Now() - zombiesSpawnList(index).countTime
 
