@@ -991,6 +991,7 @@ Partial Class Form2
         Me.Controls.Add(Me.currentMoneyLabelUi)
         Me.Controls.Add(Me.leftTopUI)
         Me.Controls.Add(Me.shovelBtn)
+        Me.DoubleBuffered = True
         Me.Name = "Form2"
         Me.Text = "PLANTS vs ZOMBIES"
         CType(Me.leftTopUI, System.ComponentModel.ISupportInitialize).EndInit()
