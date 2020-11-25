@@ -199,8 +199,8 @@ Public Class Form1
         plrInfo.speed = 5
         plrInfo.damage = 1
         plrInfo.pos.x = 200
-        plrInfo.pos.y = 490
-        plrInfo.pos.height = 76
+        plrInfo.pos.y = 480
+        plrInfo.pos.height = 85
         plrInfo.pos.width = 65
         plrInfo.anim = 2
         plrInfo.dir = True
