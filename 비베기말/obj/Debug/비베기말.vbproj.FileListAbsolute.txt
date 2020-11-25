@@ -10,3 +10,15 @@ C:\Users\parks\Desktop\비베기말\obj\Debug\비베기말.vbproj.CoreCompileInp
 C:\Users\parks\Desktop\비베기말\obj\Debug\비베기말.exe
 C:\Users\parks\Desktop\비베기말\obj\Debug\비베기말.xml
 C:\Users\parks\Desktop\비베기말\obj\Debug\비베기말.pdb
+C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\bin\Debug\비베기말.exe.config
+C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\bin\Debug\비베기말.exe
+C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\bin\Debug\비베기말.pdb
+C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\bin\Debug\비베기말.xml
+C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\obj\Debug\비베기말.vbprojAssemblyReference.cache
+C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\obj\Debug\비베기말.Form1.resources
+C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\obj\Debug\비베기말.Resources.resources
+C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\obj\Debug\비베기말.vbproj.GenerateResource.cache
+C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\obj\Debug\비베기말.vbproj.CoreCompileInputs.cache
+C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\obj\Debug\비베기말.exe
+C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\obj\Debug\비베기말.xml
+C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\obj\Debug\비베기말.pdb

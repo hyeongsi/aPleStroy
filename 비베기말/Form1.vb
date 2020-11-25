@@ -1,10 +1,12 @@
 ﻿Imports System.Threading
 Public Class Form1
     Private Declare Function GetTickCount64 Lib "kernel32" () As Long
+    Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vkey As Integer) As Short
 
     Dim thread_main As Thread
     Dim currentTime As Long
     Dim lastTime As Long
+    Dim lastPlayerAnimTime As Long
     Dim lastZombieSpawnTime As Long
     Dim lastZombieAnimTime As Long
 
@@ -17,8 +19,9 @@ Public Class Form1
         Dim speed As Integer
         Dim damage As Integer
         Dim pos As Rect
-        Dim state As Integer '0~1 (leftIdle), 2~3 (rightIdle), 4~7 (leftMove), 891011 (rightMove) 
+        Dim anim As Integer '0~1 (leftIdle), 2~3 (rightIdle), 4~7 (leftMove), 891011 (rightMove) 
         Dim dir As Boolean  'left : false,  right : true
+        Dim state As Integer '0 : idle, 1 : move, 2 : attack
     End Structure
 
     Dim playerImage As Image
@@ -40,7 +43,7 @@ Public Class Form1
         Dim speed As Integer
         Dim damage As Integer
         Dim pos As Rect
-        Dim state As Integer '0~1 / attack(idle), 2~5 / move, 6 / hit, 7~9 / die
+        Dim anim As Integer '0~1 / attack(idle), 2~5 / move, 6 / hit, 7~9 / die
     End Structure
     Dim zomInfoSpawn As CharInfo
     Dim zomInfo As CharInfo
@@ -148,12 +151,12 @@ Public Class Form1
     Private Sub Form1_Paint(sender As Object, e As PaintEventArgs) Handles MyBase.Paint
         If spawnZombieList.Count() >= 1 Then
             For i As Integer = 0 To spawnZombieList.Count() - 1
-                e.Graphics.DrawImage(zombieBitmap(CType(spawnZombieList(i), CharInfo).state), CType(spawnZombieList(i), CharInfo).pos.x, CType(spawnZombieList(i), CharInfo).pos.y, CType(spawnZombieList(i), CharInfo).pos.width, CType(spawnZombieList(i), CharInfo).pos.height)
+                e.Graphics.DrawImage(zombieBitmap(CType(spawnZombieList(i), CharInfo).anim), CType(spawnZombieList(i), CharInfo).pos.x, CType(spawnZombieList(i), CharInfo).pos.y, CType(spawnZombieList(i), CharInfo).pos.width, CType(spawnZombieList(i), CharInfo).pos.height)
             Next
         End If
 
         If isSpawnPlayer = True Then
-            e.Graphics.DrawImage(playerBitmap(plrInfo.state), plrInfo.pos.x, plrInfo.pos.y, plrInfo.pos.width, plrInfo.pos.height)
+            e.Graphics.DrawImage(playerBitmap(plrInfo.anim), plrInfo.pos.x, plrInfo.pos.y, plrInfo.pos.width, plrInfo.pos.height)
         End If
     End Sub
 
@@ -161,7 +164,7 @@ Public Class Form1
         lastTime = GetTickCount64()
         lastZombieAnimTime = GetTickCount64()
         lastZombieSpawnTime = GetTickCount64()
-
+        lastPlayerAnimTime = GetTickCount64()
         SpawnPlayer()
         Do
             currentTime = GetTickCount64()
@@ -171,6 +174,9 @@ Public Class Form1
 
                 MoveZombie()
                 CheckOutOfRangeZombie()
+
+                InputKeyPlayer()
+                SwitchPlayerAnim()
                 Invoke(Sub() Me.Invalidate())
             End If
 
@@ -190,16 +196,90 @@ Public Class Form1
 
     Sub SpawnPlayer()
         plrInfo.hp = 10
-        plrInfo.speed = 3
+        plrInfo.speed = 5
         plrInfo.damage = 1
         plrInfo.pos.x = 200
         plrInfo.pos.y = 490
         plrInfo.pos.height = 76
         plrInfo.pos.width = 65
-        plrInfo.state = 2
+        plrInfo.anim = 2
         plrInfo.dir = True
 
         isSpawnPlayer = True
+    End Sub
+    Sub InputKeyPlayer()
+        If GetAsyncKeyState(Keys.Left) Then         'left key input
+            plrInfo.state = 1
+            plrInfo.dir = False
+            plrInfo.pos.x -= plrInfo.speed
+        ElseIf GetAsyncKeyState(Keys.Right) Then    'right key input
+            plrInfo.state = 1
+            plrInfo.dir = True
+            plrInfo.pos.x += plrInfo.speed
+        Else                                        'idle
+            plrInfo.state = 0
+        End If
+    End Sub
+    Sub SwitchPlayerAnim()
+        If plrInfo.state = 0 Then           'idle
+            If plrInfo.dir = False Then         'left idle
+                If plrInfo.anim >= 0 And plrInfo.anim <= 1 Then     'idle anim ++
+                    If currentTime > lastPlayerAnimTime + 1000 Then     'idle anim swiching cooltime
+                        lastPlayerAnimTime = currentTime
+
+                        plrInfo.anim += 1
+                        If plrInfo.anim > 1 Then    'left idle init
+                            plrInfo.anim = 0
+                        End If
+                    End If
+                Else                                'left idle init
+                    plrInfo.anim = 0
+                End If
+            Else                                'right idle
+                If plrInfo.anim >= 2 And plrInfo.anim <= 3 Then     'idle anim ++
+                    If currentTime > lastPlayerAnimTime + 1000 Then     'idle anim swiching cooltime
+                        lastPlayerAnimTime = currentTime
+
+                        plrInfo.anim += 1
+                        If plrInfo.anim > 3 Then    'right idle init
+                            plrInfo.anim = 2
+                        End If
+                    End If
+                Else                                'right idle init
+                    plrInfo.anim = 2
+                End If
+            End If
+        ElseIf plrInfo.state = 1 Then       'move
+            If plrInfo.dir = False Then         'left move
+                If plrInfo.anim >= 4 And plrInfo.anim <= 7 Then     'move anim ++
+                    If currentTime > lastPlayerAnimTime + 225 Then      'move anim swiching cooltime
+                        lastPlayerAnimTime = currentTime
+
+                        plrInfo.anim += 1
+                        If plrInfo.anim > 7 Then    'left move init
+                            plrInfo.anim = 4
+                        End If
+                    End If
+                Else                                'left move init
+                    plrInfo.anim = 4
+                End If
+            Else                                'right move
+                If plrInfo.anim >= 8 And plrInfo.anim <= 11 Then    'move anim ++
+                    If currentTime > lastPlayerAnimTime + 225 Then      'move anim swiching cooltime
+                        lastPlayerAnimTime = currentTime
+
+                        plrInfo.anim += 1
+                        If plrInfo.anim > 11 Then   'right move init
+                            plrInfo.anim = 8
+                        End If
+                    End If
+                Else                                'right move init
+                    plrInfo.anim = 8
+                End If
+
+            End If
+        End If
+
     End Sub
 
     Sub SpawnZombie()
@@ -210,7 +290,7 @@ Public Class Form1
         zomInfoSpawn.pos.y = 490
         zomInfoSpawn.pos.height = 76
         zomInfoSpawn.pos.width = 65
-        zomInfoSpawn.state = 2
+        zomInfoSpawn.anim = 2
 
         spawnZombieList.Add(zomInfoSpawn)
     End Sub
@@ -221,7 +301,7 @@ Public Class Form1
 
         'speed 만큼 x좌표 수정
         For i As Integer = 0 To spawnZombieList.Count() - 1
-            If CType(spawnZombieList(i), CharInfo).state >= 2 And CType(spawnZombieList(i), CharInfo).state <= 5 Then
+            If CType(spawnZombieList(i), CharInfo).anim >= 2 And CType(spawnZombieList(i), CharInfo).anim <= 5 Then
                 zomInfo.pos.x = CType(spawnZombieList(i), CharInfo).pos.x - CType(spawnZombieList(i), CharInfo).speed       '이동일때만 speed만큼 좌표 --
             Else
                 Continue For                 '이동 상태 아니면 이동 X
@@ -258,16 +338,16 @@ Public Class Form1
         End If
 
         For i As Integer = 0 To spawnZombieList.Count() - 1
-            If CType(spawnZombieList(i), CharInfo).state >= 2 And CType(spawnZombieList(i), CharInfo).state <= 5 Then
-                If CType(spawnZombieList(i), CharInfo).state = 5 Then
-                    zomInfo.state = CType(spawnZombieList(i), CharInfo).state - 3         '이동 마지막 애니메이션 -> 이동 첫 애니메이션
+            If CType(spawnZombieList(i), CharInfo).anim >= 2 And CType(spawnZombieList(i), CharInfo).anim <= 5 Then
+                If CType(spawnZombieList(i), CharInfo).anim = 5 Then
+                    zomInfo.anim = CType(spawnZombieList(i), CharInfo).anim - 3         '이동 마지막 애니메이션 -> 이동 첫 애니메이션
                 Else
-                    zomInfo.state = CType(spawnZombieList(i), CharInfo).state + 1         '이동 애니메이션 ++
+                    zomInfo.anim = CType(spawnZombieList(i), CharInfo).anim + 1         '이동 애니메이션 ++
                 End If
                 zomInfo.pos.x = CType(spawnZombieList(i), CharInfo).pos.x - CType(spawnZombieList(i), CharInfo).speed       '이동일때만 speed만큼 좌표 - 하자
             Else
                 zomInfo.pos.x = CType(spawnZombieList(i), CharInfo).pos.x
-                zomInfo.state = CType(spawnZombieList(i), CharInfo).state                 '이동 상태 아니면 애니메이션 전환 X   <-상태 추가 시 수정해야함
+                zomInfo.anim = CType(spawnZombieList(i), CharInfo).anim                 '이동 상태 아니면 애니메이션 전환 X   <-상태 추가 시 수정해야함
             End If
 
             zomInfo.hp = CType(spawnZombieList(i), CharInfo).hp
