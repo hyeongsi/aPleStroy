@@ -188,5 +188,19 @@
   <ItemGroup>
     <None Include="Resources\Char_12_move.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Char_13_move.png" />
+    <Content Include="Resources\Char_14_move.png" />
+    <Content Include="Resources\Char_15_attack.png" />
+    <Content Include="Resources\Char_16_attack.png" />
+    <Content Include="Resources\Char_17_attack.png" />
+    <Content Include="Resources\Char_18_attack.png" />
+    <Content Include="Resources\Char_19_attack.png" />
+    <Content Include="Resources\Char_20_attack.png" />
+    <Content Include="Resources\Char_21_attack.png" />
+    <Content Include="Resources\Char_22_attack.png" />
+    <Content Include="Resources\Char_23_attack.png" />
+    <Content Include="Resources\Char_24_attack.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

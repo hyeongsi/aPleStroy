@@ -25,7 +25,7 @@ Public Class Form1
     End Structure
 
     Dim playerImage As Image
-    Dim playerBitmap(12) As Bitmap
+    Dim playerBitmap(24) As Bitmap
 
     Dim isSpawnPlayer As Boolean
     Dim plrInfo As PlayerInfo
@@ -90,7 +90,7 @@ Public Class Form1
         zombieImage = My.Resources.ResourceManager.GetObject("10_die")
         zombieBitmap(9) = New Bitmap(zombieImage)
         zombieBitmap(9).MakeTransparent()
-
+        '========================================================================idle
         playerImage = My.Resources.ResourceManager.GetObject("Char_1_idle")
         playerBitmap(0) = New Bitmap(playerImage)
         playerBitmap(0).MakeTransparent()
@@ -106,7 +106,7 @@ Public Class Form1
         playerImage = My.Resources.ResourceManager.GetObject("Char_4_idle")
         playerBitmap(3) = New Bitmap(playerImage)
         playerBitmap(3).MakeTransparent()
-
+        '========================================================================move
         playerImage = My.Resources.ResourceManager.GetObject("Char_5_move")
         playerBitmap(4) = New Bitmap(playerImage)
         playerBitmap(4).MakeTransparent()
@@ -138,6 +138,54 @@ Public Class Form1
         playerImage = My.Resources.ResourceManager.GetObject("Char_12_move")
         playerBitmap(11) = New Bitmap(playerImage)
         playerBitmap(11).MakeTransparent()
+        '========================================================================attack
+        playerImage = My.Resources.ResourceManager.GetObject("Char_13_attack")
+        playerBitmap(12) = New Bitmap(playerImage)
+        playerBitmap(12).MakeTransparent()
+
+        playerImage = My.Resources.ResourceManager.GetObject("Char_14_attack")
+        playerBitmap(13) = New Bitmap(playerImage)
+        playerBitmap(13).MakeTransparent()
+
+        playerImage = My.Resources.ResourceManager.GetObject("Char_15_attack")
+        playerBitmap(14) = New Bitmap(playerImage)
+        playerBitmap(14).MakeTransparent()
+
+        playerImage = My.Resources.ResourceManager.GetObject("Char_16_attack")
+        playerBitmap(15) = New Bitmap(playerImage)
+        playerBitmap(15).MakeTransparent()
+
+        playerImage = My.Resources.ResourceManager.GetObject("Char_17_attack")
+        playerBitmap(16) = New Bitmap(playerImage)
+        playerBitmap(16).MakeTransparent()
+
+        playerImage = My.Resources.ResourceManager.GetObject("Char_18_attack")
+        playerBitmap(17) = New Bitmap(playerImage)
+        playerBitmap(17).MakeTransparent()
+
+        playerImage = My.Resources.ResourceManager.GetObject("Char_19_attack")
+        playerBitmap(18) = New Bitmap(playerImage)
+        playerBitmap(18).MakeTransparent()
+
+        playerImage = My.Resources.ResourceManager.GetObject("Char_20_attack")
+        playerBitmap(19) = New Bitmap(playerImage)
+        playerBitmap(19).MakeTransparent()
+
+        playerImage = My.Resources.ResourceManager.GetObject("Char_21_attack")
+        playerBitmap(20) = New Bitmap(playerImage)
+        playerBitmap(20).MakeTransparent()
+
+        playerImage = My.Resources.ResourceManager.GetObject("Char_22_attack")
+        playerBitmap(21) = New Bitmap(playerImage)
+        playerBitmap(21).MakeTransparent()
+
+        playerImage = My.Resources.ResourceManager.GetObject("Char_23_attack")
+        playerBitmap(22) = New Bitmap(playerImage)
+        playerBitmap(22).MakeTransparent()
+
+        playerImage = My.Resources.ResourceManager.GetObject("Char_24_attack")
+        playerBitmap(23) = New Bitmap(playerImage)
+        playerBitmap(23).MakeTransparent()
     End Sub
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadBitmap()
@@ -199,9 +247,9 @@ Public Class Form1
         plrInfo.speed = 5
         plrInfo.damage = 1
         plrInfo.pos.x = 200
-        plrInfo.pos.y = 480
-        plrInfo.pos.height = 85
-        plrInfo.pos.width = 65
+        plrInfo.pos.y = 477
+        plrInfo.pos.width = 124
+        plrInfo.pos.height = 95
         plrInfo.anim = 2
         plrInfo.dir = True
 
