@@ -3,17 +3,18 @@ Public Class Form1
     Private Declare Function GetTickCount64 Lib "kernel32" () As Long
     Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vkey As Integer) As Short
 
-    Dim count = 0
-
     Dim thread_main As Thread
     Dim currentTime As Long
     Dim lastTime As Long
     Dim lastPlayerAnimTime As Long
+    Dim hitPlayerTime As Long
+
     Dim lastMonsterAnimTime As Long
     Dim hitMonsterTime As Long
     Dim switchMonsterStateTime As Long
 
     Dim velocity As Long
+    Dim MonsterVelocity As Long
 
     '==============================
     Structure CharInfo
@@ -29,6 +30,7 @@ Public Class Form1
     Dim isAttack As Boolean
     Dim isJump As Boolean
     Dim isMove As Boolean
+    Dim isHit As Boolean
 
     Dim playerImage As Image
     Dim playerBitmap(28) As Bitmap
@@ -281,6 +283,7 @@ Public Class Form1
         lastTime = GetTickCount64()
         lastMonsterAnimTime = GetTickCount64()
         lastPlayerAnimTime = GetTickCount64()
+        hitPlayerTime = GetTickCount64()
         hitMonsterTime = GetTickCount64()
 
         SpawnMonster()
@@ -291,10 +294,14 @@ Public Class Form1
             If currentTime > lastTime + 33 Then
                 lastTime = currentTime
 
-                SetStateMonster()
-                SwitchMonsterAnim()
+                If isSpawnMonster = True Then
+                    SetStateMonster()
+                    SwitchMonsterAnim()
+                End If
 
+                Label1.Text = monsterInfo.hp
                 Label2.Text = monsterInfo.state
+                Label3.Text = plrInfo.hp
 
                 InputKeyPlayer()
                 SwitchPlayerAnim()
@@ -349,6 +356,19 @@ Public Class Form1
         ElseIf isJump = False And isAttack = False Then
             plrInfo.state = 0
             isMove = False
+        End If
+
+        If plrInfo.pos.x <= -40 Then
+            plrInfo.pos.x = -40
+        ElseIf plrInfo.pos.x >= 940 Then
+            plrInfo.pos.x = 940
+        End If
+
+        If isHit = True Then
+            If currentTime > hitPlayerTime + 1000 Then
+                hitPlayerTime = currentTime
+                isHit = False
+            End If
         End If
     End Sub
     Sub SwitchPlayerAnim()
@@ -464,13 +484,14 @@ Public Class Form1
             If endX >= monsterInfo.pos.x And startX <= (monsterInfo.pos.x + monsterInfo.pos.width) Then
 
                 If isMove_Monster = False And isAttack_Monster = False Then
-                    count += 1
-                    Label1.Text = count
-
                     monsterInfo.hp -= 1
                     ishitMonster = True
                     hitMonsterTime = GetTickCount64()
                     monsterInfo.state = 2
+                Else
+                    monsterInfo.hp -= 1
+                    ishitMonster = True
+                    hitMonsterTime = GetTickCount64()
                 End If
             End If
         ElseIf plrInfo.anim = 15 Then
@@ -479,13 +500,14 @@ Public Class Form1
             If endX >= monsterInfo.pos.x And startX <= (monsterInfo.pos.x + monsterInfo.pos.width) Then
 
                 If isMove_Monster = False And isAttack_Monster = False Then
-                    count += 1
-                    Label1.Text = count
-
                     monsterInfo.hp -= 1
                     ishitMonster = True
                     hitMonsterTime = GetTickCount64()
                     monsterInfo.state = 2
+                Else
+                    monsterInfo.hp -= 1
+                    ishitMonster = True
+                    hitMonsterTime = GetTickCount64()
                 End If
             End If
         ElseIf plrInfo.anim = 20 Then
@@ -494,13 +516,14 @@ Public Class Form1
             If endX <= (monsterInfo.pos.x + monsterInfo.pos.width) And startX >= monsterInfo.pos.x Then
 
                 If isMove_Monster = False And isAttack_Monster = False Then
-                    count += 1
-                    Label1.Text = count
-
                     monsterInfo.hp -= 1
                     ishitMonster = True
                     hitMonsterTime = GetTickCount64()
                     monsterInfo.state = 2
+                Else
+                    monsterInfo.hp -= 1
+                    ishitMonster = True
+                    hitMonsterTime = GetTickCount64()
                 End If
             End If
         ElseIf plrInfo.anim = 21 Then
@@ -509,21 +532,36 @@ Public Class Form1
             If endX <= (monsterInfo.pos.x + monsterInfo.pos.width) And startX >= monsterInfo.pos.x Then
 
                 If isMove_Monster = False And isAttack_Monster = False Then
-                    count += 1
-                    Label1.Text = count
-
                     monsterInfo.hp -= 1
                     ishitMonster = True
                     hitMonsterTime = GetTickCount64()
                     monsterInfo.state = 2
+                Else
+                    monsterInfo.hp -= 1
+                    ishitMonster = True
+                    hitMonsterTime = GetTickCount64()
                 End If
             End If
         End If
 
     End Sub
     Sub Hit_Player()
-        plrInfo.hp -= 1
-        '무적시간 + 밀려나는거 추가
+        If isHit = False Then
+            isHit = True
+            plrInfo.hp -= 1
+
+            If plrInfo.dir = False Then
+                plrInfo.pos.x += 25
+            Else
+                plrInfo.pos.x -= 25
+            End If
+
+            If plrInfo.pos.x <= -40 Then
+                plrInfo.pos.x = -40
+            ElseIf plrInfo.pos.x >= 940 Then
+                plrInfo.pos.x = 940
+            End If
+        End If
     End Sub
     Sub ClearState()
         If plrInfo.anim = 17 Then       'left attack
@@ -565,6 +603,7 @@ Public Class Form1
         isMove_Monster = False
         ishitMonster = False
         isSwitchStateMonster = True
+        MonsterVelocity = 30
 
         isSpawnMonster = True
     End Sub
@@ -709,8 +748,24 @@ Public Class Form1
     Sub MonsterAttack()
         isAttack_Monster = True
 
-        If currentTime > switchMonsterStateTime + 2000 Then
-            switchMonsterStateTime = currentTime
+        If isAttack_Monster = True Then
+            monsterInfo.pos.y -= MonsterVelocity
+            MonsterVelocity -= 4
+
+            If monsterInfo.pos.y >= 338 Then
+                MonsterVelocity = 30
+                monsterInfo.pos.y = 338
+
+                If plrInfo.pos.y >= 477 Then
+                    Hit_Player()
+                    hitPlayerTime = GetTickCount64()
+                End If
+
+                isAttack_Monster = False
+            End If
+        End If
+
+        If isAttack_Monster = False Then
             isSwitchStateMonster = True
         End If
     End Sub
