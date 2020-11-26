@@ -22,7 +22,20 @@ Partial Class Form1
     '코드 편집기에서는 수정하지 마세요.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.BackColor = System.Drawing.Color.Transparent
+        Me.Label1.Enabled = False
+        Me.Label1.Font = New System.Drawing.Font("굴림", 20.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(129, Byte))
+        Me.Label1.ForeColor = System.Drawing.SystemColors.ControlLightLight
+        Me.Label1.Location = New System.Drawing.Point(469, 31)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(0, 27)
+        Me.Label1.TabIndex = 0
         '
         'Form1
         '
@@ -31,10 +44,14 @@ Partial Class Form1
         Me.BackgroundImage = Global.비베기말.My.Resources.Resources.backgroundImg
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
         Me.ClientSize = New System.Drawing.Size(1017, 584)
+        Me.Controls.Add(Me.Label1)
         Me.DoubleBuffered = True
         Me.Name = "Form1"
-        Me.Text = "집 막기"
+        Me.Text = "APle Story"
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
+
+    Friend WithEvents Label1 As Label
 End Class

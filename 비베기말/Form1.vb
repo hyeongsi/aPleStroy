@@ -4,6 +4,7 @@ Public Class Form1
     Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vkey As Integer) As Short
 
     Dim thread_main As Thread
+    Dim startTime As Long
     Dim currentTime As Long
     Dim lastTime As Long
     Dim lastPlayerAnimTime As Long
@@ -288,19 +289,27 @@ Public Class Form1
         If isSpawnMonster = True Then
             e.Graphics.DrawImage(monsterBitmap(monsterInfo.anim), monsterInfo.pos.x, monsterInfo.pos.y, monsterInfo.pos.width, monsterInfo.pos.height)
 
-            e.Graphics.DrawImage(hpBitmap, monsterInfo.pos.x + 30, monsterInfo.pos.y, 15 * monsterInfo.hp, 10)   'hp
+            e.Graphics.DrawImage(hpBitmap, monsterInfo.pos.x + 30, monsterInfo.pos.y, 15 * monsterInfo.hp, 10)   'small hp
+            e.Graphics.DrawImage(hpBitmap, 700 + (30 * (10 - monsterInfo.hp)), 20, 30 * monsterInfo.hp, 20)   'large hp
         End If
 
         If isSpawnPlayer = True Then
             e.Graphics.DrawImage(playerBitmap(plrInfo.anim), plrInfo.pos.x, plrInfo.pos.y, plrInfo.pos.width, plrInfo.pos.height)
 
-            e.Graphics.DrawImage(hpBitmap, plrInfo.pos.x + 30, plrInfo.pos.y, 6 * plrInfo.hp, 10)   'hp
+            e.Graphics.DrawImage(hpBitmap, plrInfo.pos.x + 30, plrInfo.pos.y, 6 * plrInfo.hp, 10)   'small hp
+            e.Graphics.DrawImage(hpBitmap, 20, 20, 20 * plrInfo.hp, 20)   'large hp
         End If
 
-
+        If Label1.Enabled = True Then
+            Label1.Text = CInt((GetTickCount64() - startTime) / 1000) & "초"
+        End If
     End Sub
 
     Private Sub Main()
+        MsgBox("좀비버섯이 마을을 파괴하고 있습니다." & vbCrLf & vbCrLf & "좀비버섯을 막아 마을을 구하시오." & vbCrLf & vbCrLf & vbCrLf & "공격 : Ctrl, 점프 : Alt, 이동 : 방향키" & vbCrLf & vbCrLf & "확인 버튼을 누르면 바로 시작합니다",, "스토리")
+        Label1.Enabled = True
+
+        startTime = GetTickCount64()
         lastTime = GetTickCount64()
         lastMonsterAnimTime = GetTickCount64()
         lastPlayerAnimTime = GetTickCount64()
