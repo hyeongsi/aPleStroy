@@ -3,32 +3,38 @@ Public Class Form1
     Private Declare Function GetTickCount64 Lib "kernel32" () As Long
     Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vkey As Integer) As Short
 
+    Dim count = 0
+
     Dim thread_main As Thread
     Dim currentTime As Long
     Dim lastTime As Long
     Dim lastPlayerAnimTime As Long
-    Dim lastZombieSpawnTime As Long
-    Dim lastZombieAnimTime As Long
+    Dim lastMonsterAnimTime As Long
+    Dim hitMonsterTime As Long
+    Dim switchMonsterStateTime As Long
 
-    Dim zombieImage As Image
-    Dim zombieBitmap(10) As Bitmap
+    Dim velocity As Long
 
     '==============================
-    Structure PlayerInfo
+    Structure CharInfo
         Dim hp As Integer
         Dim speed As Integer
         Dim damage As Integer
         Dim pos As Rect
-        Dim anim As Integer '0~1 (leftIdle), 2~3 (rightIdle), 4~7 (leftMove), 891011 (rightMove) 
+        Dim anim As Integer '0~1 (leftIdle), 2~3 (rightIdle), 4~7 (leftMove), 891011 (rightMove)        /monster : 0~1 : (left Idle), 2~3 (right idle), 4~ move
         Dim dir As Boolean  'left : false,  right : true
-        Dim state As Integer '0 : idle, 1 : move, 2 : attack
+        Dim state As Integer '0 : idle, 1 : move, 2 : attack, 3 : hit, 4 : die
     End Structure
 
+    Dim isAttack As Boolean
+    Dim isJump As Boolean
+    Dim isMove As Boolean
+
     Dim playerImage As Image
-    Dim playerBitmap(24) As Bitmap
+    Dim playerBitmap(28) As Bitmap
 
     Dim isSpawnPlayer As Boolean
-    Dim plrInfo As PlayerInfo
+    Dim plrInfo As CharInfo
     '===============================
     Structure Rect
         Dim x As Integer
@@ -38,58 +44,101 @@ Public Class Form1
     End Structure
 
     '===========================================
-    Structure CharInfo
-        Dim hp As Integer
-        Dim speed As Integer
-        Dim damage As Integer
-        Dim pos As Rect
-        Dim anim As Integer '0~1 / attack(idle), 2~5 / move, 6 / hit, 7~9 / die
-    End Structure
-    Dim zomInfoSpawn As CharInfo
-    Dim zomInfo As CharInfo
-    Dim spawnZombieList As New ArrayList()
-    '===========================================   / zombie 관련 변수
+    Dim isAttack_Monster As Boolean
+    Dim isJump_Monster As Boolean
+    Dim isMove_Monster As Boolean
+    Dim ishitMonster As Boolean
+    Dim isSwitchStateMonster As Boolean
+
+    Dim randomNum As Integer
+
+    Dim monsterImage As Image
+    Dim monsterBitmap(20) As Bitmap
+
+    Dim isSpawnMonster As Boolean
+    Dim monsterInfo As CharInfo
+    '===========================================   / monster 관련 변수
 
     Sub LoadBitmap()
-        zombieImage = My.Resources.ResourceManager.GetObject("1_idle")
-        zombieBitmap(0) = New Bitmap(zombieImage)
-        zombieBitmap(0).MakeTransparent()
+        monsterImage = My.Resources.ResourceManager.GetObject("1_idle")
+        monsterBitmap(0) = New Bitmap(monsterImage)
+        monsterBitmap(0).MakeTransparent()
 
-        zombieImage = My.Resources.ResourceManager.GetObject("2_idle")
-        zombieBitmap(1) = New Bitmap(zombieImage)
-        zombieBitmap(1).MakeTransparent()
+        monsterImage = My.Resources.ResourceManager.GetObject("2_idle")
+        monsterBitmap(1) = New Bitmap(monsterImage)
+        monsterBitmap(1).MakeTransparent()
 
-        zombieImage = My.Resources.ResourceManager.GetObject("3_move")
-        zombieBitmap(2) = New Bitmap(zombieImage)
-        zombieBitmap(2).MakeTransparent()
+        monsterImage = My.Resources.ResourceManager.GetObject("3_idle")
+        monsterBitmap(2) = New Bitmap(monsterImage)
+        monsterBitmap(2).MakeTransparent()
 
-        zombieImage = My.Resources.ResourceManager.GetObject("4_move")
-        zombieBitmap(3) = New Bitmap(zombieImage)
-        zombieBitmap(3).MakeTransparent()
+        monsterImage = My.Resources.ResourceManager.GetObject("4_idle")
+        monsterBitmap(3) = New Bitmap(monsterImage)
+        monsterBitmap(3).MakeTransparent()
 
-        zombieImage = My.Resources.ResourceManager.GetObject("5_move")
-        zombieBitmap(4) = New Bitmap(zombieImage)
-        zombieBitmap(4).MakeTransparent()
+        monsterImage = My.Resources.ResourceManager.GetObject("5_move")
+        monsterBitmap(4) = New Bitmap(monsterImage)
+        monsterBitmap(4).MakeTransparent()
 
-        zombieImage = My.Resources.ResourceManager.GetObject("6_move")
-        zombieBitmap(5) = New Bitmap(zombieImage)
-        zombieBitmap(5).MakeTransparent()
+        monsterImage = My.Resources.ResourceManager.GetObject("6_move")
+        monsterBitmap(5) = New Bitmap(monsterImage)
+        monsterBitmap(5).MakeTransparent()
 
-        zombieImage = My.Resources.ResourceManager.GetObject("7_hit")
-        zombieBitmap(6) = New Bitmap(zombieImage)
-        zombieBitmap(6).MakeTransparent()
+        monsterImage = My.Resources.ResourceManager.GetObject("7_move")
+        monsterBitmap(6) = New Bitmap(monsterImage)
+        monsterBitmap(6).MakeTransparent()
 
-        zombieImage = My.Resources.ResourceManager.GetObject("8_die")
-        zombieBitmap(7) = New Bitmap(zombieImage)
-        zombieBitmap(7).MakeTransparent()
+        monsterImage = My.Resources.ResourceManager.GetObject("8_move")
+        monsterBitmap(7) = New Bitmap(monsterImage)
+        monsterBitmap(7).MakeTransparent()
 
-        zombieImage = My.Resources.ResourceManager.GetObject("9_die")
-        zombieBitmap(8) = New Bitmap(zombieImage)
-        zombieBitmap(8).MakeTransparent()
+        monsterImage = My.Resources.ResourceManager.GetObject("9_move")
+        monsterBitmap(8) = New Bitmap(monsterImage)
+        monsterBitmap(8).MakeTransparent()
 
-        zombieImage = My.Resources.ResourceManager.GetObject("10_die")
-        zombieBitmap(9) = New Bitmap(zombieImage)
-        zombieBitmap(9).MakeTransparent()
+        monsterImage = My.Resources.ResourceManager.GetObject("10_move")
+        monsterBitmap(9) = New Bitmap(monsterImage)
+        monsterBitmap(9).MakeTransparent()
+
+        monsterImage = My.Resources.ResourceManager.GetObject("11_move")
+        monsterBitmap(10) = New Bitmap(monsterImage)
+        monsterBitmap(10).MakeTransparent()
+
+        monsterImage = My.Resources.ResourceManager.GetObject("12_move")
+        monsterBitmap(11) = New Bitmap(monsterImage)
+        monsterBitmap(11).MakeTransparent()
+
+        monsterImage = My.Resources.ResourceManager.GetObject("13_hit")
+        monsterBitmap(12) = New Bitmap(monsterImage)
+        monsterBitmap(12).MakeTransparent()
+
+        monsterImage = My.Resources.ResourceManager.GetObject("14_hit")
+        monsterBitmap(13) = New Bitmap(monsterImage)
+        monsterBitmap(13).MakeTransparent()
+
+        monsterImage = My.Resources.ResourceManager.GetObject("15_die")
+        monsterBitmap(14) = New Bitmap(monsterImage)
+        monsterBitmap(14).MakeTransparent()
+
+        monsterImage = My.Resources.ResourceManager.GetObject("16_die")
+        monsterBitmap(15) = New Bitmap(monsterImage)
+        monsterBitmap(15).MakeTransparent()
+
+        monsterImage = My.Resources.ResourceManager.GetObject("17_die")
+        monsterBitmap(16) = New Bitmap(monsterImage)
+        monsterBitmap(16).MakeTransparent()
+
+        monsterImage = My.Resources.ResourceManager.GetObject("18_die")
+        monsterBitmap(17) = New Bitmap(monsterImage)
+        monsterBitmap(17).MakeTransparent()
+
+        monsterImage = My.Resources.ResourceManager.GetObject("19_die")
+        monsterBitmap(18) = New Bitmap(monsterImage)
+        monsterBitmap(18).MakeTransparent()
+
+        monsterImage = My.Resources.ResourceManager.GetObject("20_die")
+        monsterBitmap(20) = New Bitmap(monsterImage)
+        monsterBitmap(20).MakeTransparent()
         '========================================================================idle
         playerImage = My.Resources.ResourceManager.GetObject("Char_1_idle")
         playerBitmap(0) = New Bitmap(playerImage)
@@ -186,10 +235,32 @@ Public Class Form1
         playerImage = My.Resources.ResourceManager.GetObject("Char_24_attack")
         playerBitmap(23) = New Bitmap(playerImage)
         playerBitmap(23).MakeTransparent()
+        '========================================================================jump
+        playerImage = My.Resources.ResourceManager.GetObject("Char_25_jump")
+        playerBitmap(24) = New Bitmap(playerImage)
+        playerBitmap(24).MakeTransparent()
+
+        playerImage = My.Resources.ResourceManager.GetObject("Char_26_jump")
+        playerBitmap(25) = New Bitmap(playerImage)
+        playerBitmap(25).MakeTransparent()
+
+        playerImage = My.Resources.ResourceManager.GetObject("Char_27_jump_move")
+        playerBitmap(26) = New Bitmap(playerImage)
+        playerBitmap(26).MakeTransparent()
+
+        playerImage = My.Resources.ResourceManager.GetObject("Char_28_jump_move")
+        playerBitmap(27) = New Bitmap(playerImage)
+        playerBitmap(27).MakeTransparent()
+
     End Sub
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadBitmap()
         isSpawnPlayer = False
+        isSpawnMonster = False
+        isAttack = False
+        isJump = False
+        isMove = False
+        velocity = 20
         thread_main = New Thread(AddressOf Main) With {.IsBackground = True}
     End Sub
     Private Sub Form1_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
@@ -197,10 +268,8 @@ Public Class Form1
     End Sub
 
     Private Sub Form1_Paint(sender As Object, e As PaintEventArgs) Handles MyBase.Paint
-        If spawnZombieList.Count() >= 1 Then
-            For i As Integer = 0 To spawnZombieList.Count() - 1
-                e.Graphics.DrawImage(zombieBitmap(CType(spawnZombieList(i), CharInfo).anim), CType(spawnZombieList(i), CharInfo).pos.x, CType(spawnZombieList(i), CharInfo).pos.y, CType(spawnZombieList(i), CharInfo).pos.width, CType(spawnZombieList(i), CharInfo).pos.height)
-            Next
+        If isSpawnMonster = True Then
+            e.Graphics.DrawImage(monsterBitmap(monsterInfo.anim), monsterInfo.pos.x, monsterInfo.pos.y, monsterInfo.pos.width, monsterInfo.pos.height)
         End If
 
         If isSpawnPlayer = True Then
@@ -210,9 +279,11 @@ Public Class Form1
 
     Private Sub Main()
         lastTime = GetTickCount64()
-        lastZombieAnimTime = GetTickCount64()
-        lastZombieSpawnTime = GetTickCount64()
+        lastMonsterAnimTime = GetTickCount64()
         lastPlayerAnimTime = GetTickCount64()
+        hitMonsterTime = GetTickCount64()
+
+        SpawnMonster()
         SpawnPlayer()
         Do
             currentTime = GetTickCount64()
@@ -220,25 +291,20 @@ Public Class Form1
             If currentTime > lastTime + 33 Then
                 lastTime = currentTime
 
-                MoveZombie()
-                CheckOutOfRangeZombie()
+                SetStateMonster()
+                SwitchMonsterAnim()
+
+                Label2.Text = monsterInfo.state
 
                 InputKeyPlayer()
                 SwitchPlayerAnim()
                 Invoke(Sub() Me.Invalidate())
+
+                Jump()
+                Attack_Player()
+                ClearState()
             End If
 
-            '좀비 애니메이션 수정 / 0.25초마다 이미지 전환
-            If currentTime > lastZombieAnimTime + 250 Then
-                lastZombieAnimTime = currentTime
-                SwitchZombieAnim()
-            End If
-
-            '좀비스폰 5초로 고정시켜놓음, 이거 나중에 랜덤하게 수정
-            If currentTime > lastZombieSpawnTime + 5000 Then
-                lastZombieSpawnTime = currentTime
-                SpawnZombie()
-            End If
         Loop
     End Sub
 
@@ -256,16 +322,33 @@ Public Class Form1
         isSpawnPlayer = True
     End Sub
     Sub InputKeyPlayer()
-        If GetAsyncKeyState(Keys.Left) Then         'left key input
-            plrInfo.state = 1
+        If GetAsyncKeyState(Keys.Menu) And isJump = False Then    'ctrl key input
+            plrInfo.state = 3
+            isJump = True
+        ElseIf GetAsyncKeyState(Keys.Left) And isAttack = False Then         'left key input
+            If plrInfo.state <> 3 Then
+                plrInfo.state = 1
+            End If
+
             plrInfo.dir = False
             plrInfo.pos.x -= plrInfo.speed
-        ElseIf GetAsyncKeyState(Keys.Right) Then    'right key input
-            plrInfo.state = 1
+            isMove = True
+        ElseIf GetAsyncKeyState(Keys.Right) And isAttack = False Then    'right key input
+            If plrInfo.state <> 3 Then
+                plrInfo.state = 1
+            End If
+
             plrInfo.dir = True
             plrInfo.pos.x += plrInfo.speed
-        Else                                        'idle
+            isMove = True
+        ElseIf GetAsyncKeyState(Keys.LControlKey) And isAttack = False Then    'ctrl key input
+            plrInfo.state = 2
+
+            isAttack = True
+            isMove = False
+        ElseIf isJump = False And isAttack = False Then
             plrInfo.state = 0
+            isMove = False
         End If
     End Sub
     Sub SwitchPlayerAnim()
@@ -324,89 +407,312 @@ Public Class Form1
                 Else                                'right move init
                     plrInfo.anim = 8
                 End If
-
             End If
-        End If
+        ElseIf plrInfo.state = 2 Then       'attack
+            If plrInfo.dir = False Then         'left attack
+                If plrInfo.anim >= 12 And plrInfo.anim <= 17 Then     'attack anim ++
+                    If currentTime > lastPlayerAnimTime + 80 Then     'attack anim swiching cooltime
+                        lastPlayerAnimTime = currentTime
 
-    End Sub
-
-    Sub SpawnZombie()
-        zomInfoSpawn.hp = 3
-        zomInfoSpawn.speed = 1
-        zomInfoSpawn.damage = 1
-        zomInfoSpawn.pos.x = 900
-        zomInfoSpawn.pos.y = 490
-        zomInfoSpawn.pos.height = 76
-        zomInfoSpawn.pos.width = 65
-        zomInfoSpawn.anim = 2
-
-        spawnZombieList.Add(zomInfoSpawn)
-    End Sub
-    Sub MoveZombie()
-        If spawnZombieList.Count() = 0 Then
-            Return
-        End If
-
-        'speed 만큼 x좌표 수정
-        For i As Integer = 0 To spawnZombieList.Count() - 1
-            If CType(spawnZombieList(i), CharInfo).anim >= 2 And CType(spawnZombieList(i), CharInfo).anim <= 5 Then
-                zomInfo.pos.x = CType(spawnZombieList(i), CharInfo).pos.x - CType(spawnZombieList(i), CharInfo).speed       '이동일때만 speed만큼 좌표 --
-            Else
-                Continue For                 '이동 상태 아니면 이동 X
-            End If
-
-            zomInfo.hp = CType(spawnZombieList(i), CharInfo).hp
-            zomInfo.speed = CType(spawnZombieList(i), CharInfo).speed
-            zomInfo.damage = CType(spawnZombieList(i), CharInfo).damage
-            zomInfo.pos.y = CType(spawnZombieList(i), CharInfo).pos.y
-            zomInfo.pos.height = CType(spawnZombieList(i), CharInfo).pos.height
-            zomInfo.pos.width = CType(spawnZombieList(i), CharInfo).pos.width
-
-            spawnZombieList(i) = zomInfo
-        Next
-
-    End Sub
-    Sub CheckOutOfRangeZombie()
-        If spawnZombieList.Count() = 0 Then
-            Return
-        End If
-
-        '식물 뚫고 집에 도착 시 좀비 삭제, /  게임오버 처리 (게임오버 처리 추가 해야함)
-        For i As Integer = 0 To spawnZombieList.Count() - 1
-            If CType(spawnZombieList(i), CharInfo).pos.x <= (0 - CType(spawnZombieList(i), CharInfo).pos.width) Then
-                spawnZombieList.RemoveAt(i)
-                Exit For
-            End If
-        Next
-    End Sub
-
-    Sub SwitchZombieAnim()
-        If spawnZombieList.Count() = 0 Then
-            Return
-        End If
-
-        For i As Integer = 0 To spawnZombieList.Count() - 1
-            If CType(spawnZombieList(i), CharInfo).anim >= 2 And CType(spawnZombieList(i), CharInfo).anim <= 5 Then
-                If CType(spawnZombieList(i), CharInfo).anim = 5 Then
-                    zomInfo.anim = CType(spawnZombieList(i), CharInfo).anim - 3         '이동 마지막 애니메이션 -> 이동 첫 애니메이션
-                Else
-                    zomInfo.anim = CType(spawnZombieList(i), CharInfo).anim + 1         '이동 애니메이션 ++
+                        plrInfo.anim += 1
+                        If plrInfo.anim > 17 Then    'left attack init
+                            plrInfo.anim = 12
+                        End If
+                    End If
+                Else                                'left attack init
+                    plrInfo.anim = 12
                 End If
-                zomInfo.pos.x = CType(spawnZombieList(i), CharInfo).pos.x - CType(spawnZombieList(i), CharInfo).speed       '이동일때만 speed만큼 좌표 - 하자
-            Else
-                zomInfo.pos.x = CType(spawnZombieList(i), CharInfo).pos.x
-                zomInfo.anim = CType(spawnZombieList(i), CharInfo).anim                 '이동 상태 아니면 애니메이션 전환 X   <-상태 추가 시 수정해야함
+            Else                                'right attack
+                If plrInfo.anim >= 18 And plrInfo.anim <= 23 Then    'attack anim ++
+                    If currentTime > lastPlayerAnimTime + 80 Then      'attack anim swiching cooltime
+                        lastPlayerAnimTime = currentTime
+
+                        plrInfo.anim += 1
+                        If plrInfo.anim > 23 Then   'right attack init
+                            plrInfo.anim = 18
+                        End If
+                    End If
+                Else                                'right attack init
+                    plrInfo.anim = 18
+                End If
             End If
+        ElseIf plrInfo.state = 3 Then       'jump
+            If plrInfo.dir = False Then         'left jump
+                If isMove = False Then
+                    plrInfo.anim = 24
+                Else
+                    plrInfo.anim = 26
+                End If
+            Else                                'right jump
+                If isMove = False Then
+                    plrInfo.anim = 25
+                Else
+                    plrInfo.anim = 27
+                End If
+            End If
+        End If
 
-            zomInfo.hp = CType(spawnZombieList(i), CharInfo).hp
-            zomInfo.speed = CType(spawnZombieList(i), CharInfo).speed
-            zomInfo.damage = CType(spawnZombieList(i), CharInfo).damage
-            zomInfo.pos.y = CType(spawnZombieList(i), CharInfo).pos.y
-            zomInfo.pos.height = CType(spawnZombieList(i), CharInfo).pos.height
-            zomInfo.pos.width = CType(spawnZombieList(i), CharInfo).pos.width
+    End Sub
+    Sub Attack_Player()
+        If ishitMonster = True Then     '몬스터 무적 아닐때만 공격판정
+            Return
+        End If
 
-            spawnZombieList(i) = zomInfo
-        Next
+        If plrInfo.anim = 14 Then
+            Dim startX = plrInfo.pos.x
+            Dim endX = plrInfo.pos.x + 35
+            If endX >= monsterInfo.pos.x And startX <= (monsterInfo.pos.x + monsterInfo.pos.width) Then
+
+                If isMove_Monster = False And isAttack_Monster = False Then
+                    count += 1
+                    Label1.Text = count
+
+                    monsterInfo.hp -= 1
+                    ishitMonster = True
+                    hitMonsterTime = GetTickCount64()
+                    monsterInfo.state = 2
+                End If
+            End If
+        ElseIf plrInfo.anim = 15 Then
+            Dim startX = plrInfo.pos.x
+            Dim endX = plrInfo.pos.x + 35
+            If endX >= monsterInfo.pos.x And startX <= (monsterInfo.pos.x + monsterInfo.pos.width) Then
+
+                If isMove_Monster = False And isAttack_Monster = False Then
+                    count += 1
+                    Label1.Text = count
+
+                    monsterInfo.hp -= 1
+                    ishitMonster = True
+                    hitMonsterTime = GetTickCount64()
+                    monsterInfo.state = 2
+                End If
+            End If
+        ElseIf plrInfo.anim = 20 Then
+            Dim startX = plrInfo.pos.x + plrInfo.pos.width
+            Dim endX = plrInfo.pos.x + plrInfo.pos.width - 33
+            If endX <= (monsterInfo.pos.x + monsterInfo.pos.width) And startX >= monsterInfo.pos.x Then
+
+                If isMove_Monster = False And isAttack_Monster = False Then
+                    count += 1
+                    Label1.Text = count
+
+                    monsterInfo.hp -= 1
+                    ishitMonster = True
+                    hitMonsterTime = GetTickCount64()
+                    monsterInfo.state = 2
+                End If
+            End If
+        ElseIf plrInfo.anim = 21 Then
+            Dim startX = plrInfo.pos.x + plrInfo.pos.width
+            Dim endX = plrInfo.pos.x + plrInfo.pos.width - 33
+            If endX <= (monsterInfo.pos.x + monsterInfo.pos.width) And startX >= monsterInfo.pos.x Then
+
+                If isMove_Monster = False And isAttack_Monster = False Then
+                    count += 1
+                    Label1.Text = count
+
+                    monsterInfo.hp -= 1
+                    ishitMonster = True
+                    hitMonsterTime = GetTickCount64()
+                    monsterInfo.state = 2
+                End If
+            End If
+        End If
+
+    End Sub
+    Sub Hit_Player()
+        plrInfo.hp -= 1
+        '무적시간 + 밀려나는거 추가
+    End Sub
+    Sub ClearState()
+        If plrInfo.anim = 17 Then       'left attack
+            isAttack = False
+        ElseIf plrInfo.anim = 23 Then   'right attack
+            isAttack = False
+        End If
+    End Sub
+    Sub Jump()
+        If isJump = True Then
+            plrInfo.pos.y -= velocity
+            velocity -= 4
+
+
+            If plrInfo.pos.y >= 477 Then
+                velocity = 20
+                isJump = False
+                isAttack = False
+                isMove = False
+                plrInfo.state = 0
+            End If
+        End If
+
+    End Sub
+    Sub SpawnMonster()
+        monsterInfo.hp = 5
+        monsterInfo.speed = 7
+        monsterInfo.damage = 1
+        monsterInfo.pos.x = 700
+        monsterInfo.pos.y = 338
+        monsterInfo.pos.height = 228
+        monsterInfo.pos.width = 195
+        monsterInfo.anim = 0
+        monsterInfo.dir = False
+        monsterInfo.state = 0
+
+        isAttack_Monster = False
+        isJump_Monster = False
+        isMove_Monster = False
+        ishitMonster = False
+        isSwitchStateMonster = True
+
+        isSpawnMonster = True
+    End Sub
+
+    Sub SwitchMonsterAnim()
+        If monsterInfo.state = 0 Then           'idle
+            If monsterInfo.dir = False Then         'left idle
+                If monsterInfo.anim >= 0 And monsterInfo.anim <= 1 Then     'idle anim ++
+                    If currentTime > lastMonsterAnimTime + 1000 Then     'idle anim swiching cooltime
+                        lastMonsterAnimTime = currentTime
+
+                        monsterInfo.anim += 1
+                        If monsterInfo.anim > 1 Then    'left idle init
+                            monsterInfo.anim = 0
+                        End If
+                    End If
+                Else                                'left idle init
+                    monsterInfo.anim = 0
+                End If
+            Else                                'right idle
+                If monsterInfo.anim >= 2 And monsterInfo.anim <= 3 Then     'idle anim ++
+                    If currentTime > lastMonsterAnimTime + 1000 Then     'idle anim swiching cooltime
+                        lastMonsterAnimTime = currentTime
+
+                        monsterInfo.anim += 1
+                        If monsterInfo.anim > 3 Then    'right idle init
+                            monsterInfo.anim = 2
+                        End If
+                    End If
+                Else                                'right idle init
+                    monsterInfo.anim = 2
+                End If
+            End If
+        ElseIf monsterInfo.state = 1 Then
+            If monsterInfo.dir = False Then         'left move
+                If monsterInfo.anim >= 4 And monsterInfo.anim <= 7 Then     'move anim ++
+                    If currentTime > lastMonsterAnimTime + 225 Then     'move anim swiching cooltime
+                        lastMonsterAnimTime = currentTime
+
+                        monsterInfo.anim += 1
+                        If monsterInfo.anim > 7 Then    'left move init
+                            monsterInfo.anim = 4
+                        End If
+                    End If
+                Else                                'left move init
+                    monsterInfo.anim = 4
+                End If
+            Else                                'right move
+                If monsterInfo.anim >= 8 And monsterInfo.anim <= 11 Then     'move anim ++
+                    If currentTime > lastMonsterAnimTime + 225 Then     'move anim swiching cooltime
+                        lastMonsterAnimTime = currentTime
+
+                        monsterInfo.anim += 1
+                        If monsterInfo.anim > 11 Then    'right move init
+                            monsterInfo.anim = 8
+                        End If
+                    End If
+                Else                                'right move init
+                    monsterInfo.anim = 8
+                End If
+            End If
+        ElseIf monsterInfo.state = 2 Then       'hit
+            If monsterInfo.dir = False Then     'left hit
+                monsterInfo.anim = 12
+            Else
+                monsterInfo.anim = 13           'right hit
+            End If
+        End If
+    End Sub
+    Sub SetStateMonster()
+        If monsterInfo.hp <= 0 Then     '죽는 처리
+            isSpawnMonster = False
+        End If
+
+        If ishitMonster = True Then       '무적시간 1초
+            If currentTime > hitMonsterTime + 1000 Then     '0.7초 후 무적 해제
+                ishitMonster = False
+
+                If isAttack_Monster = False And isMove_Monster = False Then
+                    monsterInfo.state = 0
+                End If
+            End If
+        End If
+
+        If isSwitchStateMonster = True Then
+            isSwitchStateMonster = False
+            Randomize()
+
+            Dim randomizeNum = CInt(CInt(2 * Rnd()) + 1)
+            randomNum = CInt(Rnd())
+            If randomizeNum = 1 Then                           'idle
+                switchMonsterStateTime = currentTime
+                monsterInfo.state = 0
+            ElseIf randomizeNum = 2 Then                       'move
+                switchMonsterStateTime = currentTime
+                monsterInfo.state = 1
+            ElseIf randomizeNum = 3 Then                       'attack
+                switchMonsterStateTime = currentTime
+                monsterInfo.state = 3
+            End If
+        End If
+
+        isMove_Monster = False
+        isAttack_Monster = False
+
+        If monsterInfo.state = 0 Then
+            MonsterIdle()
+        ElseIf monsterInfo.state = 1 Then
+            MonsterMove(randomNum)
+        ElseIf monsterInfo.state = 3 Then
+            MonsterAttack()
+        End If
+    End Sub
+    Sub MonsterIdle()
+        If currentTime > switchMonsterStateTime + 2000 Then
+            switchMonsterStateTime = currentTime
+            isSwitchStateMonster = True
+        End If
+    End Sub
+    Sub MonsterMove(i As Integer)
+        isMove_Monster = True
+
+        If i = 0 Then                   'left
+            monsterInfo.dir = False
+            monsterInfo.pos.x -= monsterInfo.speed
+        Else                             'right
+            monsterInfo.dir = True
+            monsterInfo.pos.x += monsterInfo.speed
+        End If
+
+        If monsterInfo.pos.x <= -15 Then
+            monsterInfo.pos.x = -15
+        ElseIf monsterInfo.pos.x >= 870 Then
+            monsterInfo.pos.x = 870
+        End If
+
+        If currentTime > switchMonsterStateTime + CInt(CInt(4000 * Rnd()) + 1000) Then
+            switchMonsterStateTime = currentTime
+            isSwitchStateMonster = True
+        End If
+    End Sub
+    Sub MonsterAttack()
+        isAttack_Monster = True
+
+        If currentTime > switchMonsterStateTime + 2000 Then
+            switchMonsterStateTime = currentTime
+            isSwitchStateMonster = True
+        End If
     End Sub
     Private Sub Form1_Closed(sender As Object, e As EventArgs) Handles MyBase.Closed
         thread_main.Abort()
