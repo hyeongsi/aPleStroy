@@ -320,9 +320,6 @@ Public Class Form1
                     SwitchMonsterAnim()
                 End If
 
-                Label1.Text = monsterInfo.hp
-                Label2.Text = monsterInfo.state
-                Label3.Text = plrInfo.hp
                 If isSpawnPlayer = True Then
                     InputKeyPlayer()
                     SwitchPlayerAnim()
@@ -390,9 +387,11 @@ Public Class Form1
 
         If isHit = True Then
             plrInfo.state = 4
+            plrInfo.speed = 10
             If currentTime > hitPlayerTime + 1000 Then
                 hitPlayerTime = currentTime
                 plrInfo.state = 0
+                plrInfo.speed = 6
                 isHit = False
                 isAttack = False
             End If
