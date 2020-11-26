@@ -307,6 +307,7 @@ Public Class Form1
                 SwitchPlayerAnim()
                 Invoke(Sub() Me.Invalidate())
 
+                Hit()
                 Jump()
                 Attack_Player()
                 ClearState()
@@ -585,6 +586,21 @@ Public Class Form1
             End If
         End If
 
+    End Sub
+    Sub Hit()
+        If isHit = False Then
+            If plrInfo.dir = False Then
+                If (plrInfo.pos.x + 65) <= (monsterInfo.pos.x + monsterInfo.pos.width) And (plrInfo.pos.x + plrInfo.pos.width - 44) >= monsterInfo.pos.x Then
+                    Hit_Player()
+                    hitPlayerTime = GetTickCount64()
+                End If
+            Else
+                If (plrInfo.pos.x + plrInfo.pos.width - 65) >= monsterInfo.pos.x And (plrInfo.pos.x - 44) <= (monsterInfo.pos.x + monsterInfo.pos.width) Then
+                    Hit_Player()
+                    hitPlayerTime = GetTickCount64()
+                End If
+            End If
+        End If
     End Sub
     Sub SpawnMonster()
         monsterInfo.hp = 5
