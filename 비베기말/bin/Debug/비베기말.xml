@@ -27,7 +27,57 @@
   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
 </summary>
 </member>
-<member name="P:비베기말.My.Resources.Resources._10_die">
+<member name="P:비베기말.My.Resources.Resources._1_login_screen">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources._10_move">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources._11_move">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources._12_move">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources._13_hit">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources._14_hit">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources._15_die">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources._16_die">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources._17_die">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources._18_die">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources._19_die">
 <summary>
   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
 </summary>
@@ -37,12 +87,17 @@
   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
 </summary>
 </member>
-<member name="P:비베기말.My.Resources.Resources._3_move">
+<member name="P:비베기말.My.Resources.Resources._20_die">
 <summary>
   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
 </summary>
 </member>
-<member name="P:비베기말.My.Resources.Resources._4_move">
+<member name="P:비베기말.My.Resources.Resources._3_idle">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources._4_idle">
 <summary>
   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
 </summary>
@@ -57,22 +112,32 @@
   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
 </summary>
 </member>
-<member name="P:비베기말.My.Resources.Resources._7_hit">
+<member name="P:비베기말.My.Resources.Resources._7_move">
 <summary>
   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
 </summary>
 </member>
-<member name="P:비베기말.My.Resources.Resources._8_die">
+<member name="P:비베기말.My.Resources.Resources._8_move">
 <summary>
   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
 </summary>
 </member>
-<member name="P:비베기말.My.Resources.Resources._9_die">
+<member name="P:비베기말.My.Resources.Resources._9_move">
 <summary>
   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
 </summary>
 </member>
 <member name="P:비베기말.My.Resources.Resources.backgroundImg">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources.button11">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources.button21">
 <summary>
   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
 </summary>
@@ -97,12 +162,102 @@
   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
 </summary>
 </member>
+<member name="P:비베기말.My.Resources.Resources.Char_13_attack">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources.Char_14_attack">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources.Char_15_attack">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources.Char_16_attack">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources.Char_17_attack">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources.Char_18_attack">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources.Char_19_attack">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
 <member name="P:비베기말.My.Resources.Resources.Char_2_idle">
 <summary>
   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
 </summary>
 </member>
+<member name="P:비베기말.My.Resources.Resources.Char_20_attack">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources.Char_21_attack">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources.Char_22_attack">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources.Char_23_attack">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources.Char_24_attack">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources.Char_25_jump">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources.Char_26_jump">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources.Char_27_jump_move">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources.Char_28_jump_move">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources.Char_29_hit">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
 <member name="P:비베기말.My.Resources.Resources.Char_3_idle">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources.Char_30_hit">
 <summary>
   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
 </summary>
@@ -133,6 +288,16 @@
 </summary>
 </member>
 <member name="P:비베기말.My.Resources.Resources.Char_9_move">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources.explain">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources.hp">
 <summary>
   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
 </summary>
