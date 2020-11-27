@@ -66,7 +66,7 @@ Partial Class Form1
         Me.Controls.Add(Me.Label1)
         Me.DoubleBuffered = True
         Me.Name = "Form1"
-        Me.Text = "APle Story"
+        Me.Text = "ApleStory"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

@@ -132,6 +132,11 @@
   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
 </summary>
 </member>
+<member name="P:비베기말.My.Resources.Resources.backImage">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
 <member name="P:비베기말.My.Resources.Resources.button11">
 <summary>
   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
@@ -292,12 +297,22 @@
   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
 </summary>
 </member>
+<member name="P:비베기말.My.Resources.Resources.effectA">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
 <member name="P:비베기말.My.Resources.Resources.explain">
 <summary>
   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
 </summary>
 </member>
 <member name="P:비베기말.My.Resources.Resources.hp">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources.loadimage">
 <summary>
   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
 </summary>

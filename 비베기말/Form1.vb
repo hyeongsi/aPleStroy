@@ -33,6 +33,7 @@ Public Class Form1
     Dim isEffect As Boolean
     Dim isEffectSound As Boolean
     Dim effectTime As Long
+    Dim isJumpEffectSound As Boolean
     '==============================
     Structure CharInfo
         Dim hp As Integer
@@ -301,6 +302,7 @@ Public Class Form1
 
         My.Computer.Audio.Play("sound\FloralLife.wav", AudioPlayMode.BackgroundLoop)
         mciSendString("open sound\hiteffectsound.wav alias hitEffectSound", 0, 0, 0)
+        mciSendString("open sound\jump.wav alias jumpsound", 0, 0, 0)
     End Sub
     Private Sub Form1_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
         thread_main.Start()
@@ -317,10 +319,16 @@ Public Class Form1
         If isSpawnPlayer = True Then
             e.Graphics.DrawImage(playerBitmap(plrInfo.anim), plrInfo.pos.x, plrInfo.pos.y, plrInfo.pos.width, plrInfo.pos.height)
 
+            If isJumpEffectSound = True And isJump = True Then
+                isJumpEffectSound = False
+                mciSendString("play jumpsound from 0", 0, 0, 0)
+            End If
+
             If isEffect = True Then
                 e.Graphics.DrawImage(effectBitmap, effectX, effectY, 30, 50)
                 If isEffectSound = True Then
                     mciSendString("play hitEffectSound from 0", 0, 0, 0)
+
                     isEffectSound = False
                 End If
             End If
@@ -415,6 +423,7 @@ Public Class Form1
     End Sub
     Sub InputKeyPlayer()
         If GetAsyncKeyState(Keys.Menu) And isJump = False Then    'alt key input
+            isJumpEffectSound = True
             plrInfo.state = 3
             isJump = True
         ElseIf GetAsyncKeyState(Keys.Left) And isAttack = False Then         'left key input
@@ -449,7 +458,15 @@ Public Class Form1
         End If
 
         If isHit = True Then
-            plrInfo.state = 4
+            If isAttack = False Then
+                plrInfo.state = 4
+            Else
+                plrInfo.state = 2
+
+                isAttack = True
+                isMove = False
+            End If
+
             plrInfo.speed = 9
             If currentTime > hitPlayerTime + 1000 Then
                 hitPlayerTime = currentTime

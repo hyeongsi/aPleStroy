@@ -127,6 +127,9 @@
   <data name="Char_18_attack" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\image\Char_18_attack.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="9_move" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\image\9_move.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="3_idle" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\image\3_idle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -160,9 +163,6 @@
   <data name="16_die" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\image\16_die.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Char_4_idle" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\image\Char_4_idle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="hp" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\image\hp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -171,6 +171,9 @@
   </data>
   <data name="20_die" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\image\20_die.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="1_login_screen" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\image\1_login_screen.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Char_26_jump" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\image\Char_26_jump.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -193,8 +196,8 @@
   <data name="Char_29_hit" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\image\Char_29_hit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="1_login_screen" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\image\1_login_screen.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Char_4_idle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\image\Char_4_idle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="button11" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\image\button1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -220,8 +223,8 @@
   <data name="7_move" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\image\7_move.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Char_15_attack" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\image\Char_15_attack.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="backImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\image\backImage.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Char_12_move" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\image\Char_12_move.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -231,6 +234,9 @@
   </data>
   <data name="15_die" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\image\15_die.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="explain" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\image\explain.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Char_27_jump_move" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\image\Char_27_jump_move.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -262,6 +268,9 @@
   <data name="2_idle" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\image\2_idle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="effectA" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\image\effectA.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Char_25_jump" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\image\Char_25_jump.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -274,8 +283,8 @@
   <data name="11_move" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\image\11_move.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="9_move" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\image\9_move.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Char_15_attack" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\image\Char_15_attack.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="12_move" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\image\12_move.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -283,10 +292,7 @@
   <data name="Char_5_move" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\image\Char_5_move.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="explain" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\image\explain.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="effectA" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\image\effectA.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="loadimage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\image\loadimage.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
