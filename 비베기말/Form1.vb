@@ -20,6 +20,12 @@ Public Class Form1
     Dim hpImage As Image
     Dim hpBitmap As Bitmap
 
+    Dim effectImage As Image
+    Dim effectBitmap As Bitmap
+    Dim effectX As Integer
+    Dim effectY As Integer
+    Dim isEffect As Boolean
+    Dim effectTime As Long
     '==============================
     Structure CharInfo
         Dim hp As Integer
@@ -66,6 +72,10 @@ Public Class Form1
     '===========================================   / monster 관련 변수
 
     Sub LoadBitmap()
+        effectImage = My.Resources.ResourceManager.GetObject("effectA")
+        effectBitmap = New Bitmap(effectImage)
+        effectBitmap.MakeTransparent()
+
         hpImage = My.Resources.ResourceManager.GetObject("hp")
         hpBitmap = New Bitmap(hpImage)
         hpBitmap.MakeTransparent()
@@ -296,11 +306,14 @@ Public Class Form1
         If isSpawnPlayer = True Then
             e.Graphics.DrawImage(playerBitmap(plrInfo.anim), plrInfo.pos.x, plrInfo.pos.y, plrInfo.pos.width, plrInfo.pos.height)
 
+            If isEffect = True Then
+                e.Graphics.DrawImage(effectBitmap, effectX, effectY, 30, 50)
+            End If
             e.Graphics.DrawImage(hpBitmap, plrInfo.pos.x + 30, plrInfo.pos.y, 6 * plrInfo.hp, 10)   'small hp
             e.Graphics.DrawImage(hpBitmap, 20, 20, 20 * plrInfo.hp, 20)   'large hp
         End If
 
-        If Label1.Enabled = True Then
+            If Label1.Enabled = True Then
             Label1.Text = CInt((GetTickCount64() - startTime) / 1000) & "초"
         End If
     End Sub
@@ -341,6 +354,8 @@ Public Class Form1
                     Attack_Player()
                     ClearState()
                 End If
+
+                DeleteEffect()
             End If
 
         Loop
@@ -348,7 +363,7 @@ Public Class Form1
 
     Sub SpawnPlayer()
         plrInfo.hp = 10
-        plrInfo.speed = 6
+        plrInfo.speed = 7
         plrInfo.damage = 1
         plrInfo.pos.x = 200
         plrInfo.pos.y = 477
@@ -356,6 +371,7 @@ Public Class Form1
         plrInfo.pos.height = 95
         plrInfo.anim = 2
         plrInfo.dir = True
+        isEffect = False
 
         isSpawnPlayer = True
     End Sub
@@ -396,11 +412,11 @@ Public Class Form1
 
         If isHit = True Then
             plrInfo.state = 4
-            plrInfo.speed = 10
+            plrInfo.speed = 8
             If currentTime > hitPlayerTime + 1000 Then
                 hitPlayerTime = currentTime
                 plrInfo.state = 0
-                plrInfo.speed = 6
+                plrInfo.speed = 7
                 isHit = False
                 isAttack = False
             End If
@@ -527,9 +543,13 @@ Public Class Form1
                 If isMove_Monster = False And isAttack_Monster = False Then
                     If plrInfo.dir = False Then
                         monsterInfo.pos.x -= 60
+                        effectX = plrInfo.pos.x
+                        effectY = plrInfo.pos.y
                     Else
                         monsterInfo.pos.x += 60
                     End If
+                    effectTime = GetTickCount64()
+                    isEffect = True
                     monsterInfo.hp -= 1
                     ishitMonster = True
                     hitMonsterTime = GetTickCount64()
@@ -537,9 +557,13 @@ Public Class Form1
                 Else
                     If plrInfo.dir = False Then
                         monsterInfo.pos.x -= 60
+                        effectX = plrInfo.pos.x
+                        effectY = plrInfo.pos.y
                     Else
                         monsterInfo.pos.x += 60
                     End If
+                    effectTime = GetTickCount64()
+                    isEffect = True
                     monsterInfo.hp -= 1
                     ishitMonster = True
                     hitMonsterTime = GetTickCount64()
@@ -553,9 +577,15 @@ Public Class Form1
                 If isMove_Monster = False And isAttack_Monster = False Then
                     If plrInfo.dir = False Then
                         monsterInfo.pos.x -= 60
+                        effectX = plrInfo.pos.x
+                        effectY = plrInfo.pos.y
                     Else
                         monsterInfo.pos.x += 60
+                        effectX = plrInfo.pos.x + plrInfo.pos.width
+                        effectY = plrInfo.pos.y
                     End If
+                    effectTime = GetTickCount64()
+                    isEffect = True
                     monsterInfo.hp -= 1
                     ishitMonster = True
                     hitMonsterTime = GetTickCount64()
@@ -563,9 +593,15 @@ Public Class Form1
                 Else
                     If plrInfo.dir = False Then
                         monsterInfo.pos.x -= 60
+                        effectX = plrInfo.pos.x
+                        effectY = plrInfo.pos.y
                     Else
                         monsterInfo.pos.x += 60
+                        effectX = plrInfo.pos.x + plrInfo.pos.width
+                        effectY = plrInfo.pos.y
                     End If
+                    effectTime = GetTickCount64()
+                    isEffect = True
                     monsterInfo.hp -= 1
                     ishitMonster = True
                     hitMonsterTime = GetTickCount64()
@@ -579,9 +615,15 @@ Public Class Form1
                 If isMove_Monster = False And isAttack_Monster = False Then
                     If plrInfo.dir = False Then
                         monsterInfo.pos.x -= 60
+                        effectX = plrInfo.pos.x
+                        effectY = plrInfo.pos.y
                     Else
                         monsterInfo.pos.x += 60
+                        effectX = plrInfo.pos.x + plrInfo.pos.width
+                        effectY = plrInfo.pos.y
                     End If
+                    effectTime = GetTickCount64()
+                    isEffect = True
                     monsterInfo.hp -= 1
                     ishitMonster = True
                     hitMonsterTime = GetTickCount64()
@@ -589,9 +631,15 @@ Public Class Form1
                 Else
                     If plrInfo.dir = False Then
                         monsterInfo.pos.x -= 60
+                        effectX = plrInfo.pos.x
+                        effectY = plrInfo.pos.y
                     Else
                         monsterInfo.pos.x += 60
+                        effectX = plrInfo.pos.x + plrInfo.pos.width
+                        effectY = plrInfo.pos.y
                     End If
+                    effectTime = GetTickCount64()
+                    isEffect = True
                     monsterInfo.hp -= 1
                     ishitMonster = True
                     hitMonsterTime = GetTickCount64()
@@ -605,9 +653,15 @@ Public Class Form1
                 If isMove_Monster = False And isAttack_Monster = False Then
                     If plrInfo.dir = False Then
                         monsterInfo.pos.x -= 60
+                        effectX = plrInfo.pos.x
+                        effectY = plrInfo.pos.y
                     Else
                         monsterInfo.pos.x += 60
+                        effectX = plrInfo.pos.x + plrInfo.pos.width
+                        effectY = plrInfo.pos.y
                     End If
+                    effectTime = GetTickCount64()
+                    isEffect = True
                     monsterInfo.hp -= 1
                     ishitMonster = True
                     hitMonsterTime = GetTickCount64()
@@ -615,9 +669,15 @@ Public Class Form1
                 Else
                     If plrInfo.dir = False Then
                         monsterInfo.pos.x -= 60
+                        effectX = plrInfo.pos.x
+                        effectY = plrInfo.pos.y
                     Else
                         monsterInfo.pos.x += 60
+                        effectX = plrInfo.pos.x + plrInfo.pos.width
+                        effectY = plrInfo.pos.y
                     End If
+                    effectTime = GetTickCount64()
+                    isEffect = True
                     monsterInfo.hp -= 1
                     ishitMonster = True
                     hitMonsterTime = GetTickCount64()
@@ -688,6 +748,13 @@ Public Class Form1
                     Hit_Player()
                     hitPlayerTime = GetTickCount64()
                 End If
+            End If
+        End If
+    End Sub
+    Sub DeleteEffect()
+        If isEffect = True Then
+            If GetTickCount64() > effectTime + 500 Then
+                isEffect = False
             End If
         End If
     End Sub
