@@ -3,6 +3,10 @@ Public Class Form1
     Private Declare Function GetTickCount64 Lib "kernel32" () As Long
     Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vkey As Integer) As Short
 
+    Public Declare Function mciSendString Lib "winmm.dll" Alias "mciSendStringA" _
+    (ByVal lpstrCommand As String, ByVal lpstrReturnString As String, ByVal uReturnLength As _
+     Integer, ByVal hwndCallback As Integer) As Integer
+
     Dim thread_main As Thread
     Dim startTime As Long
     Dim currentTime As Long
@@ -25,6 +29,7 @@ Public Class Form1
     Dim effectX As Integer
     Dim effectY As Integer
     Dim isEffect As Boolean
+    Dim isEffectSound As Boolean
     Dim effectTime As Long
     '==============================
     Structure CharInfo
@@ -61,6 +66,7 @@ Public Class Form1
     Dim isMove_Monster As Boolean
     Dim ishitMonster As Boolean
     Dim isSwitchStateMonster As Boolean
+    Dim isDieMonster As Boolean
 
     Dim randomNum As Integer
 
@@ -157,8 +163,8 @@ Public Class Form1
         monsterBitmap(18).MakeTransparent()
 
         monsterImage = My.Resources.ResourceManager.GetObject("20_die")
-        monsterBitmap(20) = New Bitmap(monsterImage)
-        monsterBitmap(20).MakeTransparent()
+        monsterBitmap(19) = New Bitmap(monsterImage)
+        monsterBitmap(19).MakeTransparent()
         '========================================================================idle
         playerImage = My.Resources.ResourceManager.GetObject("Char_1_idle")
         playerBitmap(0) = New Bitmap(playerImage)
@@ -290,6 +296,9 @@ Public Class Form1
         isMove = False
         velocity = 20
         thread_main = New Thread(AddressOf Main) With {.IsBackground = True}
+
+        My.Computer.Audio.Play("sound\FloralLife.wav", AudioPlayMode.BackgroundLoop)
+        mciSendString("open sound\hiteffectsound.wav alias hitEffectSound", 0, 0, 0)
     End Sub
     Private Sub Form1_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
         thread_main.Start()
@@ -308,19 +317,29 @@ Public Class Form1
 
             If isEffect = True Then
                 e.Graphics.DrawImage(effectBitmap, effectX, effectY, 30, 50)
+                If isEffectSound = True Then
+                    mciSendString("play hitEffectSound from 0", 0, 0, 0)
+                    isEffectSound = False
+                End If
             End If
             e.Graphics.DrawImage(hpBitmap, plrInfo.pos.x + 30, plrInfo.pos.y, 6 * plrInfo.hp, 10)   'small hp
             e.Graphics.DrawImage(hpBitmap, 20, 20, 20 * plrInfo.hp, 20)   'large hp
         End If
 
-            If Label1.Enabled = True Then
+        If monsterInfo.hp <= 0 And isDieMonster = False Then
+            e.Graphics.DrawImage(monsterBitmap(monsterInfo.anim), monsterInfo.pos.x, monsterInfo.pos.y, monsterInfo.pos.width, monsterInfo.pos.height)
+        End If
+
+        If Label1.Enabled = True Then
             Label1.Text = CInt((GetTickCount64() - startTime) / 1000) & "초"
         End If
     End Sub
 
     Private Sub Main()
+        mciSendString("play sound2 from 0", 0, 0, 0)
+
         MsgBox("좀비버섯이 마을을 파괴하고 있습니다." & vbCrLf & vbCrLf & "좀비버섯을 막아 마을을 구하시오." & vbCrLf & vbCrLf & vbCrLf & "공격 : Ctrl, 점프 : Alt, 이동 : 방향키" & vbCrLf & vbCrLf & "확인 버튼을 누르면 바로 시작합니다",, "스토리")
-        Label1.Enabled = True
+        'Label1.Enabled = True
 
         startTime = GetTickCount64()
         lastTime = GetTickCount64()
@@ -339,6 +358,8 @@ Public Class Form1
 
                 If isSpawnMonster = True Then
                     SetStateMonster()
+                End If
+                If isDieMonster = False Then
                     SwitchMonsterAnim()
                 End If
 
@@ -356,15 +377,21 @@ Public Class Form1
                 End If
 
                 DeleteEffect()
-            End If
 
+                If isSpawnPlayer = False Then
+                    MsgBox("좀비버섯에게 패배하였습니다" & vbCrLf & vbCrLf & "좀비버섯이 마을을 부수고있습니다." & "확인 버튼을 누르면 로비로 이동합니다",, "YOU DIE")
+                    Form2.Show()
+                    Me.Close()
+                End If
+
+            End If
         Loop
     End Sub
 
     Sub SpawnPlayer()
         plrInfo.hp = 10
-        plrInfo.speed = 7
-        plrInfo.damage = 1
+        plrInfo.speed = 8
+        plrInfo.damage = 10
         plrInfo.pos.x = 200
         plrInfo.pos.y = 477
         plrInfo.pos.width = 124
@@ -372,6 +399,7 @@ Public Class Form1
         plrInfo.anim = 2
         plrInfo.dir = True
         isEffect = False
+        isEffectSound = False
 
         isSpawnPlayer = True
     End Sub
@@ -412,11 +440,11 @@ Public Class Form1
 
         If isHit = True Then
             plrInfo.state = 4
-            plrInfo.speed = 8
+            plrInfo.speed = 9
             If currentTime > hitPlayerTime + 1000 Then
                 hitPlayerTime = currentTime
                 plrInfo.state = 0
-                plrInfo.speed = 7
+                plrInfo.speed = 8
                 isHit = False
                 isAttack = False
             End If
@@ -548,9 +576,10 @@ Public Class Form1
                     Else
                         monsterInfo.pos.x += 60
                     End If
+                    isEffectSound = True
                     effectTime = GetTickCount64()
                     isEffect = True
-                    monsterInfo.hp -= 1
+                    monsterInfo.hp -= plrInfo.damage
                     ishitMonster = True
                     hitMonsterTime = GetTickCount64()
                     monsterInfo.state = 2
@@ -562,9 +591,11 @@ Public Class Form1
                     Else
                         monsterInfo.pos.x += 60
                     End If
+                    isEffectSound = True
+
                     effectTime = GetTickCount64()
                     isEffect = True
-                    monsterInfo.hp -= 1
+                    monsterInfo.hp -= plrInfo.damage
                     ishitMonster = True
                     hitMonsterTime = GetTickCount64()
                 End If
@@ -584,9 +615,11 @@ Public Class Form1
                         effectX = plrInfo.pos.x + plrInfo.pos.width
                         effectY = plrInfo.pos.y
                     End If
+                    isEffectSound = True
+
                     effectTime = GetTickCount64()
                     isEffect = True
-                    monsterInfo.hp -= 1
+                    monsterInfo.hp -= plrInfo.damage
                     ishitMonster = True
                     hitMonsterTime = GetTickCount64()
                     monsterInfo.state = 2
@@ -600,9 +633,11 @@ Public Class Form1
                         effectX = plrInfo.pos.x + plrInfo.pos.width
                         effectY = plrInfo.pos.y
                     End If
+                    isEffectSound = True
+
                     effectTime = GetTickCount64()
                     isEffect = True
-                    monsterInfo.hp -= 1
+                    monsterInfo.hp -= plrInfo.damage
                     ishitMonster = True
                     hitMonsterTime = GetTickCount64()
                 End If
@@ -622,9 +657,11 @@ Public Class Form1
                         effectX = plrInfo.pos.x + plrInfo.pos.width
                         effectY = plrInfo.pos.y
                     End If
+                    isEffectSound = True
+
                     effectTime = GetTickCount64()
                     isEffect = True
-                    monsterInfo.hp -= 1
+                    monsterInfo.hp -= plrInfo.damage
                     ishitMonster = True
                     hitMonsterTime = GetTickCount64()
                     monsterInfo.state = 2
@@ -638,9 +675,11 @@ Public Class Form1
                         effectX = plrInfo.pos.x + plrInfo.pos.width
                         effectY = plrInfo.pos.y
                     End If
+                    isEffectSound = True
+
                     effectTime = GetTickCount64()
                     isEffect = True
-                    monsterInfo.hp -= 1
+                    monsterInfo.hp -= plrInfo.damage
                     ishitMonster = True
                     hitMonsterTime = GetTickCount64()
                 End If
@@ -660,9 +699,11 @@ Public Class Form1
                         effectX = plrInfo.pos.x + plrInfo.pos.width
                         effectY = plrInfo.pos.y
                     End If
+                    isEffectSound = True
+
                     effectTime = GetTickCount64()
                     isEffect = True
-                    monsterInfo.hp -= 1
+                    monsterInfo.hp -= plrInfo.damage
                     ishitMonster = True
                     hitMonsterTime = GetTickCount64()
                     monsterInfo.state = 2
@@ -676,9 +717,11 @@ Public Class Form1
                         effectX = plrInfo.pos.x + plrInfo.pos.width
                         effectY = plrInfo.pos.y
                     End If
+                    isEffectSound = True
+
                     effectTime = GetTickCount64()
                     isEffect = True
-                    monsterInfo.hp -= 1
+                    monsterInfo.hp -= plrInfo.damage
                     ishitMonster = True
                     hitMonsterTime = GetTickCount64()
                 End If
@@ -770,6 +813,7 @@ Public Class Form1
         monsterInfo.dir = False
         monsterInfo.state = 0
 
+        isDieMonster = False
         isAttack_Monster = False
         isJump_Monster = False
         isMove_Monster = False
@@ -843,11 +887,44 @@ Public Class Form1
             Else
                 monsterInfo.anim = 13           'right hit
             End If
+        ElseIf monsterInfo.state = 4 Then       'die
+            If monsterInfo.dir = False Then         'left move
+                If monsterInfo.anim >= 14 And monsterInfo.anim <= 16 Then     'move anim ++
+                    If currentTime > lastMonsterAnimTime + 700 Then     'move anim swiching cooltime
+                        lastMonsterAnimTime = currentTime
+
+                        monsterInfo.anim += 1
+                        If monsterInfo.anim > 16 Then    'left move init
+                            isDieMonster = True
+                            monsterInfo.pos.x = -100
+                            monsterInfo.pos.y = -100
+                        End If
+                    End If
+                Else                                'left move init
+                    monsterInfo.anim = 14
+                End If
+            Else                                'right move
+                If monsterInfo.anim >= 17 And monsterInfo.anim <= 19 Then     'move anim ++
+                    If currentTime > lastMonsterAnimTime + 700 Then     'move anim swiching cooltime
+                        lastMonsterAnimTime = currentTime
+
+                        monsterInfo.anim += 1
+                        If monsterInfo.anim > 19 Then    'right move init
+                            isDieMonster = True
+                            monsterInfo.pos.x = -100
+                            monsterInfo.pos.y = -100
+                        End If
+                    End If
+                Else                                'right move init
+                    monsterInfo.anim = 19
+                End If
+            End If
         End If
     End Sub
     Sub SetStateMonster()
         If monsterInfo.hp <= 0 Then     '죽는 처리
             isSpawnMonster = False
+            monsterInfo.state = 4
         End If
 
         If ishitMonster = True Then       '무적시간 1초
@@ -944,5 +1021,4 @@ Public Class Form1
     Private Sub Form1_Closed(sender As Object, e As EventArgs) Handles MyBase.Closed
         thread_main.Abort()
     End Sub
-
 End Class

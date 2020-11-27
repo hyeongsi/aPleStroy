@@ -1,5 +1,6 @@
 ﻿Public Class Form2
 
+
     Private Sub Button3_MouseDown(sender As Object, e As MouseEventArgs) Handles Button3.MouseDown
         Button3.BackgroundImage = My.Resources.ResourceManager.GetObject("button21")
     End Sub
@@ -24,5 +25,9 @@
     Private Sub Button4_MouseUp(sender As Object, e As MouseEventArgs) Handles Button4.MouseUp
         Form3.Show()
         Me.Close()
+    End Sub
+
+    Private Sub Form2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        My.Computer.Audio.Play("sound\Title.wav", AudioPlayMode.BackgroundLoop)
     End Sub
 End Class
