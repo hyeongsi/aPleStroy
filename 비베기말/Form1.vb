@@ -6,6 +6,8 @@ Public Class Form1
     Public Declare Function mciSendString Lib "winmm.dll" Alias "mciSendStringA" _
     (ByVal lpstrCommand As String, ByVal lpstrReturnString As String, ByVal uReturnLength As _
      Integer, ByVal hwndCallback As Integer) As Integer
+    Dim isStart As Boolean = False
+
 
     Dim thread_main As Thread
     Dim startTime As Long
@@ -333,13 +335,27 @@ Public Class Form1
         If Label1.Enabled = True Then
             Label1.Text = CInt((GetTickCount64() - startTime) / 1000) & "초"
         End If
+
+        If isSpawnMonster = False And isStart = True Then
+            isStart = False
+            MsgBox("좀비버섯을 물리쳤습니다" & vbCrLf & vbCrLf & "좀비버섯에게 마을을 지켰습니다." & "확인 버튼을 누르면 로비로 이동합니다",, "YOU WIN")
+            Form2.Show()
+            Me.Close()
+        End If
+
+        If isSpawnPlayer = False And isStart = True Then
+            isStart = False
+            MsgBox("좀비버섯에게 패배하였습니다" & vbCrLf & vbCrLf & "좀비버섯이 마을을 부수고있습니다." & "확인 버튼을 누르면 로비로 이동합니다",, "YOU DIE")
+            Form2.Show()
+            Me.Close()
+        End If
     End Sub
 
     Private Sub Main()
         mciSendString("play sound2 from 0", 0, 0, 0)
 
         MsgBox("좀비버섯이 마을을 파괴하고 있습니다." & vbCrLf & vbCrLf & "좀비버섯을 막아 마을을 구하시오." & vbCrLf & vbCrLf & vbCrLf & "공격 : Ctrl, 점프 : Alt, 이동 : 방향키" & vbCrLf & vbCrLf & "확인 버튼을 누르면 바로 시작합니다",, "스토리")
-        'Label1.Enabled = True
+        Label1.Enabled = True
 
         startTime = GetTickCount64()
         lastTime = GetTickCount64()
@@ -350,6 +366,7 @@ Public Class Form1
 
         SpawnMonster()
         SpawnPlayer()
+        isStart = True
         Do
             currentTime = GetTickCount64()
 
@@ -377,13 +394,6 @@ Public Class Form1
                 End If
 
                 DeleteEffect()
-
-                If isSpawnPlayer = False Then
-                    MsgBox("좀비버섯에게 패배하였습니다" & vbCrLf & vbCrLf & "좀비버섯이 마을을 부수고있습니다." & "확인 버튼을 누르면 로비로 이동합니다",, "YOU DIE")
-                    Form2.Show()
-                    Me.Close()
-                End If
-
             End If
         Loop
     End Sub
@@ -1020,5 +1030,14 @@ Public Class Form1
     End Sub
     Private Sub Form1_Closed(sender As Object, e As EventArgs) Handles MyBase.Closed
         thread_main.Abort()
+    End Sub
+
+    Private Sub Button1_MouseDown(sender As Object, e As MouseEventArgs) Handles Button1.MouseDown
+        Button1.BackgroundImage = My.Resources.ResourceManager.GetObject("button21")
+    End Sub
+
+    Private Sub Button1_MouseUp(sender As Object, e As MouseEventArgs) Handles Button1.MouseUp
+        Form2.Show()
+        Me.Close()
     End Sub
 End Class
