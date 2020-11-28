@@ -1,5 +1,5 @@
 ﻿Imports System.Threading
-Public Class Form4
+Public Class Form5
     Private Declare Function GetTickCount64 Lib "kernel32" () As Long
     Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vkey As Integer) As Short
 
@@ -55,15 +55,18 @@ Public Class Form4
     Dim isJump As Boolean
     Dim isJumpEffectSound As Boolean
 
+    Dim monsterInfo(10) As Rect
+    Dim monsterSurv(10) As Boolean
+
     Dim velocity As Integer = 28
 
-    Private Sub Form4_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub Form5_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         thread_main = New Thread(AddressOf Main) With {.IsBackground = True}
 
         My.Computer.Audio.Play("sound\hanggu.wav", AudioPlayMode.BackgroundLoop)
         mciSendString("open sound\jump.wav alias jumpsound1", 0, 0, 0)
     End Sub
-    Private Sub Form4_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
+    Private Sub Form5_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
         thread_main.Start()
         LoadBitmap()
         SpawnPlayer()
@@ -93,6 +96,11 @@ Public Class Form4
 
         timeGauge = 0
         isStart = True
+
+        For i As Integer = 0 To monsterInfo.Count() - 1
+            'monsterInfo(i).x =
+            'monsterSurv(i)
+        Next
     End Sub
     Sub SpawnPlayer()
         plrInfo.hp = 3
@@ -252,6 +260,11 @@ Public Class Form4
         e.Graphics.DrawImage(ldBitmap, ldRect2.x, ldRect2.y, ldBitmap.Width, ldBitmap.Height)
         e.Graphics.DrawImage(ldBitmap, ldRect3.x, ldRect3.y, ldBitmap.Width, ldBitmap.Height)
 
+        For i As Integer = 0 To monsterInfo.Count() - 1
+
+        Next
+
+
         If timeGauge >= Me.Width - 70 Then
             plrInfo.pos.x += 3
         End If
@@ -272,7 +285,7 @@ Public Class Form4
             e.Graphics.FillRectangle(brush1, Me.Width - 40, 20, 10, 20)
 
             If timeGauge < Me.Width - 70 Then
-                timeGauge = CInt((Me.Width - 70) / 5) * CInt((currentTime - startTime) / 1000)  '600 / 200으로 바꾸자
+                timeGauge = CInt((Me.Width - 70) / 290) * CInt((currentTime - startTime) / 200)
             End If
 
             If timeGauge >= Me.Width - 70 Then
@@ -280,7 +293,7 @@ Public Class Form4
             End If
         End If
 
-            If isJumpEffectSound = True And isJump = True Then
+        If isJumpEffectSound = True And isJump = True Then
             isJumpEffectSound = False
             mciSendString("play jumpsound1 from 0", 0, 0, 0)
         End If

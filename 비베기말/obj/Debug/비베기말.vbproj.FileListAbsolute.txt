@@ -25,3 +25,4 @@ C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\obj\Debug
 C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\obj\Debug\비베기말.Form2.resources
 C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\obj\Debug\비베기말.Form3.resources
 C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\obj\Debug\비베기말.Form4.resources
+C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\obj\Debug\비베기말.Form5.resources

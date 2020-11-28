@@ -6,7 +6,7 @@
     End Sub
 
     Private Sub Button3_MouseUp(sender As Object, e As MouseEventArgs) Handles Button3.MouseUp
-        Form1.Show()
+        Form5.Show()
         Me.Close()
     End Sub
 
@@ -29,5 +29,14 @@
 
     Private Sub Form2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         My.Computer.Audio.Play("sound\Title.wav", AudioPlayMode.BackgroundLoop)
+    End Sub
+
+    Private Sub Button5_MouseDown(sender As Object, e As MouseEventArgs) Handles Button5.MouseDown
+        Button5.BackgroundImage = My.Resources.ResourceManager.GetObject("button21")
+    End Sub
+
+    Private Sub Button5_MouseUp(sender As Object, e As MouseEventArgs) Handles Button5.MouseUp
+        Form4.Show()
+        Me.Close()
     End Sub
 End Class

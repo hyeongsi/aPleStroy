@@ -28,6 +28,7 @@ Partial Class Form2
         Me.Button2 = New System.Windows.Forms.Button()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.Button4 = New System.Windows.Forms.Button()
+        Me.Button5 = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'Label1
@@ -121,6 +122,23 @@ Partial Class Form2
         Me.Button4.Text = "설명"
         Me.Button4.UseVisualStyleBackColor = False
         '
+        'Button5
+        '
+        Me.Button5.BackColor = System.Drawing.Color.Transparent
+        Me.Button5.BackgroundImage = Global.비베기말.My.Resources.Resources.button11
+        Me.Button5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Button5.FlatAppearance.BorderSize = 0
+        Me.Button5.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent
+        Me.Button5.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent
+        Me.Button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button5.Font = New System.Drawing.Font("맑은 고딕", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(129, Byte))
+        Me.Button5.Location = New System.Drawing.Point(294, 345)
+        Me.Button5.Name = "Button5"
+        Me.Button5.Size = New System.Drawing.Size(67, 45)
+        Me.Button5.TabIndex = 6
+        Me.Button5.Text = "FAST 1ROUND"
+        Me.Button5.UseVisualStyleBackColor = False
+        '
         'Form2
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 12.0!)
@@ -128,6 +146,7 @@ Partial Class Form2
         Me.BackgroundImage = Global.비베기말.My.Resources.Resources._1_login_screen
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
         Me.ClientSize = New System.Drawing.Size(807, 607)
+        Me.Controls.Add(Me.Button5)
         Me.Controls.Add(Me.Button4)
         Me.Controls.Add(Me.Button3)
         Me.Controls.Add(Me.Button2)
@@ -147,4 +166,5 @@ Partial Class Form2
     Friend WithEvents Button2 As Button
     Friend WithEvents Button3 As Button
     Friend WithEvents Button4 As Button
+    Friend WithEvents Button5 As Button
 End Class
