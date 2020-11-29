@@ -273,6 +273,16 @@ Namespace My.Resources
         '''<summary>
         '''  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         '''</summary>
+        Friend ReadOnly Property apleicon() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("apleicon", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        '''</summary>
         Friend ReadOnly Property backgroundImg() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("backgroundImg", resourceCulture)
@@ -613,6 +623,16 @@ Namespace My.Resources
         '''<summary>
         '''  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         '''</summary>
+        Friend ReadOnly Property chrismas() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("chrismas", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        '''</summary>
         Friend ReadOnly Property effectA() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("effectA", resourceCulture)
@@ -643,9 +663,59 @@ Namespace My.Resources
         '''<summary>
         '''  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         '''</summary>
+        Friend ReadOnly Property junior_lace() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("junior_lace", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        '''</summary>
         Friend ReadOnly Property loadimage() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("loadimage", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        '''</summary>
+        Friend ReadOnly Property Maple_tree_hill() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Maple_tree_hill", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        '''</summary>
+        Friend ReadOnly Property MapleStory_Logo() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("MapleStory-Logo", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        '''</summary>
+        Friend ReadOnly Property merry() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("merry", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        '''</summary>
+        Friend ReadOnly Property merry__3_() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("merry (3)", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

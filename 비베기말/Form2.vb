@@ -1,6 +1,4 @@
 ﻿Public Class Form2
-
-
     Private Sub Button3_MouseDown(sender As Object, e As MouseEventArgs) Handles Button3.MouseDown
         Button3.BackgroundImage = My.Resources.ResourceManager.GetObject("button21")
     End Sub

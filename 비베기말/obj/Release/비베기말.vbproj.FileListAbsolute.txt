@@ -13,3 +13,5 @@ C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\obj\Relea
 C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\obj\Release\비베기말.exe
 C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\obj\Release\비베기말.xml
 C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\obj\Release\비베기말.pdb
+C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\obj\Release\비베기말.Form5.resources
+C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\obj\Release\비베기말.Form6.resources

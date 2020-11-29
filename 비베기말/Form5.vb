@@ -12,11 +12,19 @@ Public Class Form5
 
     Dim isStart As Boolean = False
     Dim isEnd As Boolean = False
+    Dim isGameOver As Boolean = False
+    Dim lock As Boolean = False
+    Dim pt As Boolean = False
 
     Dim startTime As Long
     Dim currentTime As Long
     Dim lastTime As Long
     Dim lastPlayerAnimTime As Long
+
+    Dim lastMonsterSpawnTime As Long
+    Dim lastMonsterAnimTime As Long
+
+    Dim lastDieAnimTime As Long
 
     Dim backImage As Image
     Dim backBitmap As Bitmap
@@ -25,7 +33,7 @@ Public Class Form5
     Dim ldBitmap As Bitmap
 
     Dim playerImage As Image
-    Dim playerBitmap(5) As Bitmap
+    Dim playerBitmap(6) As Bitmap
 
     Dim monsterImage As Image
     Dim monsterBitmap As Bitmap
@@ -56,6 +64,7 @@ Public Class Form5
     Dim isJumpEffectSound As Boolean
 
     Dim monsterInfo(10) As Rect
+    Dim monsterSpeed(10) As Integer
     Dim monsterSurv(10) As Boolean
 
     Dim velocity As Integer = 28
@@ -97,10 +106,6 @@ Public Class Form5
         timeGauge = 0
         isStart = True
 
-        For i As Integer = 0 To monsterInfo.Count() - 1
-            'monsterInfo(i).x =
-            'monsterSurv(i)
-        Next
     End Sub
     Sub SpawnPlayer()
         plrInfo.hp = 3
@@ -144,6 +149,10 @@ Public Class Form5
         playerImage = My.Resources.ResourceManager.GetObject("Char_28_jump_move")
         playerBitmap(4) = New Bitmap(playerImage)
         playerBitmap(4).MakeTransparent()
+
+        playerImage = My.Resources.ResourceManager.GetObject("Char_30_hit")
+        playerBitmap(5) = New Bitmap(playerImage)
+        playerBitmap(5).MakeTransparent()
     End Sub
 
     Private Sub Main()
@@ -155,22 +164,27 @@ Public Class Form5
         currentTime = GetTickCount64()
         lastTime = GetTickCount64()
         lastPlayerAnimTime = GetTickCount64()
+        lastMonsterSpawnTime = GetTickCount64()
+        lastMonsterAnimTime = GetTickCount64()
 
         Do
             currentTime = GetTickCount64()
 
             If currentTime > lastTime + 33 Then
                 lastTime = currentTime
-                ScrollMap()
-                SetState()
-                SwichPlayerAnim()
 
-                MonsterSpawn()
-                MonsterMove()
+                If isGameOver = False Then
+                    ScrollMap()
+                    SetState()
+                    SwichPlayerAnim()
 
+                    MonsterSpawn()
+                    MonsterMove()
+
+                    Jump()
+                    Hit()
+                End If
                 Invoke(Sub() Me.Invalidate())
-
-                Jump()
 
             End If
 
@@ -189,9 +203,9 @@ Public Class Form5
             backMap2.x = backMap2.width
         End If
 
-        ldRect.x -= 6
-        ldRect2.x -= 6
-        ldRect3.x -= 6
+        ldRect.x -= 8
+        ldRect2.x -= 8
+        ldRect3.x -= 8
 
         If ldRect.x <= -ldRect.width Then
             ldRect.x = ldRect3.x + ldRect.width
@@ -228,6 +242,19 @@ Public Class Form5
             plrInfo.anim = 4
         End If
     End Sub
+    Sub Hit()
+        For i As Integer = 0 To monsterInfo.Count() - 1
+            If monsterSurv(i) = True Then
+                If (plrInfo.pos.x + playerBitmap(plrInfo.anim).Width - 50) >= monsterInfo(i).x And (plrInfo.pos.x + 50) <= (monsterInfo(i).x + monsterInfo(i).width) Then
+                    If (plrInfo.pos.y + playerBitmap(plrInfo.anim).Height - 10) >= monsterInfo(i).y + 2 And (plrInfo.pos.y + 10) <= (monsterInfo(i).y + monsterInfo(i).height - 15) Then
+                        isGameOver = True
+                        lastDieAnimTime = GetTickCount64()
+                    End If
+                End If
+            End If
+        Next
+
+    End Sub
     Sub Jump()
         If isJump = True Then
             plrInfo.pos.y -= velocity
@@ -243,15 +270,60 @@ Public Class Form5
     End Sub
 
     Sub MonsterSpawn()
+        If CInt((currentTime - startTime) / 1000) >= 44 Then
+            Return
+        End If
 
+        Randomize()
+        If GetTickCount64() > lastMonsterSpawnTime + CInt(CInt(3000 * Rnd()) + 2000) Then
+            lastMonsterSpawnTime = GetTickCount64()
+            For i As Integer = 0 To monsterInfo.Count() - 1
+                If monsterSurv(i) = False Then
+                    monsterSurv(i) = True
+                    monsterInfo(i).width = 41
+                    monsterInfo(i).height = 36
+                    monsterInfo(i).x = 800
+                    Dim rNum = CInt(CInt(2 * Rnd()))
+
+                    If rNum = 0 Then
+                        monsterInfo(i).y = 338
+                    ElseIf rNum = 1 Then
+                        monsterInfo(i).y = 302
+                    ElseIf rNum = 2 Then
+                        monsterInfo(i).y = 260
+                    End If
+
+                    Dim rNum2 = CInt(CInt(2 * Rnd()))
+
+                    If rNum2 = 0 Then
+                        monsterSpeed(i) = 12
+                    ElseIf rNum2 = 1 Then
+                        monsterSpeed(i) = 14
+                    ElseIf rNum2 = 2 Then
+                        monsterSpeed(i) = 16
+                    End If
+
+                    Exit For
+                End If
+            Next
+        End If
     End Sub
-
     Sub MonsterMove()
+        For i As Integer = 0 To monsterInfo.Count() - 1
+            If monsterSurv(i) = True Then
+                monsterInfo(i).x -= monsterSpeed(i)
+            End If
 
+            If monsterInfo(i).x <= -40 Then
+                monsterSurv(i) = False
+            End If
+        Next
     End Sub
 
     Private Sub Form4_Paint(sender As Object, e As PaintEventArgs) Handles MyBase.Paint
-        Label1.Text = CInt((currentTime - startTime) / 1000) & "초"
+        If isGameOver = False Then
+            Label1.Text = CInt((currentTime - startTime) / 1000) & "초"
+        End If
 
         e.Graphics.DrawImage(backBitmap, backMap.x, 0, backBitmap.Width, backBitmap.Height)
         e.Graphics.DrawImage(backBitmap, backMap2.x, 0, backBitmap.Width, backBitmap.Height)
@@ -261,31 +333,39 @@ Public Class Form5
         e.Graphics.DrawImage(ldBitmap, ldRect3.x, ldRect3.y, ldBitmap.Width, ldBitmap.Height)
 
         For i As Integer = 0 To monsterInfo.Count() - 1
-
+            If monsterSurv(i) = True Then
+                e.Graphics.DrawImage(monsterBitmap, monsterInfo(i).x, monsterInfo(i).y, monsterInfo(i).width, monsterInfo(i).height)
+            End If
         Next
 
 
         If timeGauge >= Me.Width - 70 Then
-            plrInfo.pos.x += 3
-        End If
+                plrInfo.pos.x += 3
+            End If
 
         If plrInfo.pos.x < Me.Width - 10 Then
-            e.Graphics.DrawImage(playerBitmap(plrInfo.anim), plrInfo.pos.x, plrInfo.pos.y, playerBitmap(plrInfo.anim).Width, playerBitmap(plrInfo.anim).Height)
+            If isGameOver = False Then
+                e.Graphics.DrawImage(playerBitmap(plrInfo.anim), plrInfo.pos.x, plrInfo.pos.y, playerBitmap(plrInfo.anim).Width, playerBitmap(plrInfo.anim).Height)
+            End If
         ElseIf isEnd = False Then
             isEnd = True
-            MsgBox("열심히 달려 마을에 도착했습니다." & vbCrLf & vbCrLf & "확인 버튼을 누르면 다음 스테이지로 이동합니다",, "NEXT STAGE")
+            MsgBox("열심히 달려 제시간에 마을에 도착했습니다." & vbCrLf & vbCrLf & "확인 버튼을 누르면 다음 스테이지로 이동합니다",, "NEXT STAGE")
             thread_main.Abort()
             Form1.Show()
             Me.Close()
         End If
+
+
         If isStart = True Then
             e.Graphics.FillRectangle(brush1, 20, 20, 10, 20)
             e.Graphics.FillRectangle(brush2, 30, 20, timeGauge, 20)
 
             e.Graphics.FillRectangle(brush1, Me.Width - 40, 20, 10, 20)
 
-            If timeGauge < Me.Width - 70 Then
-                timeGauge = CInt((Me.Width - 70) / 290) * CInt((currentTime - startTime) / 200)
+            If isGameOver = False Then
+                If timeGauge < Me.Width - 70 Then
+                    timeGauge = CInt((Me.Width - 70) / 290) * CInt((currentTime - startTime) / 200)
+                End If
             End If
 
             If timeGauge >= Me.Width - 70 Then
@@ -296,6 +376,22 @@ Public Class Form5
         If isJumpEffectSound = True And isJump = True Then
             isJumpEffectSound = False
             mciSendString("play jumpsound1 from 0", 0, 0, 0)
+        End If
+
+        If isGameOver = True And lock = False Then
+            e.Graphics.DrawImage(playerBitmap(5), plrInfo.pos.x, plrInfo.pos.y, playerBitmap(plrInfo.anim).Width, playerBitmap(plrInfo.anim).Height)
+
+            If GetTickCount64() > lastDieAnimTime + 200 Then
+                pt = True
+            End If
+
+            If pt = True Then
+                lock = True
+                MsgBox("마을에 달려가던 도중 몬스터에게 습격을 당해 다리가 부러졌습니다." & vbCrLf & vbCrLf & "제시간에 마을에 도착하지 못해, 마을이 파괴되고" & vbCrLf & "마을주민들이 모두 코딩노예가 되었습니다." & vbCrLf & vbCrLf & "아픈 몸을 이끌고 도망칩니다." & vbCrLf & vbCrLf & "확인 버튼을 누르면 로비로 이동합니다.",, "TIME OVER")
+
+                Form2.Show()
+                Me.Close()
+            End If
         End If
     End Sub
     Private Sub Form4_Closed(sender As Object, e As EventArgs) Handles MyBase.Closed

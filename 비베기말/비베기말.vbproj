@@ -105,6 +105,12 @@
     <Compile Include="Form5.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Form6.Designer.vb">
+      <DependentUpon>Form6.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form6.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -137,6 +143,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form5.resx">
       <DependentUpon>Form5.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form6.resx">
+      <DependentUpon>Form6.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -234,6 +243,12 @@
     <None Include="image\explain.jpg" />
     <None Include="image\loadimage.png" />
     <None Include="image\loadimage.jpg" />
+    <None Include="image\MapleStory-Logo.png" />
+    <None Include="image\apleicon.png" />
+    <None Include="image\Maple_tree_hill.png" />
+    <None Include="image\chrismas.jpg" />
+    <None Include="image\merry.png" />
+    <None Include="image\merry %283%29.png" />
     <Content Include="Resources\Char_13_move.png" />
     <Content Include="Resources\Char_14_move.png" />
     <Content Include="Resources\Char_15_attack.png" />

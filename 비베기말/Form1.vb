@@ -312,7 +312,7 @@ Public Class Form1
         If isSpawnMonster = True Then
             e.Graphics.DrawImage(monsterBitmap(monsterInfo.anim), monsterInfo.pos.x, monsterInfo.pos.y, monsterInfo.pos.width, monsterInfo.pos.height)
 
-            e.Graphics.DrawImage(hpBitmap, monsterInfo.pos.x + 30, monsterInfo.pos.y, 15 * monsterInfo.hp, 10)   'small hp
+            e.Graphics.DrawImage(hpBitmap, monsterInfo.pos.x - 20, monsterInfo.pos.y, 15 * monsterInfo.hp, 10)   'small hp
             e.Graphics.DrawImage(hpBitmap, 700 + (30 * (10 - monsterInfo.hp)), 20, 30 * monsterInfo.hp, 20)   'large hp
         End If
 
@@ -332,7 +332,7 @@ Public Class Form1
                     isEffectSound = False
                 End If
             End If
-            e.Graphics.DrawImage(hpBitmap, plrInfo.pos.x + 30, plrInfo.pos.y, 6 * plrInfo.hp, 10)   'small hp
+            e.Graphics.DrawImage(hpBitmap, plrInfo.pos.x + 40, plrInfo.pos.y, 6 * plrInfo.hp, 10)   'small hp
             e.Graphics.DrawImage(hpBitmap, 20, 20, 20 * plrInfo.hp, 20)   'large hp
         End If
 
@@ -346,14 +346,14 @@ Public Class Form1
 
         If isSpawnMonster = False And isStart = True Then
             isStart = False
-            MsgBox("좀비버섯을 물리쳤습니다" & vbCrLf & vbCrLf & "좀비버섯에게 마을을 지켰습니다." & "확인 버튼을 누르면 로비로 이동합니다",, "YOU WIN")
-            Form2.Show()
+            MsgBox("좀비버섯을 물리쳤습니다" & vbCrLf & vbCrLf & "마을을 지켜내고 영웅이 되었습니다." & vbCrLf & vbCrLf & "그러나 많은 과제 때문에 이 아이에겐 시간이 없습니다." & vbCrLf & vbCrLf & "과제를 하기 위해 다시 마을을 떠납니다.",, "OPEN ENDING")
+            Form6.Show()
             Me.Close()
         End If
 
         If isSpawnPlayer = False And isStart = True Then
             isStart = False
-            MsgBox("좀비버섯에게 패배하였습니다" & vbCrLf & vbCrLf & "좀비버섯이 마을을 부수고있습니다." & "확인 버튼을 누르면 로비로 이동합니다",, "YOU DIE")
+            MsgBox("좀비버섯에게 패배하였습니다" & vbCrLf & vbCrLf & "좀비버섯이 마을을 부수고 마을 주민들이 코딩 노예가 되었습니다." & vbCrLf & vbCrLf & "확인 버튼을 누르면 로비로 이동합니다",, "YOU DIE")
             Form2.Show()
             Me.Close()
         End If
@@ -407,9 +407,9 @@ Public Class Form1
     End Sub
 
     Sub SpawnPlayer()
-        plrInfo.hp = 10
+        plrInfo.hp = 5
         plrInfo.speed = 8
-        plrInfo.damage = 10
+        plrInfo.damage = 1
         plrInfo.pos.x = 200
         plrInfo.pos.y = 477
         plrInfo.pos.width = 124
@@ -829,7 +829,7 @@ Public Class Form1
         End If
     End Sub
     Sub SpawnMonster()
-        monsterInfo.hp = 10
+        monsterInfo.hp = 15
         monsterInfo.speed = 7
         monsterInfo.damage = 1
         monsterInfo.pos.x = 700

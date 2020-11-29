@@ -23,7 +23,6 @@ Partial Class Form2
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.Label2 = New System.Windows.Forms.Label()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.Button3 = New System.Windows.Forms.Button()
@@ -42,18 +41,6 @@ Partial Class Form2
         Me.Label1.Size = New System.Drawing.Size(82, 21)
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "21724123"
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.BackColor = System.Drawing.Color.Transparent
-        Me.Label2.Font = New System.Drawing.Font("맑은 고딕", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(129, Byte))
-        Me.Label2.ForeColor = System.Drawing.SystemColors.ControlLightLight
-        Me.Label2.Location = New System.Drawing.Point(296, 308)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(58, 21)
-        Me.Label2.TabIndex = 1
-        Me.Label2.Text = "박시형"
         '
         'Button1
         '
@@ -151,7 +138,6 @@ Partial Class Form2
         Me.Controls.Add(Me.Button3)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button1)
-        Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Label1)
         Me.Name = "Form2"
         Me.Text = "ApleStory"
@@ -161,7 +147,6 @@ Partial Class Form2
     End Sub
 
     Friend WithEvents Label1 As Label
-    Friend WithEvents Label2 As Label
     Friend WithEvents Button1 As Button
     Friend WithEvents Button2 As Button
     Friend WithEvents Button3 As Button

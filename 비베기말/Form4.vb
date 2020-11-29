@@ -260,7 +260,7 @@ Public Class Form4
             e.Graphics.DrawImage(playerBitmap(plrInfo.anim), plrInfo.pos.x, plrInfo.pos.y, playerBitmap(plrInfo.anim).Width, playerBitmap(plrInfo.anim).Height)
         ElseIf isEnd = False Then
             isEnd = True
-            MsgBox("열심히 달려 마을에 도착했습니다." & vbCrLf & vbCrLf & "확인 버튼을 누르면 다음 스테이지로 이동합니다",, "NEXT STAGE")
+            MsgBox("열심히 달려 제시간에 마을에 도착했습니다." & vbCrLf & vbCrLf & "확인 버튼을 누르면 다음 스테이지로 이동합니다",, "NEXT STAGE")
             thread_main.Abort()
             Form1.Show()
             Me.Close()

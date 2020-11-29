@@ -127,6 +127,11 @@
   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
 </summary>
 </member>
+<member name="P:비베기말.My.Resources.Resources.apleicon">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
 <member name="P:비베기말.My.Resources.Resources.backgroundImg">
 <summary>
   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
@@ -297,6 +302,11 @@
   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
 </summary>
 </member>
+<member name="P:비베기말.My.Resources.Resources.chrismas">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
 <member name="P:비베기말.My.Resources.Resources.effectA">
 <summary>
   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
@@ -312,7 +322,32 @@
   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
 </summary>
 </member>
+<member name="P:비베기말.My.Resources.Resources.junior_lace">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
 <member name="P:비베기말.My.Resources.Resources.loadimage">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources.Maple_tree_hill">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources.MapleStory_Logo">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources.merry">
+<summary>
+  System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+</summary>
+</member>
+<member name="P:비베기말.My.Resources.Resources.merry__3_">
 <summary>
   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
 </summary>
