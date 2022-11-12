@@ -2,7 +2,6 @@ C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\bin\Relea
 C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\bin\Release\비베기말.exe
 C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\bin\Release\비베기말.pdb
 C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\bin\Release\비베기말.xml
-C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\obj\Release\비베기말.vbprojAssemblyReference.cache
 C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\obj\Release\비베기말.Form1.resources
 C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\obj\Release\비베기말.Form2.resources
 C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\obj\Release\비베기말.Form3.resources
@@ -15,3 +14,4 @@ C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\obj\Relea
 C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\obj\Release\비베기말.pdb
 C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\obj\Release\비베기말.Form5.resources
 C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\obj\Release\비베기말.Form6.resources
+C:\Users\parks\Desktop\GitHub\visual-basic-finals-project\비베기말\obj\Release\비베기말.vbproj.AssemblyReference.cache

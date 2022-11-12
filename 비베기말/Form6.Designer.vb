@@ -85,7 +85,7 @@ Partial Class Form6
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(53, 12)
         Me.Label2.TabIndex = 7
-        Me.Label2.Text = "21724123"
+        Me.Label2.Text = "si hyeong"
         '
         'Label3
         '
