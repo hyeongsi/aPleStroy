@@ -3,11 +3,6 @@
 
 ## 프로젝트 소개
 <div>
-<img width="300" src="https://user-images.githubusercontent.com/71202869/201474952-8d4aa731-1685-4b59-8b86-add7c3f6b49a.png"/>
-<img width="300" src="https://user-images.githubusercontent.com/71202869/201474400-2a27608f-1de9-408d-92e4-4c3937e746df.png"/>
-<img width="300" src="https://user-images.githubusercontent.com/71202869/201475433-49cdca2e-1be8-425b-908d-d8bc3a9c5848.PNG"/>
-</div>
-<div>
 <img width="400" src="https://user-images.githubusercontent.com/71202869/201475090-aac9877d-bc96-46a6-855c-1862a13ec720.png"/>
 <img width="400" src="https://user-images.githubusercontent.com/71202869/201475169-0e38d9bf-1dd0-4116-b273-4806734d155c.png"/>
 </div>
