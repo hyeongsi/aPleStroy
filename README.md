@@ -34,22 +34,24 @@ Visual Basic 게임 제작
 
 <br>
 
-## 기타
-<details>
-  <summary>조작법</summary>
-  <table>
-    <tr>
-      <td><b>방향키</b></td>
-      <td><b>alt</b></td>
-      <td><b>ctrl</b></td>
-    </tr>
-    <tr>
-      <td>이동</td>
-      <td>점프</td>
-      <td>공격</td>
-    </tr>
-  </table>
-</details>
+## 기타 / 조작법
+<ui>
+  <li>
+    <table>
+      <tr>
+        <td><b>방향키</b></td>
+        <td><b>alt</b></td>
+        <td><b>ctrl</b></td>
+      </tr>
+      <tr>
+        <td>이동</td>
+        <td>점프</td>
+        <td>공격</td>
+      </tr>
+    </table>
+  </li>
+  <li></li>
+</ui>
 
 
 ```
